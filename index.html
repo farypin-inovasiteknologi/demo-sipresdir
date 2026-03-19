@@ -54,6 +54,19 @@ input, button, select, textarea {
     .view-section { display: none; }
     .view-section.active { display: block; }
     .judul-container { display: flex; align-items: center; gap: 10px; }
+
+    /* Tampilan khusus HP untuk memisahkan Branding dan Form Login */
+@media (max-width: 1023px) {
+    #panelForm { display: none !important; } /* Sembunyikan form di HP secara default */
+    
+    /* Saat tombol ditekan, tampilkan form dan sembunyikan branding */
+    .mobile-login-active #panelForm { display: flex !important; }
+    .mobile-login-active #panelBranding { display: none !important; }
+    .mobile-login-active #mobileLoginBtnWrapper { display: none !important; }
+    
+    /* Hilangkan border bawah branding di HP agar lebih mulus */
+    #panelBranding { border-bottom: none !important; }
+}
   </style>
 </head>
 <body class="bg-slate-50 font-sans antialiased text-slate-600 overflow-x-hidden">
@@ -62,8 +75,8 @@ input, button, select, textarea {
     <div class="absolute bottom-0 right-0 w-96 h-96 bg-pink-400/20 rounded-full mix-blend-overlay filter blur-3xl opacity-30 animate-pulse translate-x-1/2 translate-y-1/2"></div>
 
     <div class="w-full max-w-5xl flex flex-col lg:flex-row shadow-2xl rounded-3xl overflow-hidden z-10 mx-4 animate-fade-in glass-card">
-        
-        <div class="w-full lg:w-5/12 p-6 lg:p-12 flex flex-col justify-between relative text-white border-b lg:border-b-0 lg:border-r border-white/20 bg-white/10 backdrop-blur-md">
+
+        <div id="panelBranding" class="w-full lg:w-5/12 p-6 lg:p-12 flex flex-col justify-between relative text-white border-b lg:border-b-0 lg:border-r border-white/20 bg-white/10 backdrop-blur-md">
             
             <div class="relative z-10">
                 <center>
@@ -104,10 +117,19 @@ input, button, select, textarea {
                 <div class="px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-blue-800 lg:text-blue-600">
                 <a href='#' class="dyn-website-link" rel='dofollow'><span class="dyn-website">Memuat...</span></a></div>
             </div>
-        </div>
 
-        <div class="w-full lg:w-7/12 p-6 lg:p-12 bg-white/40 backdrop-blur-xl flex items-center">
+        <div id="mobileLoginBtnWrapper" class="fixed bottom-8 left-4 right-4 z-[100] lg:hidden animate-bounce">
+        <button onclick="showMobileLogin()" type="button" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-2xl shadow-[0_10px_25px_-5px_rgba(79,70,229,0.5)] flex justify-center items-center gap-2 border border-white/20 backdrop-blur-md transition transform active:scale-95">
+            Untuk masuk klik disini <i class="fas fa-sign-in-alt text-lg"></i>
+        </button>
+    </div>
+</div>
+<!--======================-->
+       <div id="panelForm" class="w-full lg:w-7/12 p-6 lg:p-12 bg-white/40 backdrop-blur-xl flex items-center">
             <div class="w-full max-w-md mx-auto">
+              <button onclick="hideMobileLogin()" type="button" class="block lg:hidden mb-6 text-gray-600 hover:text-indigo-600 bg-white/60 px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-sm backdrop-blur-md w-fit">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </button>
                 <div class="text-center lg:text-left mb-6 lg:mb-10">
                     <center>
                         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfzGqA11LudTtI5aqUk93_GUJWPoHCR2uNbhgSgZhv71Bmx48aW6zBg7l7U6KoVNNmQpC7zai4T3KeV6DfH1VXfpwQDaxYPEiaCZ8opxte2Koje_yoSzejOD3eKTGt8tHeMuVVrldPZjsXCeRjUe1dbFibHnjpxZYcYlsGBz3YKr_ZU9E9n4z1y0dUrYXC/s425/logo%20sipresdir.png" class="w-12 lg:w-[70px] object-contain" >
@@ -2322,6 +2344,20 @@ function applyCrop() {
     
     // Tutup modal
     closeCropModal();
+}
+
+
+// ============================================================
+// LOGIKA TAMPILAN LOGIN KHUSUS MOBILE
+// ============================================================
+function showMobileLogin() {
+    // Menambahkan class pada container utama untuk men-trigger CSS yang kita buat
+    document.getElementById('loginPage').classList.add('mobile-login-active');
+}
+
+function hideMobileLogin() {
+    // Menghapus class untuk mengembalikan ke tampilan branding
+    document.getElementById('loginPage').classList.remove('mobile-login-active');
 }
 
 
