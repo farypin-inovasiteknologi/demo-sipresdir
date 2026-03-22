@@ -1656,25 +1656,25 @@ async function loadQRCodeSiswa(nisnParam, namaParam, kelasParam) {
         <div class="flex flex-col items-center justify-center py-5">
             <div id="idCardElement" style="width: 320px; height: 510px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; position: relative; font-family: sans-serif; box-sizing: border-box;">
                 
-                <div style="height: 120px; background: #312e81; padding: 15px; text-align: center; color: white; box-sizing: border-box;">
-                    <img src="${logoBase64}" style="height: 50px; width: auto; max-width: 100%; margin: 0 auto 8px auto; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
-                    <div style="font-weight: 800; font-size: 15px; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; line-height: 1.2; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${namaSekolah}</div>
-                    <div style="font-size: 8px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
+                <div style="height: 160px; background: #312e81; padding: 20px 15px; text-align: center; color: white; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <img src="${logoBase64}" style="height: 60px; width: auto; max-width: 100%; margin-bottom: 10px; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                    <div style="font-weight: 900; font-size: 22px; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; line-height: 1.1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${namaSekolah}</div>
+                    <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
                 </div>
 
-                <div style="height: 390px; padding: 20px; text-align: center; background: white; box-sizing: border-box; position: relative;">
-                    <div style="width: 140px; height: 140px; margin: 0 auto 15px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); box-sizing: border-box;">
+                <div style="height: 350px; padding: 15px 20px; text-align: center; background: white; box-sizing: border-box; position: relative;">
+                    <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); box-sizing: border-box;">
                         <img id="qrImageTarget" src="" style="width: 100%; height: 100%; display: block; border-radius: 4px;" alt="Memuat QR...">
                     </div>
                     
-                    <div style="font-size: 18px; font-weight: 800; color: #1f2937; margin-bottom: 4px; line-height: 1.2;">${nama}</div>
-                    <div style="font-size: 13px; color: #6b7280; margin-bottom: 12px; font-family: monospace;">${nisn}</div>
+                    <div style="font-size: 18px; font-weight: 800; color: #1f2937; margin-bottom: 2px; line-height: 1.2;">${nama}</div>
+                    <div style="font-size: 13px; color: #6b7280; margin-bottom: 10px; font-family: monospace;">${nisn}</div>
                     
-                    <div style="margin-bottom: 15px;">
+                    <div style="margin-bottom: 10px;">
                         <span style="background: #eef2ff; color: #4f46e5; padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 800; text-transform: uppercase; border: 1px solid #e0e7ff;">${kelas}</span>
                     </div>
                     
-                    <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; border-top: 2px dashed #f3f4f6; padding-top: 12px; font-size: 10px; color: #9ca3af; display: flex; justify-content: space-between;">
+                    <div style="position: absolute; bottom: 15px; left: 20px; right: 20px; border-top: 2px dashed #f3f4f6; padding-top: 10px; font-size: 10px; color: #9ca3af; display: flex; justify-content: space-between;">
                         <span>ID: ${nisn}</span>
                         <span>VALID: ${new Date().getFullYear()}</span>
                     </div>
@@ -1698,7 +1698,6 @@ async function loadQRCodeSiswa(nisnParam, namaParam, kelasParam) {
 
         setTimeout(() => {
             const tempDiv = document.createElement("div");
-            // Ukuran QR pas dengan area 140px - 16px padding = 124px
             new QRCode(tempDiv, { text: String(nisn), width: 124, height: 124, correctLevel : QRCode.CorrectLevel.H });
             setTimeout(() => {
                 const canvas = tempDiv.querySelector("canvas");
@@ -2278,10 +2277,7 @@ async function downloadPDFRekapSiswa() {
 }
 
 // ============================================================
-// FITUR BARU: CETAK SEMUA KARTU SISWA (A4, 3x3 COLUMNS, COLOR)
-// ============================================================
-// ============================================================
-// FITUR BARU: CETAK SEMUA KARTU SISWA (A4, 3x3 COLUMNS, COLOR)
+// FITUR: CETAK SEMUA KARTU SISWA (A4, 3x3 COLUMNS, COLOR) - FIXED PROPORTION
 // ============================================================
 async function cetakSemuaKartuSiswa() {
     const dataToPrint = tableState.siswa.filtered;
@@ -2306,12 +2302,13 @@ async function cetakSemuaKartuSiswa() {
         }
 
         const { jsPDF } = window.jspdf;
+        // PDF Ukuran A4 standar (210mm x 297mm)
         const doc = new jsPDF('p', 'mm', 'a4');
 
-        // PENGATURAN UKURAN KARTU (54mm x 86mm adalah Standar CR80 ID Card)
+        // PENGATURAN UKURAN KARTU SESUAI RASIO (54mm x 86mm)
         const cardW = 54; 
         const cardH = 86; 
-        // Rumus Margin agar pas 3x3 ke tengah kertas A4 (210 x 297 mm)
+        // Rumus Margin agar pas 3x3 ke tengah kertas
         const marginX = (210 - (3 * cardW)) / 4; 
         const marginY = (297 - (3 * cardH)) / 4; 
 
@@ -2320,54 +2317,53 @@ async function cetakSemuaKartuSiswa() {
 
             document.getElementById('loadingText').innerHTML = `Memproses Kartu... <br><span class="text-[10px] text-gray-500 font-normal">${i + 1} dari ${dataToPrint.length} Siswa</span>`;
 
-            // Struktur HTML Kartu sama persis dengan preview satuan (Rasio terkunci 320x510)
+            // STRUKTUR HTML SAMA PERSIS DENGAN PREVIEW (HEADER 160px, BODY 350px)
             container.innerHTML = `
             <div id="printCardTemplate" style="width: 320px; height: 510px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; position: relative; font-family: sans-serif; box-sizing: border-box;">
                 
-                <div style="height: 120px; background: #312e81; padding: 15px; text-align: center; color: white; box-sizing: border-box;">
-                    <img src="${logoBase64}" style="height: 50px; width: auto; max-width: 100%; margin: 0 auto 8px auto; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
-                    <div style="font-weight: 800; font-size: 15px; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; line-height: 1.2; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${namaSekolah}</div>
-                    <div style="font-size: 8px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
+                <div style="height: 160px; background: #312e81; padding: 20px 15px; text-align: center; color: white; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <img src="${logoBase64}" style="height: 60px; width: auto; max-width: 100%; margin-bottom: 10px; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                    <div style="font-weight: 900; font-size: 22px; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; line-height: 1.1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${namaSekolah}</div>
+                    <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
                 </div>
 
-                <div style="height: 390px; padding: 20px; text-align: center; background: white; box-sizing: border-box; position: relative;">
-                    <div style="width: 140px; height: 140px; margin: 0 auto 15px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); box-sizing: border-box;">
+                <div style="height: 350px; padding: 15px 20px; text-align: center; background: white; box-sizing: border-box; position: relative;">
+                    <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); box-sizing: border-box;">
                         <div id="hiddenQrTarget" style="width: 100%; height: 100%;"></div>
                     </div>
                     
-                    <div style="font-size: 18px; font-weight: 800; color: #1f2937; margin-bottom: 4px; line-height: 1.2;">${siswa.nama}</div>
-                    <div style="font-size: 13px; color: #6b7280; margin-bottom: 12px; font-family: monospace;">${siswa.nisn}</div>
+                    <div style="font-size: 18px; font-weight: 800; color: #1f2937; margin-bottom: 2px; line-height: 1.2;">${siswa.nama}</div>
+                    <div style="font-size: 13px; color: #6b7280; margin-bottom: 10px; font-family: monospace;">${siswa.nisn}</div>
                     
-                    <div style="margin-bottom: 15px;">
+                    <div style="margin-bottom: 10px;">
                         <span style="background: #eef2ff; color: #4f46e5; padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 800; text-transform: uppercase; border: 1px solid #e0e7ff;">${siswa.kelas}</span>
                     </div>
                     
-                    <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; border-top: 2px dashed #f3f4f6; padding-top: 12px; font-size: 10px; color: #9ca3af; display: flex; justify-content: space-between;">
+                    <div style="position: absolute; bottom: 15px; left: 20px; right: 20px; border-top: 2px dashed #f3f4f6; padding-top: 10px; font-size: 10px; color: #9ca3af; display: flex; justify-content: space-between;">
                         <span>ID: ${siswa.nisn}</span>
                         <span>VALID: ${new Date().getFullYear()}</span>
                     </div>
                 </div>
             </div>`;
 
-            // Ukuran QR Code persis dengan area dalam box (124px)
             const qrTarget = document.getElementById('hiddenQrTarget');
             new QRCode(qrTarget, { text: String(siswa.nisn), width: 124, height: 124, correctLevel : QRCode.CorrectLevel.H });
             
             await new Promise(resolve => setTimeout(resolve, 150));
 
             const cardEl = document.getElementById('printCardTemplate');
-            const canvas = await html2canvas(cardEl, { scale: 2, useCORS: true, backgroundColor: "#ffffff", logging: false });
+            // Gunakan scale: 3 untuk kualitas rendering HTML ke gambar yang lebih tajam
+            const canvas = await html2canvas(cardEl, { scale: 3, useCORS: true, backgroundColor: "#ffffff", logging: false });
             
-            // Format Full Color
             const imgData = canvas.toDataURL('image/jpeg', 1.0); 
 
-            // Algoritma Grid Posisi 3 Baris x 3 Kolom
+            // Algoritma Grid 3 Baris x 3 Kolom
             const col = i % 3;
             const row = Math.floor((i % 9) / 3);
             const x = marginX + col * (cardW + marginX);
             const y = marginY + row * (cardH + marginY);
 
-            // Tempel ke PDF dengan dimensi persis rasio
+            // Tempel ke PDF dengan rasio presisi 54x86mm
             doc.addImage(imgData, 'JPEG', x, y, cardW, cardH);
 
             if ((i + 1) % 9 === 0 && i !== dataToPrint.length - 1) {
@@ -2378,7 +2374,7 @@ async function cetakSemuaKartuSiswa() {
         const pdfFileName = `Cetak_Kartu_Siswa_${new Date().getTime()}.pdf`;
         doc.save(pdfFileName);
         
-        showAlert('success', 'PDF berhasil diunduh dengan ukuran proporsional!');
+        showAlert('success', 'PDF berhasil diunduh dengan proporsi nama sekolah yang jelas!');
 
     } catch (error) {
         console.error("Error Cetak PDF:", error);
