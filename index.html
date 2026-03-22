@@ -1654,29 +1654,29 @@ async function loadQRCodeSiswa(nisnParam, namaParam, kelasParam) {
 
         container.innerHTML = `
         <div class="flex flex-col items-center justify-center py-5">
-            <div id="idCardElement" style="width: 320px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; position: relative; font-family: sans-serif;">
+            <div id="idCardElement" style="width: 320px; height: 510px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; position: relative; font-family: sans-serif; box-sizing: border-box;">
                 
-                <div style="background: #312e81; padding: 25px 20px; text-align: center; color: white;">
-                    <img src="${logoBase64}" style="height: 70px; width: auto; max-width: 100%; margin: 0 auto 10px auto; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
-                    
-                    <div style="font-weight: 800; font-size: 16px; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; line-height: 1.2;">${namaSekolah}</div>
-                    
-                    <div style="font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL REALTIME</div>
+                <div style="height: 120px; background: #312e81; padding: 15px; text-align: center; color: white; box-sizing: border-box;">
+                    <img src="${logoBase64}" style="height: 50px; width: auto; max-width: 100%; margin: 0 auto 8px auto; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                    <div style="font-weight: 800; font-size: 15px; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; line-height: 1.2; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${namaSekolah}</div>
+                    <div style="font-size: 8px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
                 </div>
 
-                <div style="padding: 25px 20px; text-align: center; background: white;">
-                    <div style="width: 150px; height: 150px; margin: 0 auto 15px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05);">
+                <div style="height: 390px; padding: 20px; text-align: center; background: white; box-sizing: border-box; position: relative;">
+                    <div style="width: 140px; height: 140px; margin: 0 auto 15px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); box-sizing: border-box;">
                         <img id="qrImageTarget" src="" style="width: 100%; height: 100%; display: block; border-radius: 4px;" alt="Memuat QR...">
                     </div>
                     
-                    <div style="font-size: 20px; font-weight: 800; color: #1f2937; margin-bottom: 4px; line-height: 1.2;">${nama}</div>
-                    <div style="font-size: 14px; color: #6b7280; margin-bottom: 12px; font-family: monospace;">${nisn}</div>
+                    <div style="font-size: 18px; font-weight: 800; color: #1f2937; margin-bottom: 4px; line-height: 1.2;">${nama}</div>
+                    <div style="font-size: 13px; color: #6b7280; margin-bottom: 12px; font-family: monospace;">${nisn}</div>
                     
-                    <span style="background: #eef2ff; color: #4f46e5; padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 800; text-transform: uppercase; border: 1px solid #e0e7ff;">${kelas}</span>
+                    <div style="margin-bottom: 15px;">
+                        <span style="background: #eef2ff; color: #4f46e5; padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 800; text-transform: uppercase; border: 1px solid #e0e7ff;">${kelas}</span>
+                    </div>
                     
-                    <div style="margin-top: 20px; border-top: 2px dashed #f3f4f6; padding-top: 15px; font-size: 10px; color: #9ca3af; display: flex; justify-content: space-between;">
+                    <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; border-top: 2px dashed #f3f4f6; padding-top: 12px; font-size: 10px; color: #9ca3af; display: flex; justify-content: space-between;">
                         <span>ID: ${nisn}</span>
-                        <span class="dyn-tahun">VALID: ...</span>
+                        <span>VALID: ${new Date().getFullYear()}</span>
                     </div>
                 </div>
             </div>
@@ -1698,7 +1698,8 @@ async function loadQRCodeSiswa(nisnParam, namaParam, kelasParam) {
 
         setTimeout(() => {
             const tempDiv = document.createElement("div");
-            new QRCode(tempDiv, { text: String(nisn), width: 250, height: 250, correctLevel : QRCode.CorrectLevel.H });
+            // Ukuran QR pas dengan area 140px - 16px padding = 124px
+            new QRCode(tempDiv, { text: String(nisn), width: 124, height: 124, correctLevel : QRCode.CorrectLevel.H });
             setTimeout(() => {
                 const canvas = tempDiv.querySelector("canvas");
                 const imgInTemp = tempDiv.querySelector("img");
@@ -2279,8 +2280,10 @@ async function downloadPDFRekapSiswa() {
 // ============================================================
 // FITUR BARU: CETAK SEMUA KARTU SISWA (A4, 3x3 COLUMNS, COLOR)
 // ============================================================
+// ============================================================
+// FITUR BARU: CETAK SEMUA KARTU SISWA (A4, 3x3 COLUMNS, COLOR)
+// ============================================================
 async function cetakSemuaKartuSiswa() {
-    // Ambil data siswa yang sedang tampil di tabel (Bisa terpengaruh filter Kelas)
     const dataToPrint = tableState.siswa.filtered;
     
     if (!dataToPrint || dataToPrint.length === 0) {
@@ -2291,93 +2294,91 @@ async function cetakSemuaKartuSiswa() {
     showLoading();
 
     try {
-        // Ambil data logo dan nama sekolah dari tampilan utama
         const logoBase64 = document.querySelector('.dyn-logo').src;
         const namaSekolah = document.querySelector('.dyn-namasekolah').textContent;
 
-        // Buat elemen "pabrik" tersembunyi untuk memproduksi gambar kartu
         let container = document.getElementById('hiddenCardFactory');
         if (!container) {
             container = document.createElement('div');
             container.id = 'hiddenCardFactory';
-            // Sembunyikan jauh di luar layar agar tidak merusak tampilan web
             container.style.cssText = 'position: fixed; top: 0; left: -9999px; z-index: -9999; pointer-events: none; background: white;';
             document.body.appendChild(container);
         }
 
-        // Siapkan Dokumen PDF ukuran A4 (Orientasi Portrait, Satuan Milimeter)
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
 
-        // PENGATURAN UKURAN KARTU (mm) & GRID A4 (210 x 297 mm)
-        const cardW = 60; // Lebar Kartu
-        const cardH = 85; // Tinggi Kartu
-        // Perhitungan margin otomatis agar pas 3x3 ke tengah kertas
+        // PENGATURAN UKURAN KARTU (54mm x 86mm adalah Standar CR80 ID Card)
+        const cardW = 54; 
+        const cardH = 86; 
+        // Rumus Margin agar pas 3x3 ke tengah kertas A4 (210 x 297 mm)
         const marginX = (210 - (3 * cardW)) / 4; 
         const marginY = (297 - (3 * cardH)) / 4; 
 
-        // Proses satu per satu siswa
         for (let i = 0; i < dataToPrint.length; i++) {
             const siswa = dataToPrint[i];
 
-            // Update loading bar agar user tahu prosesnya tidak macet
             document.getElementById('loadingText').innerHTML = `Memproses Kartu... <br><span class="text-[10px] text-gray-500 font-normal">${i + 1} dari ${dataToPrint.length} Siswa</span>`;
 
-            // Suntikkan desain HTML kartu ke "pabrik" tersembunyi
+            // Struktur HTML Kartu sama persis dengan preview satuan (Rasio terkunci 320x510)
             container.innerHTML = `
-            <div id="printCardTemplate" style="width: 320px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; font-family: sans-serif;">
-                <div style="background: #312e81; padding: 25px 20px; text-align: center; color: white;">
-                    <img src="${logoBase64}" style="height: 70px; width: auto; max-width: 100%; margin: 0 auto 10px auto; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
-                    <div style="font-weight: 800; font-size: 16px; text-transform: uppercase; margin-bottom: 2px;">${namaSekolah}</div>
-                    <div style="font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
+            <div id="printCardTemplate" style="width: 320px; height: 510px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; position: relative; font-family: sans-serif; box-sizing: border-box;">
+                
+                <div style="height: 120px; background: #312e81; padding: 15px; text-align: center; color: white; box-sizing: border-box;">
+                    <img src="${logoBase64}" style="height: 50px; width: auto; max-width: 100%; margin: 0 auto 8px auto; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                    <div style="font-weight: 800; font-size: 15px; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; line-height: 1.2; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${namaSekolah}</div>
+                    <div style="font-size: 8px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
                 </div>
-                <div style="padding: 25px 20px; text-align: center; background: white;">
-                    <div style="width: 150px; height: 150px; margin: 0 auto 15px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px;">
+
+                <div style="height: 390px; padding: 20px; text-align: center; background: white; box-sizing: border-box; position: relative;">
+                    <div style="width: 140px; height: 140px; margin: 0 auto 15px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); box-sizing: border-box;">
                         <div id="hiddenQrTarget" style="width: 100%; height: 100%;"></div>
                     </div>
-                    <div style="font-size: 20px; font-weight: 800; color: #1f2937; margin-bottom: 4px;">${siswa.nama}</div>
-                    <div style="font-size: 14px; color: #6b7280; margin-bottom: 12px; font-family: monospace;">${siswa.nisn}</div>
-                    <span style="background: #eef2ff; color: #4f46e5; padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 800; border: 1px solid #e0e7ff;">${siswa.kelas}</span>
-                    <div style="margin-top: 20px; border-top: 2px dashed #f3f4f6; padding-top: 15px; font-size: 10px; color: #9ca3af; display: flex; justify-content: space-between;">
+                    
+                    <div style="font-size: 18px; font-weight: 800; color: #1f2937; margin-bottom: 4px; line-height: 1.2;">${siswa.nama}</div>
+                    <div style="font-size: 13px; color: #6b7280; margin-bottom: 12px; font-family: monospace;">${siswa.nisn}</div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <span style="background: #eef2ff; color: #4f46e5; padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 800; text-transform: uppercase; border: 1px solid #e0e7ff;">${siswa.kelas}</span>
+                    </div>
+                    
+                    <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; border-top: 2px dashed #f3f4f6; padding-top: 12px; font-size: 10px; color: #9ca3af; display: flex; justify-content: space-between;">
                         <span>ID: ${siswa.nisn}</span>
                         <span>VALID: ${new Date().getFullYear()}</span>
                     </div>
                 </div>
             </div>`;
 
-            // Buat QR Code (Beri jeda sebentar agar library selesai menggambar QR)
+            // Ukuran QR Code persis dengan area dalam box (124px)
             const qrTarget = document.getElementById('hiddenQrTarget');
-            new QRCode(qrTarget, { text: String(siswa.nisn), width: 132, height: 132, correctLevel : QRCode.CorrectLevel.H });
+            new QRCode(qrTarget, { text: String(siswa.nisn), width: 124, height: 124, correctLevel : QRCode.CorrectLevel.H });
             
-            await new Promise(resolve => setTimeout(resolve, 150)); // Jeda 150ms
+            await new Promise(resolve => setTimeout(resolve, 150));
 
-            // Ambil "Foto" HTML tersebut menjadi gambar berwarna
             const cardEl = document.getElementById('printCardTemplate');
             const canvas = await html2canvas(cardEl, { scale: 2, useCORS: true, backgroundColor: "#ffffff", logging: false });
             
-            // Format JPEG dengan Kualitas 1.0 (100%) agar warna tidak pudar/hitam putih
+            // Format Full Color
             const imgData = canvas.toDataURL('image/jpeg', 1.0); 
 
-            // Hitung Titik X dan Y untuk Kolom dan Baris saat ini
+            // Algoritma Grid Posisi 3 Baris x 3 Kolom
             const col = i % 3;
             const row = Math.floor((i % 9) / 3);
             const x = marginX + col * (cardW + marginX);
             const y = marginY + row * (cardH + marginY);
 
-            // Tempelkan gambar ke PDF
+            // Tempel ke PDF dengan dimensi persis rasio
             doc.addImage(imgData, 'JPEG', x, y, cardW, cardH);
 
-            // Jika sudah 9 kartu tertempel, dan masih ada sisa siswa, tambah halaman baru
             if ((i + 1) % 9 === 0 && i !== dataToPrint.length - 1) {
                 doc.addPage();
             }
         }
 
-        // Selesai looping, unduh PDF
         const pdfFileName = `Cetak_Kartu_Siswa_${new Date().getTime()}.pdf`;
         doc.save(pdfFileName);
         
-        showAlert('success', 'PDF berhasil diunduh secara penuh warna!');
+        showAlert('success', 'PDF berhasil diunduh dengan ukuran proporsional!');
 
     } catch (error) {
         console.error("Error Cetak PDF:", error);
