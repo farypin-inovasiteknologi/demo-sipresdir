@@ -152,7 +152,7 @@ input, button, select, textarea {
                         </div>
                     </div>
                     
-                   <div id="formAdminLogin" class="hidden space-y-4 lg:space-y-5 animate-fade-in">
+                    <div id="formAdminLogin" class="hidden space-y-4 lg:space-y-5 animate-fade-in">
                         <div>
                             <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2 ml-1">Username</label>
                             <div class="relative group">
@@ -300,14 +300,16 @@ input, button, select, textarea {
 
               <div id="view-siswa-dashboard" class="view-section animate-fade-in"><div class="flex justify-end mb-4"><button onclick="refreshData('dashboard')" class="flex items-center space-x-2 text-xs font-bold text-indigo-600 bg-white border border-indigo-100 px-3 py-1.5 rounded-lg shadow-sm hover:bg-indigo-50 transition"><i class="fas fa-sync-alt"></i> <span>Refresh</span></button></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"><div class="lg:col-span-2 space-y-6"><div id="heroCard" class="relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group"><div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-110"></div><div class="relative z-10"><div class="flex justify-between items-start mb-6"><div><p id="dashDate" class="text-slate-300 text-[10px] font-bold tracking-widest uppercase mb-1">...</p><h2 class="text-3xl font-bold tracking-tight mb-1">Hai, <span id="dashGreeting">Siswa</span></h2><p class="text-slate-400 text-xs">Semoga harimu menyenangkan!</p></div><div id="dashStatusBadge" class="px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-bold shadow-sm">Memuat...</div></div><div class="grid grid-cols-2 gap-4 mt-4"><div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10"><div class="flex items-center gap-2 mb-2 text-slate-300"><i class="fas fa-sign-in-alt text-xs"></i><span class="text-[10px] uppercase font-bold tracking-wider">Jam Datang</span></div><div id="valMasuk" class="font-mono text-2xl font-bold tracking-tight">--:--</div></div><div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10"><div class="flex items-center gap-2 mb-2 text-slate-300"><i class="fas fa-sign-out-alt text-xs"></i><span class="text-[10px] uppercase font-bold tracking-wider">Jam Pulang</span></div><div id="valPulang" class="font-mono text-2xl font-bold tracking-tight">--:--</div></div></div></div></div><div id="alertBelumAbsen" class="hidden bg-rose-50 border border-rose-100 rounded-xl p-4 flex gap-3 items-start shadow-sm"><div class="bg-white p-2 rounded-full text-rose-500 shadow-sm"><i class="fas fa-exclamation"></i></div><div><h4 class="text-sm font-bold text-rose-800 mb-0.5">Peringatan Absensi</h4><p class="text-xs font-medium text-rose-600/80 leading-relaxed">Anda belum melakukan scan absensi datang hari ini. Harap segera lakukan absensi.</p></div></div></div><div class="space-y-6"><div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 text-center relative overflow-hidden"><div class="absolute top-0 left-0 w-full h-16 bg-gradient-to-r from-indigo-500 to-purple-500"></div><div class="relative z-10 -mt-2"><div class="w-20 h-20 bg-white p-1 rounded-full mx-auto shadow-md"><div class="w-full h-full bg-slate-100 rounded-full flex items-center justify-center text-3xl text-slate-300"><i class="fas fa-user"></i></div></div><h3 id="profileNameSidebar" class="font-bold text-slate-800 text-lg mt-3 truncate">Nama Siswa</h3><p id="profileNisnSidebar" class="text-xs font-mono text-slate-500 bg-slate-100 inline-block px-2 py-1 rounded mt-1">1234567890</p><div class="grid grid-cols-2 gap-2 mt-4 text-left"><div class="bg-slate-50 p-2 rounded-lg border border-slate-100"><p class="text-[10px] text-slate-400 uppercase font-bold">Kelas</p><p id="profileKelasSidebar" class="text-sm font-bold text-slate-700">-</p></div><div class="bg-slate-50 p-2 rounded-lg border border-slate-100"><p class="text-[10px] text-slate-400 uppercase font-bold">Status</p><p class="text-sm font-bold text-emerald-600">Aktif</p></div></div></div></div>
               <button onclick="loadQRCodeSiswa()" class="hidden md:block w-full group relative overflow-hidden rounded-2xl bg-slate-900 p-1 shadow-lg shadow-slate-900/10 transition-all active:scale-[0.98]">
-              <div class="relative bg-slate-900 rounded-[0.9rem] px-5 py-4 flex items-center justify-between transition-all group-hover:bg-slate-800"><div class="text-left"><h3 class="text-white font-bold text-sm">Kartu Absensi Digital</h3><p class="text-slate-400 text-[10px]">Tampilkan QR Code</p></div><div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white text-lg"><i class="fas fa-qrcode"></i></div></div></button></div></div></div>
+              <div class="relative bg-slate-900 rounded-[0.9rem] px-5 py-4 flex items-center justify-between transition-all group-hover:bg-slate-800"><div class="text-left"><h3 class="text-white font-bold text-sm">Kartu Presensi Digital Realtime</h3><p class="text-slate-400 text-[10px]">Tampilkan QR Code</p></div><div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white text-lg"><i class="fas fa-qrcode"></i></div></div></button></div></div></div>
 
               <div id="view-data-siswa" class="view-section animate-fade-in"><div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"><div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/30"><div><h3 class="font-bold text-sm text-gray-800">Direktori Siswa</h3></div>
               <div class="flex flex-wrap items-center gap-2 justify-end">
     <button onclick="refreshData('siswa')" class="bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-gray-50 transition"><i class="fas fa-sync-alt"></i></button>
+    
+    <button onclick="cetakSemuaKartuSiswa()" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition transform active:scale-95"><i class="fas fa-print"></i> <span class="hidden sm:inline ml-1">Cetak Semua</span></button>
     <button onclick="showImportSiswaModal()" class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-700 transition"><i class="fas fa-file-excel"></i> <span class="hidden sm:inline ml-1">Import</span></button>
-    <button onclick="showAddSiswaModal()" class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-indigo-700 transition"><i class="fas fa-plus"></i> <span class="hidden sm:inline ml-1">Tambah</span></button></div>
-              
+    <button onclick="showAddSiswaModal()" class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-indigo-700 transition"><i class="fas fa-plus"></i> <span class="hidden sm:inline ml-1">Tambah</span></button>
+</div> 
               </div>
               
               <div class="p-4 bg-white border-b border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4"><div class="flex flex-col sm:flex-row items-center gap-3 text-xs w-full md:w-auto"><div class="flex items-center gap-2 w-full sm:w-auto"><span class="text-gray-500 font-bold whitespace-nowrap">Show</span><select onchange="handleTableLimit('siswa', this.value)" class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2 w-full sm:w-auto"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="all">Semua</option></select></div><select id="filterKelasSiswa" onchange="handleTableClassFilter('siswa', this.value)" class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2 w-full sm:w-40 font-bold shadow-sm"><option value="">Semua Kelas</option></select></div><div class="relative w-full md:w-64"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400 text-xs"></i></div><input type="text" oninput="handleTableSearch('siswa', this.value)" class="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 p-2 transition-all" placeholder="Cari Nama / NISN..."></div></div><div class="overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-semibold"><tr><th class="p-3 text-center w-10">No</th><th class="p-3">Nama</th><th class="p-3">NISN</th><th class="p-3">Kelas</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="tbody-siswa" class="divide-y divide-gray-50 bg-white text-xs"></tbody></table></div><div id="footer-siswa" class="p-4 border-t border-gray-100 bg-gray-50/30 flex justify-between items-center text-xs text-gray-500"><span id="info-siswa">Menampilkan 0 data</span><div class="flex gap-1"><button onclick="changePage('siswa', -1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50 transition" id="btn-prev-siswa">Prev</button><button onclick="changePage('siswa', 1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50 transition" id="btn-next-siswa">Next</button></div></div></div></div>
@@ -1659,7 +1661,7 @@ async function loadQRCodeSiswa(nisnParam, namaParam, kelasParam) {
                     
                     <div style="font-weight: 800; font-size: 16px; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; line-height: 1.2;">${namaSekolah}</div>
                     
-                    <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU ABSENSI DIGITAL</div>
+                    <div style="font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL REALTIME</div>
                 </div>
 
                 <div style="padding: 25px 20px; text-align: center; background: white;">
@@ -2271,6 +2273,117 @@ async function downloadPDFRekapSiswa() {
         showAlert('error', 'Gagal membuat PDF. Coba kembali.');
     } finally {
         btn.innerHTML = originalTxt; btn.disabled = false;
+    }
+}
+
+// ============================================================
+// FITUR BARU: CETAK SEMUA KARTU SISWA (A4, 3x3 COLUMNS, COLOR)
+// ============================================================
+async function cetakSemuaKartuSiswa() {
+    // Ambil data siswa yang sedang tampil di tabel (Bisa terpengaruh filter Kelas)
+    const dataToPrint = tableState.siswa.filtered;
+    
+    if (!dataToPrint || dataToPrint.length === 0) {
+        showAlert('error', 'Tidak ada data siswa untuk dicetak. Hapus filter pencarian jika perlu.');
+        return;
+    }
+
+    showLoading();
+
+    try {
+        // Ambil data logo dan nama sekolah dari tampilan utama
+        const logoBase64 = document.querySelector('.dyn-logo').src;
+        const namaSekolah = document.querySelector('.dyn-namasekolah').textContent;
+
+        // Buat elemen "pabrik" tersembunyi untuk memproduksi gambar kartu
+        let container = document.getElementById('hiddenCardFactory');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'hiddenCardFactory';
+            // Sembunyikan jauh di luar layar agar tidak merusak tampilan web
+            container.style.cssText = 'position: fixed; top: 0; left: -9999px; z-index: -9999; pointer-events: none; background: white;';
+            document.body.appendChild(container);
+        }
+
+        // Siapkan Dokumen PDF ukuran A4 (Orientasi Portrait, Satuan Milimeter)
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4');
+
+        // PENGATURAN UKURAN KARTU (mm) & GRID A4 (210 x 297 mm)
+        const cardW = 60; // Lebar Kartu
+        const cardH = 85; // Tinggi Kartu
+        // Perhitungan margin otomatis agar pas 3x3 ke tengah kertas
+        const marginX = (210 - (3 * cardW)) / 4; 
+        const marginY = (297 - (3 * cardH)) / 4; 
+
+        // Proses satu per satu siswa
+        for (let i = 0; i < dataToPrint.length; i++) {
+            const siswa = dataToPrint[i];
+
+            // Update loading bar agar user tahu prosesnya tidak macet
+            document.getElementById('loadingText').innerHTML = `Memproses Kartu... <br><span class="text-[10px] text-gray-500 font-normal">${i + 1} dari ${dataToPrint.length} Siswa</span>`;
+
+            // Suntikkan desain HTML kartu ke "pabrik" tersembunyi
+            container.innerHTML = `
+            <div id="printCardTemplate" style="width: 320px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; font-family: sans-serif;">
+                <div style="background: #312e81; padding: 25px 20px; text-align: center; color: white;">
+                    <img src="${logoBase64}" style="height: 70px; width: auto; max-width: 100%; margin: 0 auto 10px auto; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                    <div style="font-weight: 800; font-size: 16px; text-transform: uppercase; margin-bottom: 2px;">${namaSekolah}</div>
+                    <div style="font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
+                </div>
+                <div style="padding: 25px 20px; text-align: center; background: white;">
+                    <div style="width: 150px; height: 150px; margin: 0 auto 15px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px;">
+                        <div id="hiddenQrTarget" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <div style="font-size: 20px; font-weight: 800; color: #1f2937; margin-bottom: 4px;">${siswa.nama}</div>
+                    <div style="font-size: 14px; color: #6b7280; margin-bottom: 12px; font-family: monospace;">${siswa.nisn}</div>
+                    <span style="background: #eef2ff; color: #4f46e5; padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 800; border: 1px solid #e0e7ff;">${siswa.kelas}</span>
+                    <div style="margin-top: 20px; border-top: 2px dashed #f3f4f6; padding-top: 15px; font-size: 10px; color: #9ca3af; display: flex; justify-content: space-between;">
+                        <span>ID: ${siswa.nisn}</span>
+                        <span>VALID: ${new Date().getFullYear()}</span>
+                    </div>
+                </div>
+            </div>`;
+
+            // Buat QR Code (Beri jeda sebentar agar library selesai menggambar QR)
+            const qrTarget = document.getElementById('hiddenQrTarget');
+            new QRCode(qrTarget, { text: String(siswa.nisn), width: 132, height: 132, correctLevel : QRCode.CorrectLevel.H });
+            
+            await new Promise(resolve => setTimeout(resolve, 150)); // Jeda 150ms
+
+            // Ambil "Foto" HTML tersebut menjadi gambar berwarna
+            const cardEl = document.getElementById('printCardTemplate');
+            const canvas = await html2canvas(cardEl, { scale: 2, useCORS: true, backgroundColor: "#ffffff", logging: false });
+            
+            // Format JPEG dengan Kualitas 1.0 (100%) agar warna tidak pudar/hitam putih
+            const imgData = canvas.toDataURL('image/jpeg', 1.0); 
+
+            // Hitung Titik X dan Y untuk Kolom dan Baris saat ini
+            const col = i % 3;
+            const row = Math.floor((i % 9) / 3);
+            const x = marginX + col * (cardW + marginX);
+            const y = marginY + row * (cardH + marginY);
+
+            // Tempelkan gambar ke PDF
+            doc.addImage(imgData, 'JPEG', x, y, cardW, cardH);
+
+            // Jika sudah 9 kartu tertempel, dan masih ada sisa siswa, tambah halaman baru
+            if ((i + 1) % 9 === 0 && i !== dataToPrint.length - 1) {
+                doc.addPage();
+            }
+        }
+
+        // Selesai looping, unduh PDF
+        const pdfFileName = `Cetak_Kartu_Siswa_${new Date().getTime()}.pdf`;
+        doc.save(pdfFileName);
+        
+        showAlert('success', 'PDF berhasil diunduh secara penuh warna!');
+
+    } catch (error) {
+        console.error("Error Cetak PDF:", error);
+        showAlert('error', 'Gagal mencetak kartu: ' + error.message);
+    } finally {
+        hideLoading();
     }
 }
 
