@@ -349,6 +349,13 @@ input, button, select, textarea {
                 <p class="text-sm font-bold text-emerald-600">Aktif</p>
             </div>
         </div>
+        
+        <button onclick="showUbahPasswordSiswaModal()" class="w-full mt-5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 py-2.5 rounded-xl text-xs font-bold border border-indigo-200 transition-colors flex items-center justify-center gap-2 shadow-sm">
+            <i class="fas fa-key"></i> Ubah Password Akun
+        </button>
+
+    </div>
+</div>
     </div>
 </div>
 
@@ -1310,12 +1317,16 @@ async function loadSiswaDashboard() {
                     elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
                     elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> WFH SELESAI`;
                     
-                    let statText = "Selesai";
-                    if(absensi.keterangan && absensi.keterangan.includes("|")) {
-                        statText = absensi.keterangan.split("|")[0].trim(); // Ambil "Tepat Waktu" / "Terlambat"
+                    let statText = "Terekam";
+                    if(absensi.keterangan) {
+                        let parts = absensi.keterangan.split("|");
+                        // Mengambil teks status paling depan (Tepat Waktu / Terlambat)
+                        if(parts.length >= 3 || !absensi.keterangan.startsWith("Maps:")) {
+                            statText = parts[0].trim(); 
+                        }
                     }
                     elValPulang.textContent = statText;
-                    elValPulang.className = "text-lg font-bold tracking-tight text-yellow-300 uppercase";
+                    elValPulang.className = "text-lg font-bold tracking-tight text-yellow-300 uppercase mt-1";
                 } 
                 // LOGIKA JIKA REGULER
                 else {
@@ -1783,11 +1794,24 @@ function renderRekapRows(data) {
         // JIKA INI ABSEN WFH
         if (rawKet.includes("Maps:") && rawKet.includes("Foto:")) {
             const parts = rawKet.split('|');
-            const mapsLink = parts[0].replace('Maps:', '').trim();
-            const fotoLink = parts[1].replace('Foto:', '').trim();
+            let mapsLink = "";
+            let fotoLink = "";
+            let statusWfh = "";
+
+            parts.forEach(p => {
+                if(p.includes("Maps:")) mapsLink = p.replace('Maps:', '').trim();
+                else if(p.includes("Foto:")) fotoLink = p.replace('Foto:', '').trim();
+                else statusWfh = p.trim(); // Mengambil "Tepat Waktu" / "Terlambat"
+            });
+
+            // Tampilkan badge status telat jika ada
+            let badgeHtml = "";
+            if(statusWfh.includes("Terlambat")) badgeHtml = `<span class="text-rose-600 font-bold bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100 text-[9px]"><i class="fas fa-history"></i> ${statusWfh}</span>`;
+            else if(statusWfh) badgeHtml = `<span class="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 text-[9px]"><i class="fas fa-check-double"></i> ${statusWfh}</span>`;
+
             ketHtml = `
             <div class="flex flex-col items-center justify-center gap-1">
-                <span class="text-indigo-600 font-bold text-[10px] uppercase bg-indigo-50 px-2 py-0.5 rounded-full"><i class="fas fa-house-user mr-1"></i> WFH</span>
+                ${badgeHtml}
                 <div class="flex gap-1 mt-0.5">
                     <a href="${fotoLink}" target="_blank" class="bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-200 px-2 py-1 rounded text-[9px] font-bold transition flex items-center shadow-sm"><i class="fas fa-image mr-1"></i> Foto</a>
                     <a href="${mapsLink}" target="_blank" class="bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border border-rose-200 px-2 py-1 rounded text-[9px] font-bold transition flex items-center shadow-sm"><i class="fas fa-map-marker-alt mr-1"></i> Lokasi</a>
@@ -1797,7 +1821,7 @@ function renderRekapRows(data) {
         // JIKA ABSEN BIASA / TERLAMBAT / PULANG
         else if (rawKet.includes("Terlambat")) { 
             ketHtml = `<span class="text-rose-600 font-bold bg-rose-50 px-2 py-1 rounded border border-rose-100 text-[10px] whitespace-nowrap"><i class="fas fa-history mr-1"></i>${rawKet}</span>`; 
-        } 
+        }  
         else if (rawKet.includes("Pulang Cepat")) { 
             ketHtml = `<span class="text-orange-600 font-bold bg-orange-50 px-2 py-1 rounded border border-orange-100 text-[10px] whitespace-nowrap"><i class="fas fa-running mr-1"></i>${rawKet}</span>`; 
         } 
@@ -1831,11 +1855,24 @@ function renderMonitoringRows(data, startIdx) {
         // JIKA INI ABSEN WFH
         if (rawKet.includes("Maps:") && rawKet.includes("Foto:")) {
             const parts = rawKet.split('|');
-            const mapsLink = parts[0].replace('Maps:', '').trim();
-            const fotoLink = parts[1].replace('Foto:', '').trim();
+            let mapsLink = "";
+            let fotoLink = "";
+            let statusWfh = "";
+
+            parts.forEach(p => {
+                if(p.includes("Maps:")) mapsLink = p.replace('Maps:', '').trim();
+                else if(p.includes("Foto:")) fotoLink = p.replace('Foto:', '').trim();
+                else statusWfh = p.trim(); // Mengambil "Tepat Waktu" / "Terlambat"
+            });
+
+            // Tampilkan badge status telat jika ada
+            let badgeHtml = "";
+            if(statusWfh.includes("Terlambat")) badgeHtml = `<span class="text-rose-600 font-bold bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100 text-[9px]"><i class="fas fa-history"></i> ${statusWfh}</span>`;
+            else if(statusWfh) badgeHtml = `<span class="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 text-[9px]"><i class="fas fa-check-double"></i> ${statusWfh}</span>`;
+
             ketHtml = `
             <div class="flex flex-col items-center justify-center gap-1">
-                <span class="text-indigo-600 font-bold text-[10px] uppercase bg-indigo-50 px-2 py-0.5 rounded-full"><i class="fas fa-house-user mr-1"></i> WFH</span>
+                ${badgeHtml}
                 <div class="flex gap-1 mt-0.5">
                     <a href="${fotoLink}" target="_blank" class="bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-200 px-2 py-1 rounded text-[9px] font-bold transition flex items-center shadow-sm"><i class="fas fa-image mr-1"></i> Foto</a>
                     <a href="${mapsLink}" target="_blank" class="bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border border-rose-200 px-2 py-1 rounded text-[9px] font-bold transition flex items-center shadow-sm"><i class="fas fa-map-marker-alt mr-1"></i> Lokasi</a>
@@ -1846,6 +1883,7 @@ function renderMonitoringRows(data, startIdx) {
         else if (rawKet.includes("Terlambat")) { 
             ketHtml = `<span class="text-rose-600 font-bold bg-rose-50 px-2 py-1 rounded border border-rose-100 text-[10px] whitespace-nowrap"><i class="fas fa-history mr-1"></i>${rawKet}</span>`; 
         } 
+
         else if (rawKet.includes("Pulang Cepat")) { 
             ketHtml = `<span class="text-orange-600 font-bold bg-orange-50 px-2 py-1 rounded border border-orange-100 text-[10px] whitespace-nowrap"><i class="fas fa-running mr-1"></i>${rawKet}</span>`; 
         } 
@@ -2495,9 +2533,10 @@ async function submitUbahPasswordSiswa(e) {
     try {
         const res = await fetchAPI('changeSiswaPassword', { token: currentUser.token, oldPass: oldPass, newPass: newPass });
         hideLoading();
+        // Ganti baris di submitUbahPasswordSiswa:
         if(res.success) {
             showAlert('success', res.message);
-            showProfilSiswa(); // Kembali ke halaman profil
+            closeModal(); // <--- Ganti showProfilSiswa() jadi closeModal()
         } else {
             showAlert('error', res.message);
         }
