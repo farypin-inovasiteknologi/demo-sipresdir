@@ -308,7 +308,16 @@ input, button, select, textarea {
               <div id="view-guru-dashboard" class="view-section animate-fade-in"><div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4"><div><h2 class="text-2xl font-bold text-gray-800 tracking-tight">Dashboard Guru</h2><p class="text-sm text-gray-500 mt-1">Ringkasan aktivitas siswa hari ini.</p></div><div class="flex items-center gap-3"><span class="text-xs font-bold bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg border border-indigo-100"><i class="far fa-calendar-alt mr-2"></i> <span id="guruDashboardDate">...</span></span><button onclick="refreshData('dashboard')" class="flex items-center space-x-2 text-xs font-bold text-gray-600 bg-white border border-gray-200 px-4 py-2 rounded-lg shadow-sm hover:bg-gray-50 transition"><i class="fas fa-sync-alt"></i> <span>Refresh</span></button></div></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"><div class="relative overflow-hidden bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 group hover:shadow-md transition-all"><div class="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div><div class="relative z-10 flex flex-col h-full justify-between"><div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-xl mb-4 shadow-sm"><i class="fas fa-user-graduate"></i></div><div><p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Siswa</p><h3 id="statGuruTotal" class="text-3xl font-bold text-gray-800 mt-1">-</h3></div></div></div><div class="relative overflow-hidden bg-white p-6 rounded-2xl shadow-sm border border-yellow-100 group hover:shadow-md transition-all"><div class="absolute top-0 right-0 w-24 h-24 bg-yellow-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div><div class="relative z-10 flex flex-col h-full justify-between"><div class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-xl flex items-center justify-center text-xl mb-4 shadow-sm"><i class="fas fa-procedures"></i></div><div><p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Sakit</p><h3 id="statGuruSakit" class="text-3xl font-bold text-gray-800 mt-1">-</h3></div></div></div><div class="relative overflow-hidden bg-white p-6 rounded-2xl shadow-sm border border-blue-100 group hover:shadow-md transition-all"><div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div><div class="relative z-10 flex flex-col h-full justify-between"><div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-4 shadow-sm"><i class="fas fa-envelope-open-text"></i></div><div><p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Izin</p><h3 id="statGuruIzin" class="text-3xl font-bold text-gray-800 mt-1">-</h3></div></div></div><div class="relative overflow-hidden bg-white p-6 rounded-2xl shadow-sm border border-red-100 group hover:shadow-md transition-all"><div class="absolute top-0 right-0 w-24 h-24 bg-red-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div><div class="relative z-10 flex flex-col h-full justify-between"><div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center text-xl mb-4 shadow-sm"><i class="fas fa-times-circle"></i></div><div><p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Alpa</p><h3 id="statGuruAlpa" class="text-3xl font-bold text-gray-800 mt-1">-</h3></div></div></div></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-gray-100 shadow-sm"><h3 class="text-sm font-bold text-gray-700 mb-6 flex items-center justify-between"><span><i class="fas fa-chart-bar text-indigo-500 mr-2"></i> Statistik Kehadiran Hari Ini</span><span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-1 rounded">Realtime</span></h3><div class="relative w-full h-[300px]"><canvas id="guruAttendanceChart"></canvas></div></div>
               <div class="hidden lg:flex bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white shadow-xl shadow-indigo-200 relative overflow-hidden flex-col justify-center items-center text-center"><div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div><div class="relative z-10"><div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-2xl mb-4 mx-auto border border-white/20"><i class="fas fa-qrcode"></i></div><h3 class="text-lg font-bold mb-2">Mulai Presensi</h3><p class="text-indigo-100 text-xs mb-6 px-4">Buka pemindai kamera untuk melakukan presensi siswa secara cepat.</p><button onclick="loadScanAbsensi()" class="bg-white text-indigo-700 px-6 py-3 rounded-xl font-bold text-sm shadow-lg hover:bg-gray-50 transition transform active:scale-95 w-full">Buka Scanner</button></div></div></div></div>
 
-              <div id="view-siswa-dashboard" class="view-section animate-fade-in"><div class="flex justify-end mb-4"><button onclick="refreshData('dashboard')" class="flex items-center space-x-2 text-xs font-bold text-indigo-600 bg-white border border-indigo-100 px-3 py-1.5 rounded-lg shadow-sm hover:bg-indigo-50 transition"><i class="fas fa-sync-alt"></i> <span>Refresh</span></button></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"><div class="lg:col-span-2 space-y-6"><div id="heroCard" class="relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group"><div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-110"></div><div class="relative z-10"><div class="flex justify-between items-start mb-6"><div><p id="dashDate" class="text-slate-300 text-[10px] font-bold tracking-widest uppercase mb-1">...</p><h2 class="text-3xl font-bold tracking-tight mb-1">Hai, <span id="dashGreeting">Siswa</span></h2><p class="text-slate-400 text-xs">Semoga harimu menyenangkan!</p></div><div id="dashStatusBadge" class="px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-bold shadow-sm">Memuat...</div></div><div class="grid grid-cols-2 gap-4 mt-4"><div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10"><div class="flex items-center gap-2 mb-2 text-slate-300"><i class="fas fa-sign-in-alt text-xs"></i><span class="text-[10px] uppercase font-bold tracking-wider">Jam Datang</span></div><div id="valMasuk" class="font-mono text-2xl font-bold tracking-tight">--:--</div></div><div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10"><div class="flex items-center gap-2 mb-2 text-slate-300"><i class="fas fa-sign-out-alt text-xs"></i><span class="text-[10px] uppercase font-bold tracking-wider">Jam Pulang</span></div><div id="valPulang" class="font-mono text-2xl font-bold tracking-tight">--:--</div></div></div></div></div><div id="alertBelumAbsen" class="hidden bg-rose-50 border border-rose-100 rounded-xl p-4 flex gap-3 items-start shadow-sm"><div class="bg-white p-2 rounded-full text-rose-500 shadow-sm"><i class="fas fa-exclamation"></i></div><div><h4 class="text-sm font-bold text-rose-800 mb-0.5">Peringatan Presensi</h4><p class="text-xs font-medium text-rose-600/80 leading-relaxed">Anda belum melakukan scan presensi datang hari ini. Harap segera lakukan perekaman kehadiran.</p></div></div></div>
+              <div id="view-siswa-dashboard" class="view-section animate-fade-in"><div class="flex justify-end mb-4"><button onclick="refreshData('dashboard')" class="flex items-center space-x-2 text-xs font-bold text-indigo-600 bg-white border border-indigo-100 px-3 py-1.5 rounded-lg shadow-sm hover:bg-indigo-50 transition"><i class="fas fa-sync-alt"></i> <span>Refresh</span></button></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"><div class="lg:col-span-2 space-y-6"><div id="heroCard" class="relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group"><div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-110"></div><div class="relative z-10"><div class="flex justify-between items-start mb-6"><div><p id="dashDate" class="text-slate-300 text-[10px] font-bold tracking-widest uppercase mb-1">...</p><h2 class="text-3xl font-bold tracking-tight mb-1">Hai, <span id="dashGreeting">Siswa</span></h2><p class="text-slate-400 text-xs">Semoga harimu menyenangkan!</p></div><div id="dashStatusBadge" class="px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-bold shadow-sm">Memuat...</div></div>
+              
+              <div class="grid grid-cols-2 gap-4 mt-4"><div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+              <div class="flex items-center gap-2 mb-2 text-slate-300"><i class="fas fa-sign-in-alt text-xs"></i><span id="labelMasuk" class="text-[10px] uppercase font-bold tracking-wider">Jam Datang</span></div>
+<div id="valMasuk" class="font-mono text-2xl font-bold tracking-tight">--:--</div>
+
+<div class="flex items-center gap-2 mb-2 text-slate-300"><i class="fas fa-sign-out-alt text-xs"></i><span id="labelPulang" class="text-[10px] uppercase font-bold tracking-wider">Jam Pulang</span></div>
+<div id="valPulang" class="font-mono text-2xl font-bold tracking-tight">--:--</div></div></div></div></div>
+              
+              <div id="alertBelumAbsen" class="hidden bg-rose-50 border border-rose-100 rounded-xl p-4 flex gap-3 items-start shadow-sm"><div class="bg-white p-2 rounded-full text-rose-500 shadow-sm"><i class="fas fa-exclamation"></i></div><div><h4 class="text-sm font-bold text-rose-800 mb-0.5">Peringatan Presensi</h4><p class="text-xs font-medium text-rose-600/80 leading-relaxed">Anda belum melakukan scan presensi datang hari ini. Harap segera lakukan perekaman kehadiran.</p></div></div></div>
               
               <div class="space-y-6">  
                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 text-center relative overflow-hidden">
@@ -368,7 +377,28 @@ input, button, select, textarea {
                 
                 <div class="p-4 bg-white border-b border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4"><div class="flex flex-col sm:flex-row items-center gap-3 text-xs w-full md:w-auto"><div class="flex items-center gap-2"><span class="text-gray-500 font-bold">Show</span><select onchange="handleTableLimit('guru', this.value)" class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-purple-500 focus:border-purple-500 block p-2"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="all">Semua</option></select></div><select id="filterKelasGuru" onchange="handleTableClassFilter('guru', this.value)" class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-purple-500 focus:border-purple-500 block p-2 w-full sm:w-40 font-bold shadow-sm"><option value="">Semua Kelas</option></select></div><div class="relative w-full md:w-64"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400 text-xs"></i></div><input type="text" oninput="handleTableSearch('guru', this.value)" class="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 p-2" placeholder="Cari Username..."></div></div><div class="overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-semibold"><tr><th class="p-3 text-center w-10">No</th><th class="p-3">Username</th><th class="p-3">Wali Kelas</th><th class="p-3">Password</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="tbody-guru" class="divide-y divide-gray-50 bg-white text-xs"></tbody></table></div><div id="footer-guru" class="p-4 border-t border-gray-100 bg-gray-50/30 flex justify-between items-center text-xs text-gray-500"><span id="info-guru">Menampilkan 0 data</span><div class="flex gap-1"><button onclick="changePage('guru', -1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50 transition" id="btn-prev-guru">Prev</button><button onclick="changePage('guru', 1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50 transition" id="btn-next-guru">Next</button></div></div></div></div>
 
-              <div id="view-kelola-absen" class="view-section animate-fade-in"><div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="lg:col-span-1"><div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-24"><div class="p-5 border-b border-gray-100 bg-indigo-50/50"><h3 class="font-bold text-gray-800 flex items-center"><i class="fas fa-clock text-indigo-600 mr-2"></i> Pengaturan Waktu</h3><p class="text-xs text-gray-500 mt-1">Konfigurasi jam operasional presensi.</p></div><div class="p-5"><form onsubmit="saveGlobalConfig(event)"><div class="space-y-4"><div class="bg-gray-50 p-3 rounded-lg border border-gray-100"><p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Datang</p><div class="grid grid-cols-2 gap-3"><div><label class="block text-xs font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_masuk_mulai" name="jam_masuk_mulai" required class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div><div><label class="block text-xs font-bold text-gray-700 mb-1">Batas Terlambat</label><input type="time" id="conf_masuk_akhir" name="jam_masuk_akhir" required class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div></div><p class="text-[10px] text-orange-500 mt-1.5"><i class="fas fa-info-circle"></i> Lewat batas ini status: <b>Terlambat</b></p></div><div class="bg-gray-50 p-3 rounded-lg border border-gray-100"><p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Pulang</p><div class="grid grid-cols-2 gap-3"><div><label class="block text-xs font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_pulang_mulai" name="jam_pulang_mulai" required class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div><div><label class="block text-xs font-bold text-gray-700 mb-1">Tutup Absen</label><input type="time" id="conf_pulang_akhir" name="jam_pulang_akhir" required class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div></div><p class="text-[10px] text-orange-500 mt-1.5"><i class="fas fa-info-circle"></i> Pulang sebelum dibuka: <b>Pulang Cepat</b></p></div></div><button type="submit" id="btnSaveConfig" class="w-full mt-5 bg-indigo-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 transition transform active:scale-95 flex items-center justify-center gap-2"><i class="fas fa-save"></i> Simpan Pengaturan</button></form></div></div></div>
+              <div id="view-kelola-absen" class="view-section animate-fade-in"><div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="lg:col-span-1"><div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-24"><div class="p-5 border-b border-gray-100 bg-indigo-50/50"><h3 class="font-bold text-gray-800 flex items-center"><i class="fas fa-clock text-indigo-600 mr-2"></i> Pengaturan Waktu</h3><p class="text-xs text-gray-500 mt-1">Konfigurasi jam operasional presensi.</p></div><div class="p-5"><form onsubmit="saveGlobalConfig(event)"><div class="space-y-4"><div class="bg-gray-50 p-3 rounded-lg border border-gray-100"><p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Datang</p><div class="grid grid-cols-2 gap-3"><div><label class="block text-xs font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_masuk_mulai" name="jam_masuk_mulai" required class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div><div><label class="block text-xs font-bold text-gray-700 mb-1">Batas Terlambat</label><input type="time" id="conf_masuk_akhir" name="jam_masuk_akhir" required class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div></div><p class="text-[10px] text-orange-500 mt-1.5"><i class="fas fa-info-circle"></i> Lewat batas ini status: <b>Terlambat</b></p></div><div class="bg-gray-50 p-3 rounded-lg border border-gray-100"><p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Pulang</p><div class="grid grid-cols-2 gap-3"><div><label class="block text-xs font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_pulang_mulai" name="jam_pulang_mulai" required class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div><div><label class="block text-xs font-bold text-gray-700 mb-1">Tutup Absen</label><input type="time" id="conf_pulang_akhir" name="jam_pulang_akhir" required class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div></div><p class="text-[10px] text-orange-500 mt-1.5"><i class="fas fa-info-circle"></i> Pulang sebelum dibuka: <b>Pulang Cepat</b></p></div></div>
+              
+              <div class="bg-indigo-50 p-3 rounded-lg border border-indigo-100 mt-4">
+    <p class="text-[10px] uppercase font-bold text-indigo-500 mb-2"><i class="fas fa-camera-retro"></i> Waktu Absen WFH</p>
+    <div class="grid grid-cols-3 gap-3">
+        <div>
+            <label class="block text-[10px] font-bold text-gray-700 mb-1">Mulai</label>
+            <input type="time" id="conf_wfh_mulai" name="wfh_mulai" required class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label class="block text-[10px] font-bold text-gray-700 mb-1">Batas Terlambat</label>
+            <input type="time" id="conf_wfh_akhir" name="wfh_akhir" required class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label class="block text-[10px] font-bold text-gray-700 mb-1">Tutup Absen</label>
+            <input type="time" id="conf_wfh_tutup" name="wfh_tutup" required class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+    </div>
+</div>
+              
+              
+              <button type="submit" id="btnSaveConfig" class="w-full mt-5 bg-indigo-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 transition transform active:scale-95 flex items-center justify-center gap-2"><i class="fas fa-save"></i> Simpan Pengaturan</button></form></div></div></div>
               <div class="lg:col-span-2">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                   <div class="p-5 border-b border-gray-100 bg-gray-50/30 flex justify-between items-end">
@@ -1201,12 +1231,8 @@ function animateValue(id, start, end, duration) {
 }
 
 async function loadSiswaDashboard() {
-    stopAndBack(false); 
-    setActiveMenu('Dashboard'); 
-    showView('view-siswa-dashboard'); 
-    showLoading();
+    stopAndBack(false); setActiveMenu('Dashboard'); showView('view-siswa-dashboard'); showLoading();
 
-    // 1. Set Data Dasar dari Sesi Login
     try {
         if (currentUser) {
             const firstName = currentUser.nama ? currentUser.nama.split(' ')[0] : 'Siswa';
@@ -1218,7 +1244,6 @@ async function loadSiswaDashboard() {
         document.getElementById('dashDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     } catch (e) {}
 
-    // 2. Ambil Sisa Data Profil (Jenis Kelamin & Tanggal Lahir)
     try {
         const resSiswa = await fetchAPI('getSiswaList');
         if (resSiswa.success) {
@@ -1228,52 +1253,85 @@ async function loadSiswaDashboard() {
                 document.getElementById('profileLahirSidebar').textContent = myData.tanggalLahir || '-';
             }
         }
-    } catch(e) {
-        console.log("Gagal menarik detail siswa");
-    }
+    } catch(e) {}
 
-    // 3. Cek Status Kehadiran Hari Ini
     try {
         const result = await fetchAPI('getAbsensiToday', { nisn: currentUser.nisn });
         hideLoading();
         if (result) {
-            const absensi = result && result.success ? result.data : null;
+            const absensi = result.success ? result.data : null;
             const isLibur = result.isLibur; 
             const infoLibur = result.keteranganLibur;
+            const isWFH = result.isWFH; // Status WFH
+
             const elHero = document.getElementById('heroCard'), elBadge = document.getElementById('dashStatusBadge');
             const elValMasuk = document.getElementById('valMasuk'), elValPulang = document.getElementById('valPulang'), elAlert = document.getElementById('alertBelumAbsen');
+            const labelMasuk = document.getElementById('labelMasuk'), labelPulang = document.getElementById('labelPulang');
 
+            // Reset Kelas CSS
+            elValPulang.className = "font-mono text-2xl font-bold tracking-tight";
+            
             if (isLibur) {
-                if (elHero) elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 to-red-800 p-6 text-white shadow-xl shadow-rose-200 transition-all duration-500 group";
-                if (elBadge) { elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold shadow-sm"; elBadge.innerHTML = `<i class="fas fa-calendar-times mr-2"></i> HARI LIBUR`; }
-                if (elValMasuk) { elValMasuk.parentElement.innerHTML = `<div class="text-center py-2"><i class="fas fa-mug-hot text-3xl mb-2 opacity-80"></i><p class="text-sm font-bold uppercase tracking-widest">${infoLibur}</p><p class="text-[10px] mt-1 opacity-75">Tidak ada presensi hari ini</p></div>`; if(elValPulang) elValPulang.parentElement.style.display = 'none'; if(elValMasuk) elValMasuk.parentElement.classList.add('col-span-2'); }
-                if (elAlert) { elAlert.classList.add('hidden'); elAlert.classList.remove('flex'); }
+                elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 to-red-800 p-6 text-white shadow-xl shadow-rose-200 transition-all duration-500 group";
+                elBadge.innerHTML = `<i class="fas fa-calendar-times mr-2"></i> HARI LIBUR`;
+                elValMasuk.parentElement.innerHTML = `<div class="text-center py-2"><i class="fas fa-mug-hot text-3xl mb-2 opacity-80"></i><p class="text-sm font-bold uppercase tracking-widest">${infoLibur}</p></div>`;
+                elValPulang.parentElement.style.display = 'none';
+                elValMasuk.parentElement.classList.add('col-span-2');
+                elAlert.classList.add('hidden');
                 return; 
             }
 
-            if (!absensi) {
-                if (elHero) elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
-                if (elBadge) { elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN`; }
-                if (elValMasuk) elValMasuk.textContent = "--:--";
-                if (elValPulang) elValPulang.textContent = "--:--";
-                if (elAlert) { elAlert.classList.remove('hidden'); elAlert.classList.add('flex'); }
+            // ATUR LABEL BERDASARKAN MODE (WFH / REGULER)
+            if (isWFH) {
+                labelMasuk.innerHTML = "WAKTU KAMERA";
+                labelPulang.innerHTML = "STATUS WFH";
+                elAlert.innerHTML = `<div class="bg-white p-2 rounded-full text-indigo-500 shadow-sm"><i class="fas fa-camera-retro"></i></div><div><h4 class="text-sm font-bold text-indigo-800 mb-0.5">Mode Presensi WFH</h4><p class="text-xs font-medium text-indigo-600/80 leading-relaxed">Ketuk menu WFH di bawah untuk melakukan absensi kamera.</p></div>`;
+                elAlert.className = "bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
             } else {
-                if (elAlert) { elAlert.classList.add('hidden'); elAlert.classList.remove('flex'); }
-                if (elValMasuk) elValMasuk.textContent = absensi.jamDatang || "--:--";
-                if (!absensi.jamPulang) {
-                    if (elHero) elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-800 p-6 text-white shadow-xl shadow-emerald-200 transition-all duration-500 group";
-                    if (elBadge) { elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold shadow-sm"; elBadge.innerHTML = `<i class="fas fa-clock animate-pulse mr-2"></i> SEDANG BERLANGSUNG`; }
-                    if (elValPulang) elValPulang.textContent = "--:--";
-                } else {
-                    if (elHero) elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
-                    if (elBadge) { elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold shadow-sm"; elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> SELESAI HARI INI`; }
-                    if (elValPulang) elValPulang.textContent = absensi.jamPulang;
+                labelMasuk.innerHTML = "JAM DATANG";
+                labelPulang.innerHTML = "JAM PULANG";
+                elAlert.innerHTML = `<div class="bg-white p-2 rounded-full text-rose-500 shadow-sm"><i class="fas fa-exclamation"></i></div><div><h4 class="text-sm font-bold text-rose-800 mb-0.5">Peringatan Presensi</h4><p class="text-xs font-medium text-rose-600/80 leading-relaxed">Anda belum melakukan scan presensi hari ini.</p></div>`;
+                elAlert.className = "bg-rose-50 border border-rose-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
+            }
+
+            if (!absensi) {
+                elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
+                elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; 
+                elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN`;
+                elValMasuk.textContent = "--:--";
+                elValPulang.textContent = "--:--";
+                elAlert.classList.remove('hidden');
+            } else {
+                elAlert.classList.add('hidden');
+                elValMasuk.textContent = absensi.jamDatang || "--:--";
+
+                // LOGIKA JIKA WFH
+                if (isWFH) {
+                    elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
+                    elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> WFH SELESAI`;
+                    
+                    let statText = "Selesai";
+                    if(absensi.keterangan && absensi.keterangan.includes("|")) {
+                        statText = absensi.keterangan.split("|")[0].trim(); // Ambil "Tepat Waktu" / "Terlambat"
+                    }
+                    elValPulang.textContent = statText;
+                    elValPulang.className = "text-lg font-bold tracking-tight text-yellow-300 uppercase";
+                } 
+                // LOGIKA JIKA REGULER
+                else {
+                    if (!absensi.jamPulang || absensi.jamPulang === '-') {
+                        elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-800 p-6 text-white shadow-xl shadow-emerald-200 transition-all duration-500 group";
+                        elBadge.innerHTML = `<i class="fas fa-clock animate-pulse mr-2"></i> SEDANG DI SEKOLAH`;
+                        elValPulang.textContent = "--:--";
+                    } else {
+                        elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
+                        elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> SELESAI HARI INI`;
+                        elValPulang.textContent = absensi.jamPulang;
+                    }
                 }
             }
         }
-    } catch(error) {
-        hideLoading();
-    }
+    } catch(error) { hideLoading(); }
 }
 
 async function loadKelolaAbsen() {
@@ -1300,6 +1358,10 @@ async function loadGlobalConfig() {
             document.getElementById('conf_masuk_akhir').value = conf.jam_masuk_akhir;
             document.getElementById('conf_pulang_mulai').value = conf.jam_pulang_mulai;
             document.getElementById('conf_pulang_akhir').value = conf.jam_pulang_akhir;
+            // WFH
+            document.getElementById('conf_wfh_mulai').value = conf.wfh_mulai || '06:00';
+            document.getElementById('conf_wfh_akhir').value = conf.wfh_akhir || '08:00';
+            document.getElementById('conf_wfh_tutup').value = conf.wfh_tutup || '12:00';
         }
     } catch(e) {}
 }
@@ -1309,7 +1371,15 @@ async function saveGlobalConfig(e) {
     const btn = document.getElementById('btnSaveConfig'); const originalText = btn.innerHTML;
     btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Menyimpan...';
     const formData = new FormData(e.target);
-    const newConfig = { jam_masuk_mulai: formData.get('jam_masuk_mulai'), jam_masuk_akhir: formData.get('jam_masuk_akhir'), jam_pulang_mulai: formData.get('jam_pulang_mulai'), jam_pulang_akhir: formData.get('jam_pulang_akhir') };
+    const newConfig = { 
+        jam_masuk_mulai: formData.get('jam_masuk_mulai'), 
+        jam_masuk_akhir: formData.get('jam_masuk_akhir'), 
+        jam_pulang_mulai: formData.get('jam_pulang_mulai'), 
+        jam_pulang_akhir: formData.get('jam_pulang_akhir'),
+        wfh_mulai: formData.get('wfh_mulai'),
+        wfh_akhir: formData.get('wfh_akhir'),
+        wfh_tutup: formData.get('wfh_tutup')
+    };
     
     try {
         const res = await fetchAPI('saveAppConfig', { newConfig: newConfig });
@@ -2333,13 +2403,8 @@ async function processDailyExportCustom(btnElement) {
 
 async function showProfilSiswa() {
     showLoading();
-    let dataSiswa = { 
-        nama: currentUser.nama, nisn: currentUser.nisn, kelas: currentUser.kelas, 
-        jenisKelamin: '-', tanggalLahir: '-' 
-    };
-    
+    let dataSiswa = { nama: currentUser.nama, nisn: currentUser.nisn, kelas: currentUser.kelas, jenisKelamin: '-', tanggalLahir: '-' };
     try {
-        // Coba ambil data lengkap siswa dari server tanpa perlu endpoint baru
         const result = await fetchAPI('getSiswaList');
         if (result.success) {
             const findSiswa = result.data.find(s => s.nisn == currentUser.nisn);
@@ -2360,10 +2425,14 @@ async function showProfilSiswa() {
             <p class="text-[10px] font-bold text-teal-600 uppercase tracking-widest mt-1.5 bg-teal-50 inline-block px-3 py-1 rounded-full border border-teal-100">Profil Siswa</p>
         </div>
 
-        <div class="space-y-2 mb-2">
+        <div class="space-y-2 mb-4">
             <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
                 <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="far fa-id-card text-teal-500 w-4 text-center mr-1"></i> NISN</span>
                 <span class="text-sm font-bold text-gray-800 font-mono">${dataSiswa.nisn}</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="fas fa-chalkboard text-teal-500 w-4 text-center mr-1"></i> Kelas</span>
+                <span class="text-sm font-bold text-gray-800">${dataSiswa.kelas}</span>
             </div>
             <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
                 <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="fas fa-venus-mars text-teal-500 w-4 text-center mr-1"></i> L/P</span>
@@ -2373,13 +2442,9 @@ async function showProfilSiswa() {
                 <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="fas fa-birthday-cake text-teal-500 w-4 text-center mr-1"></i> Lahir</span>
                 <span class="text-sm font-bold text-gray-800">${dataSiswa.tanggalLahir || '-'}</span>
             </div>
-<div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
-                <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="fas fa-birthday-cake text-teal-500 w-4 text-center mr-1"></i> Lahir</span>
-                <span class="text-sm font-bold text-gray-800">${dataSiswa.tanggalLahir || '-'}</span>
-            </div>
         </div>
         
-        <button onclick="showUbahPasswordSiswaModal()" class="w-full mt-4 bg-teal-50 hover:bg-teal-100 text-teal-700 py-2.5 rounded-xl text-xs font-bold border border-teal-200 transition-colors flex items-center justify-center gap-2">
+        <button onclick="showUbahPasswordSiswaModal()" class="w-full bg-teal-50 hover:bg-teal-100 text-teal-700 py-3 rounded-xl text-xs font-bold border border-teal-200 transition-colors flex items-center justify-center gap-2 shadow-sm">
             <i class="fas fa-key"></i> Ubah Password Akun
         </button>
     </div>`;
