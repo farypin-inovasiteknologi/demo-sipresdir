@@ -103,18 +103,24 @@
             <div id="panelBranding" class="w-full lg:w-5/12 p-6 lg:p-12 flex flex-col justify-between relative text-white border-b lg:border-b-0 lg:border-r border-white/20 bg-white/10 backdrop-blur-md">
                 <div class="relative z-10">
                     <center>
-                        <img src="" class="dyn-logo h-16 lg:h-20 w-auto max-w-full transition-all duration-300"> 
+                        <div class="flex justify-center items-center gap-4 mb-4">
+                            <img src="" class="dyn-logoInstansi h-14 lg:h-16 w-auto max-w-full transition-all duration-300 drop-shadow-md"> 
+                            <img src="" class="dyn-logo h-14 lg:h-16 w-auto max-w-full transition-all duration-300 drop-shadow-md"> 
+                        </div>
                     </center>
                     
-                    <div class="text-center mb-9 lg:mb-16 mt-3 lg:mt-0">
+                    <div class="text-center mb-9 lg:mb-12 mt-3 lg:mt-0">
                         <center>
-                            <h4 class="dyn-namasekolah text-xl lg:text-3xl font-bold leading-tight mb-0 text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 drop-shadow-sm">
+                            <h3 class="dyn-namaInstansi text-sm lg:text-lg font-bold leading-tight mb-1 text-indigo-200 drop-shadow-sm uppercase tracking-wider">
+                                Memuat Instansi...
+                            </h3>
+                            <h4 class="dyn-namasekolah text-xl lg:text-3xl font-bold leading-tight mb-0 text-transparent bg-clip-text bg-gradient-to-r from-white to-indigo-100 drop-shadow-sm">
                                 Memuat...
                             </h4>
                         </center>
                         <br>
                         <center>
-                            <span class="dyn-provinsi px-4 py-1.5 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-xs lg:text-sm text-indigo-800 lg:text-indigo-600 font-bold">
+                            <span class="dyn-alamat px-4 py-1.5 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-xs lg:text-sm text-white font-bold">
                                 ...
                             </span>
                         </center>
@@ -122,23 +128,16 @@
 
                     <center>
                         <div class="judul-container flex items-center justify-center gap-2">
-                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfzGqA11LudTtI5aqUk93_GUJWPoHCR2uNbhgSgZhv71Bmx48aW6zBg7l7U6KoVNNmQpC7zai4T3KeV6DfH1VXfpwQDaxYPEiaCZ8opxte2Koje_yoSzejOD3eKTGt8tHeMuVVrldPZjsXCeRjUe1dbFibHnjpxZYcYlsGBz3YKr_ZU9E9n4z1y0dUrYXC/s425/logo%20sipresdir.png" alt="Logo" class="w-8 lg:w-[50px] object-contain">
+                            <i class="fas fa-qrcode text-3xl lg:text-4xl text-indigo-300"></i>
                             <h1 class="text-3xl lg:text-5xl font-bold leading-tight mb-0 text-transparent bg-clip-text bg-gradient-to-r from-white to-indigo-200 drop-shadow-sm mt-0"> SiPresDiR</h1>
                         </div>
-                        <p class="font-bold text-xs lg:text-sm text-white mt-1">Sistem Presensi Digital Realtime</p>
-                    </center>
-                    <br>
-
-                    <center>
-                        <p class="text-indigo-100 text-xs lg:text-sm leading-relaxed max-w-xs opacity-90">
-                            Platform sistem presensi digital sekolah yang modern dan real-time. Manajemen kehadiran siswa berbasis QR Code yang terintegrasi, efektif dan efisien.
-                        </p>
+                        <p class="font-bold text-xs lg:text-sm text-indigo-100 mt-2 tracking-wide">Sistem Presensi Digital Realtime</p>
                     </center>
                 </div>
                 
                 <div class="relative z-10 mt-6 lg:mt-10 flex justify-center gap-4 text-[10px] lg:text-xs font-medium text-black-200">
-                    <div class="px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-blue-800 lg:text-blue-600">
-                        <a href='#' class="dyn-website-link" rel='dofollow'><span class="dyn-website">Memuat...</span></a>
+                    <div class="px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-white font-semibold">
+                        <a href='#' class="dyn-website-link" rel='dofollow'><i class="fas fa-globe mr-1"></i> <span class="dyn-website">Memuat...</span></a>
                     </div>
                 </div>
 
@@ -456,24 +455,46 @@
                             <div class="p-5">
                                 <form onsubmit="saveLinkData(event)">
                                     <div class="space-y-4">
-                                        <div><label class="block text-xs font-bold text-gray-700 mb-1">Nama Sekolah</label><input type="text" name="namasekolah" class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
-                                        <div><label class="block text-xs font-bold text-gray-700 mb-1">Provinsi</label><input type="text" name="provinsi" class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
-                                        <div><label class="block text-xs font-bold text-gray-700 mb-1">Tahun Ajaran</label><input type="text" name="tahun" class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
-                                        <div>
-                                            <label class="block text-xs font-bold text-gray-700 mb-1">Logo Sekolah (Upload & Crop 1:1)</label>
-                                            <div class="flex items-center gap-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
-                                                <img id="previewLogoSetting" src="" class="w-14 h-14 rounded-lg border border-gray-300 object-contain bg-white shadow-sm" alt="Logo">
-                                                <div class="flex-1">
-                                                    <input type="file" id="inputLogoFile" accept="image/png, image/jpeg, image/jpg" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 transition">
-                                                    <p class="text-[9px] text-gray-400 mt-1.5 font-medium leading-tight">Pilih gambar untuk di-crop 1:1. Otomatis menjadi PNG transparan.</p>
+                                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 mb-4">
+                                            <h4 class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mb-3">Data Instansi (Atas)</h4>
+                                            <div class="space-y-3">
+                                                <div><label class="block text-xs font-bold text-gray-700 mb-1">Nama Instansi</label><input type="text" name="namaInstansi" placeholder="Misal: KEMENTERIAN AGAMA / DINAS PENDIDIKAN" class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
+                                                <div>
+                                                    <label class="block text-xs font-bold text-gray-700 mb-1">Logo Instansi</label>
+                                                    <div class="flex items-center gap-4 bg-white p-3 rounded-lg border border-gray-200">
+                                                        <img id="previewLogoInstansiSetting" src="" class="w-12 h-12 rounded-lg border border-gray-300 object-contain bg-gray-50 shadow-sm" alt="Logo">
+                                                        <div class="flex-1">
+                                                            <input type="file" id="inputLogoInstansiFile" accept="image/png, image/jpeg, image/jpg" class="w-full text-xs text-gray-500 file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 transition">
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" name="logoInstansi" id="finalLogoInstansiData">
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="logo" id="finalLogoData">
                                         </div>
-                                        <div><label class="block text-xs font-bold text-gray-700 mb-1">Website</label><input type="text" name="website" class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
-                                        <div><label class="block text-xs font-bold text-gray-700 mb-1">Running Text</label><textarea name="runningtext" class="w-full border-gray-300 rounded-lg text-sm p-2.5" rows="2"></textarea></div>
+
+                                        <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 mb-4">
+                                            <h4 class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-3">Data Sekolah (Bawah)</h4>
+                                            <div class="space-y-3">
+                                                <div><label class="block text-xs font-bold text-gray-700 mb-1">Nama Sekolah</label><input type="text" name="namasekolah" class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
+                                                <div><label class="block text-xs font-bold text-gray-700 mb-1">Alamat Lengkap</label><input type="text" name="alamat" placeholder="Jalan / Kabupaten / Provinsi" class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
+                                                <div>
+                                                    <label class="block text-xs font-bold text-gray-700 mb-1">Logo Sekolah</label>
+                                                    <div class="flex items-center gap-4 bg-white p-3 rounded-lg border border-gray-200">
+                                                        <img id="previewLogoSetting" src="" class="w-12 h-12 rounded-lg border border-gray-300 object-contain bg-gray-50 shadow-sm" alt="Logo">
+                                                        <div class="flex-1">
+                                                            <input type="file" id="inputLogoFile" accept="image/png, image/jpeg, image/jpg" class="w-full text-xs text-gray-500 file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-emerald-100 file:text-emerald-700 hover:file:bg-emerald-200 transition">
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" name="logo" id="finalLogoData">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div><label class="block text-xs font-bold text-gray-700 mb-1">Tahun Ajaran</label><input type="text" name="tahun" class="w-full border-gray-300 rounded-lg text-sm p-2.5 bg-gray-50"></div>
+                                        <div><label class="block text-xs font-bold text-gray-700 mb-1">Website</label><input type="text" name="website" class="w-full border-gray-300 rounded-lg text-sm p-2.5 bg-gray-50"></div>
+                                        <div><label class="block text-xs font-bold text-gray-700 mb-1">Running Text</label><textarea name="runningtext" class="w-full border-gray-300 rounded-lg text-sm p-2.5 bg-gray-50" rows="2"></textarea></div>
                                     </div>
-                                    <button type="submit" id="btnSaveLink" class="w-full mt-6 bg-indigo-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 transition">Simpan Perubahan</button>
+                                    <button type="submit" id="btnSaveLink" class="w-full mt-6 bg-indigo-600 text-white py-3 rounded-xl text-sm font-bold shadow-md hover:bg-indigo-700 transition transform active:scale-95"><i class="fas fa-save mr-2"></i> Simpan Perubahan</button>
                                 </form>
                             </div>
                         </div>
@@ -1236,19 +1257,17 @@
             try {
                 const result = await fetchAPI('getSettings');
                 if (result) {
-                    document.querySelectorAll('.dyn-logo').forEach(el => { 
-                        if(el.tagName === 'IMG') el.src = result.logo; 
-                    });
+                    document.querySelectorAll('.dyn-logo').forEach(el => { if(el.tagName === 'IMG') el.src = result.logo; });
+                    document.querySelectorAll('.dyn-logoInstansi').forEach(el => { if(el.tagName === 'IMG') el.src = result.logoInstansi || result.logo; });
+                    document.querySelectorAll('.dyn-namaInstansi').forEach(el => el.innerHTML = result.namaInstansi);
                     document.querySelectorAll('.dyn-namasekolah').forEach(el => el.innerHTML = result.namasekolah);
-                    document.querySelectorAll('.dyn-provinsi').forEach(el => el.innerHTML = result.provinsi);
+                    document.querySelectorAll('.dyn-alamat').forEach(el => el.innerHTML = result.alamat);
                     document.querySelectorAll('.dyn-website').forEach(el => el.innerHTML = result.website);
                     document.querySelectorAll('.dyn-website-link').forEach(el => el.href = (result.website.startsWith('http') ? result.website : 'https://' + result.website));
                     document.querySelectorAll('.dyn-runningtext').forEach(el => el.innerHTML = result.runningtext);
                     document.querySelectorAll('.dyn-tahun').forEach(el => el.innerHTML = result.tahun);
                 }
-            } catch (e) {
-                console.log("Gagal memuat pengaturan awal", e);
-            }
+            } catch (e) { console.log("Gagal memuat pengaturan awal", e); }
         }
 
         // ============================================================
@@ -3161,19 +3180,25 @@
             const backFn = (currentUser.role === 'admin' || currentUser.role === 'guru') ? "loadDataSiswa()" : "loadSiswaDashboard()";
 
             try {
-                const dataServer = await fetchAPI('getCardDataServer');
-                const logoBase64 = dataServer.logo;
-                const namaSekolah = dataServer.sekolah;
+                 const dataServer = await fetchAPI('getCardDataServer');
+                 const logoBase64 = dataServer.logo;
+                 const logoInstansiBase64 = dataServer.logoInstansi;
+                 const namaSekolah = dataServer.sekolah;
+                 const namaInstansi = dataServer.instansi;;
 
                 container.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-5">
                     <div id="idCardElement" style="width: 320px; height: 510px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; position: relative; font-family: sans-serif; box-sizing: border-box;">
                         
                         <div style="height: 180px; background: #312e81; padding: 15px; text-align: center; color: white; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                            <img src="${logoBase64}" style="height: 55px; width: auto; max-width: 100%; margin-bottom: 8px; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
-                            <div style="font-weight: 900; font-size: 17px; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; padding: 0 10px;">${namaSekolah}</div>
-                            <div style="font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
-                        </div>
+                       <div style="display: flex; gap: 15px; margin-bottom: 8px; justify-content: center;">
+                      <img src="${logoInstansiBase64}" style="height: 45px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                      <img src="${logoBase64}" style="height: 45px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                       </div>
+            <div style="font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 2px; opacity: 0.9; letter-spacing: 0.5px;">${namaInstansi}</div>
+            <div style="font-weight: 900; font-size: 16px; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; padding: 0 5px;">${namaSekolah}</div>
+            <div style="font-size: 8px; text-transform: uppercase; letter-spacing: 1.5px; color: #cbd5e1; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
+        </div>
 
                         <div style="height: 330px; padding: 15px 20px; text-align: center; background: white; box-sizing: border-box; position: relative;">
                             <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); box-sizing: border-box;">
@@ -3249,50 +3274,47 @@
             });
         }
 
-        async function loadPengaturan() {
+       async function loadPengaturan() {
             stopAndBack(false); setActiveMenu('Pengaturan'); showView('view-pengaturan');
             const form = document.querySelector('#view-pengaturan form');
             const token = currentUser ? currentUser.token : null;
             try {
                 const res = await fetchAPI('getLinkSettings', { token: token });
                 if(res.success) {
+                    form.elements['namaInstansi'].value = res.data.namaInstansi;
                     form.elements['namasekolah'].value = res.data.namasekolah;
-                    form.elements['provinsi'].value = res.data.provinsi;
+                    form.elements['alamat'].value = res.data.alamat;
                     form.elements['tahun'].value = res.data.tahun;
                     form.elements['website'].value = res.data.website;
                     form.elements['runningtext'].value = res.data.runningtext;
                     
-                    // [BARU] Tampilkan gambar logo ke preview
+                    const defLogo = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfzGqA11LudTtI5aqUk93_GUJWPoHCR2uNbhgSgZhv71Bmx48aW6zBg7l7U6KoVNNmQpC7zai4T3KeV6DfH1VXfpwQDaxYPEiaCZ8opxte2Koje_yoSzejOD3eKTGt8tHeMuVVrldPZjsXCeRjUe1dbFibHnjpxZYcYlsGBz3YKr_ZU9E9n4z1y0dUrYXC/s425/logo%20sipresdir.png';
                     document.getElementById('finalLogoData').value = res.data.logo;
-                    document.getElementById('previewLogoSetting').src = res.data.logo || 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfzGqA11LudTtI5aqUk93_GUJWPoHCR2uNbhgSgZhv71Bmx48aW6zBg7l7U6KoVNNmQpC7zai4T3KeV6DfH1VXfpwQDaxYPEiaCZ8opxte2Koje_yoSzejOD3eKTGt8tHeMuVVrldPZjsXCeRjUe1dbFibHnjpxZYcYlsGBz3YKr_ZU9E9n4z1y0dUrYXC/s425/logo%20sipresdir.png';
+                    document.getElementById('previewLogoSetting').src = res.data.logo || defLogo;
+                    document.getElementById('finalLogoInstansiData').value = res.data.logoInstansi;
+                    document.getElementById('previewLogoInstansiSetting').src = res.data.logoInstansi || defLogo;
                 }
             } catch(e) {}
         }
 
         async function saveLinkData(e) {
-            e.preventDefault(); 
-            const fd = new FormData(e.target); 
-            const token = currentUser ? currentUser.token : null;
-            
+            e.preventDefault(); const fd = new FormData(e.target); const token = currentUser ? currentUser.token : null;
             const data = { 
+                namaInstansi: fd.get('namaInstansi'), 
+                logoInstansi: document.getElementById('finalLogoInstansiData').value,
                 namasekolah: fd.get('namasekolah'), 
-                provinsi: fd.get('provinsi'), 
-                tahun: fd.get('tahun'), 
                 logo: document.getElementById('finalLogoData').value, 
+                alamat: fd.get('alamat'), 
+                tahun: fd.get('tahun'), 
                 website: fd.get('website'), 
                 runningtext: fd.get('runningtext') 
             };
-            
             showLoading();
             try {
                 const res = await fetchAPI('updateLinkSettings', { token: token, data: data });
                 hideLoading(); 
-                if(res.success) {
-                    showAlert('success', res.message);
-                    initAppConfigs(); // Reload tampilan langsung
-                } else { 
-                    showAlert('error', res.message); 
-                }
+                if(res.success) { showAlert('success', res.message); initAppConfigs(); } 
+                else { showAlert('error', res.message); }
             } catch(err) { hideLoading(); }
         }
 
@@ -3576,21 +3598,53 @@ function downloadTemplate(type) {
 
 function processImport(type) {
     const fileInput = document.getElementById('importFile');
-    if(!fileInput.files.length) { showAlert('error', 'Pilih file terlebih dahulu'); return; }
-    showLoading(); const file = fileInput.files[0]; const reader = new FileReader();
+    if(!fileInput.files.length) { 
+        showAlert('error', 'Pilih file terlebih dahulu'); 
+        return; 
+    }
+    
+    showLoading(); 
+    const file = fileInput.files[0]; 
+    const reader = new FileReader();
+    
     reader.onload = async function(e) {
-        const data = new Uint8Array(e.target.result); const workbook = XLSX.read(data, {type: 'array'});
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]]; const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+        const data = new Uint8Array(e.target.result); 
+        const workbook = XLSX.read(data, {type: 'array'});
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]]; 
+        
+        // [PERBAIKAN BUG TANGGAL EXCEL] 
+        // Tambahkan { raw: false, defval: "" } agar Tanggal & Nomor HP dibaca sebagai Teks murni, bukan Nomor Seri.
+        const jsonData = XLSX.utils.sheet_to_json(firstSheet, { raw: false, defval: "" });
+        
         try {
             let res;
             if(type === 'Siswa') {
                 res = await fetchAPI('importSiswaBulk', { arr: jsonData });
-                hideLoading(); closeModal(); if(res.success) { tableState.siswa.fullData = []; loadDataSiswa(); showAlert('success', res.message); } else showAlert('error', res.message);
+                hideLoading(); 
+                closeModal(); 
+                if(res.success) { 
+                    tableState.siswa.fullData = []; 
+                    loadDataSiswa(); 
+                    showAlert('success', res.message); 
+                } else {
+                    showAlert('error', res.message);
+                }
             } else {
                 res = await fetchAPI('importGuruBulk', { arr: jsonData });
-                hideLoading(); closeModal(); if(res.success) { tableState.guru.fullData = []; loadDataGuru(); showAlert('success', res.message); } else showAlert('error', res.message);
+                hideLoading(); 
+                closeModal(); 
+                if(res.success) { 
+                    tableState.guru.fullData = []; 
+                    loadDataGuru(); 
+                    showAlert('success', res.message); 
+                } else {
+                    showAlert('error', res.message);
+                }
             }
-        } catch(err) { hideLoading(); showAlert('error', err); }
+        } catch(err) { 
+            hideLoading(); 
+            showAlert('error', err); 
+        }
     };
     reader.readAsArrayBuffer(file);
 }
@@ -3968,9 +4022,6 @@ async function downloadPDFRekapSiswa() {
 // ============================================================
 // FITUR: CETAK SEMUA KARTU SISWA (A4, 3x3 COLUMNS, COLOR) - FIXED PROPORTION
 // ============================================================
-// ============================================================
-// FITUR: CETAK SEMUA KARTU SISWA (A4, 3x3 COLUMNS, COLOR) - FIXED PROPORTION
-// ============================================================
 async function cetakSemuaKartuSiswa() {
     const dataToPrint = tableState.siswa.filtered;
     
@@ -3982,9 +4033,12 @@ async function cetakSemuaKartuSiswa() {
     showLoading();
 
     try {
-        const logoBase64 = document.querySelector('.dyn-logo').src;
-        const namaSekolah = document.querySelector('.dyn-namasekolah').textContent;
-
+        const dataServer = await fetchAPI('getCardDataServer');
+        const logoBase64 = dataServer.logo;
+        const logoInstansiBase64 = dataServer.logoInstansi;
+        const namaSekolah = dataServer.sekolah;
+        const namaInstansi = dataServer.instansi;
+        
         let container = document.getElementById('hiddenCardFactory');
         if (!container) {
             container = document.createElement('div');
@@ -4010,11 +4064,15 @@ async function cetakSemuaKartuSiswa() {
             container.innerHTML = `
             <div id="printCardTemplate" style="width: 320px; height: 510px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; position: relative; font-family: sans-serif; box-sizing: border-box;">
                 
-                <div style="height: 180px; background: #312e81; padding: 15px; text-align: center; color: white; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <img src="${logoBase64}" style="height: 55px; width: auto; max-width: 100%; margin-bottom: 8px; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
-                    <div style="font-weight: 900; font-size: 17px; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; padding: 0 10px;">${namaSekolah}</div>
-                    <div style="font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
-                </div>
+               <div style="height: 180px; background: #312e81; padding: 15px; text-align: center; color: white; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div style="display: flex; gap: 15px; margin-bottom: 8px; justify-content: center;">
+                <img src="${logoInstansiBase64}" style="height: 45px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                <img src="${logoBase64}" style="height: 45px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+            </div>
+            <div style="font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 2px; opacity: 0.9; letter-spacing: 0.5px;">${namaInstansi}</div>
+            <div style="font-weight: 900; font-size: 16px; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; padding: 0 5px;">${namaSekolah}</div>
+            <div style="font-size: 8px; text-transform: uppercase; letter-spacing: 1.5px; color: #cbd5e1; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
+        </div>
 
                 <div style="height: 330px; padding: 15px 20px; text-align: center; background: white; box-sizing: border-box; position: relative;">
                     <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); box-sizing: border-box;">
@@ -4072,89 +4130,70 @@ async function cetakSemuaKartuSiswa() {
 
 // ============================================================
 // [BARU] LOGIKA UPLOAD & CROP LOGO 1:1
-// ============================================================
+//============================================================
+
 let cropperInstance = null;
+        let targetCropInput = '';
+        let targetCropPreview = '';
 
-document.addEventListener("DOMContentLoaded", function() {
-    // 1. Setup Input Tanggal Export Harian
-    const dateInput = document.getElementById('tgl_export_harian');
-    if (dateInput) {
-        const d = new Date();
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0'); 
-        const day = String(d.getDate()).padStart(2, '0');      
-        dateInput.value = `${year}-${month}-${day}`;
-    }
-    
-    // 2. Setup Upload & Crop Logo 1:1
-    const inputLogoFile = document.getElementById('inputLogoFile');
-    if(inputLogoFile) {
-        inputLogoFile.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                // Validasi ukuran maksimal (Opsional: 2MB)
-                if(file.size > 2 * 1024 * 1024) {
-                    showAlert('error', 'Ukuran gambar maksimal 2MB!');
-                    this.value = '';
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    openCropModal(event.target.result);
-                };
-                reader.readAsDataURL(file);
+        document.addEventListener("DOMContentLoaded", function() {
+            const dateInput = document.getElementById('tgl_export_harian');
+            if (dateInput) {
+                const d = new Date();
+                dateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
             }
+            
+            // Reusable function untuk handle upload logo
+            function setupLogoUpload(inputId, hiddenInputId, previewId) {
+                const fileInput = document.getElementById(inputId);
+                if(fileInput) {
+                    fileInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            if(file.size > 2 * 1024 * 1024) { showAlert('error', 'Ukuran maksimal 2MB!'); this.value = ''; return; }
+                            targetCropInput = hiddenInputId;
+                            targetCropPreview = previewId;
+                            const reader = new FileReader();
+                            reader.onload = function(event) { openCropModal(event.target.result); };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
+            }
+
+            setupLogoUpload('inputLogoFile', 'finalLogoData', 'previewLogoSetting');
+            setupLogoUpload('inputLogoInstansiFile', 'finalLogoInstansiData', 'previewLogoInstansiSetting');
+            
+            initAppConfigs();
+            checkSession();
         });
-    }
-    
-    // 3. Inisialisasi App
-    initAppConfigs();
-    checkSession();
-});
 
-function openCropModal(imageSrc) {
-    const modal = document.getElementById('cropModal');
-    const image = document.getElementById('imageToCrop');
-    
-    // Tampilkan Modal
-    modal.classList.remove('hidden');
-    image.src = imageSrc;
+        function openCropModal(imageSrc) {
+            const modal = document.getElementById('cropModal');
+            const image = document.getElementById('imageToCrop');
+            modal.classList.remove('hidden');
+            image.src = imageSrc;
+            if (cropperInstance) { cropperInstance.destroy(); }
+            cropperInstance = new Cropper(image, { aspectRatio: 1 / 1, viewMode: 1, background: false, autoCropArea: 0.8, dragMode: 'move' });
+        }
 
-    // Inisialisasi Cropper.js dengan Rasio 1:1
-    if (cropperInstance) { cropperInstance.destroy(); }
-    cropperInstance = new Cropper(image, {
-        aspectRatio: 1 / 1, // Memaksa kotak 1:1
-        viewMode: 1,        // Gambar tidak bisa keluar dari canvas
-        background: false,  // Background transparan
-        autoCropArea: 0.8,
-        dragMode: 'move'
-    });
-}
+        function closeCropModal() {
+            document.getElementById('cropModal').classList.add('hidden');
+            if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+            document.getElementById('inputLogoFile').value = ''; 
+            document.getElementById('inputLogoInstansiFile').value = ''; 
+        }
 
-function closeCropModal() {
-    document.getElementById('cropModal').classList.add('hidden');
-    if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
-    document.getElementById('inputLogoFile').value = ''; // Reset input
-}
+        function applyCrop() {
+            if (!cropperInstance) return;
+            const canvas = cropperInstance.getCroppedCanvas({ width: 400, height: 400 });
+            const croppedBase64 = canvas.toDataURL('image/png');
+            
+            document.getElementById(targetCropPreview).src = croppedBase64;
+            document.getElementById(targetCropInput).value = croppedBase64;
+            closeCropModal();
+        }
 
-function applyCrop() {
-    if (!cropperInstance) return;
-    
-    // Dapatkan hasil crop sebagai Base64 PNG (Mempertahankan background transparan)
-    const canvas = cropperInstance.getCroppedCanvas({
-        width: 400, // Ukuran ideal untuk logo
-        height: 400
-    });
-    
-    const croppedBase64 = canvas.toDataURL('image/png');
-    
-    // Terapkan ke tampilan dan hidden input
-    document.getElementById('previewLogoSetting').src = croppedBase64;
-    document.getElementById('finalLogoData').value = croppedBase64;
-    
-    // Tutup modal
-    closeCropModal();
-}
 
 let wfhStream = null;
 let currentGPS = { lat: null, lon: null };
