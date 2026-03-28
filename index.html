@@ -3129,6 +3129,7 @@ async function saveGlobalConfig(btnElement) {
                         else if(p.includes("Foto:")) fotoLink = p.replace('Foto:', '').trim();
                         else if(p.trim() !== "" && !p.includes("Akurasi:")) statusWfh = p.trim(); 
                     });
+                    
                     statusWfh = statusWfh.replace(/\[LAT:.*\]/, '').trim();
 
                     let badgeHtml = "";
@@ -3143,16 +3144,20 @@ async function saveGlobalConfig(btnElement) {
                         ${badgeHtml}
                         <div class="flex gap-1 mt-0.5 w-full">
                             <a href="${fotoLink}" target="_blank" class="flex-1 text-center bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-200 py-1 rounded text-[9px] font-bold transition shadow-sm"><i class="fas fa-image"></i> Foto</a>
-                            <a href="${mapsLink}" target="_blank" class="flex-1 text-center bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border border-rose-200 py-1 rounded text-[9px] font-bold transition shadow-sm"><i class="fas fa-map-marker-alt"></i> Map</a>
+                            <a href="${mapsLink}" target="_blank" class="flex-1 text-center bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white border border-emerald-200 py-1 rounded text-[9px] font-bold transition shadow-sm"><i class="fas fa-map-marker-alt"></i> Map</a>
+                            ${canEdit ? `<button onclick="hapusBuktiAbsen('${d.nisn}', '${d.tanggal}')" class="flex-1 text-center bg-red-50 text-red-600 hover:bg-red-600 hover:text-white border border-red-200 py-1 rounded text-[9px] font-bold transition shadow-sm"><i class="fas fa-trash"></i> Hapus</button>` : ''}
                         </div>
                     </div>`;
                 });
                 ketHtml += `</div>`;
             } 
-
             else if (rawKet.includes("Surat:")) {
                 let suratLink = rawKet.replace('Surat:', '').trim();
-                ketHtml = `<a href="${suratLink}" target="_blank" class="bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-200 px-3 py-1.5 rounded-lg text-[10px] font-bold transition shadow-sm inline-flex items-center gap-2"><i class="fas fa-file-medical"></i> Lihat Surat</a>`;
+                ketHtml = `
+                <div class="flex items-center gap-1">
+                    <a href="${suratLink}" target="_blank" class="bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-200 px-3 py-1 rounded-lg text-[10px] font-bold transition shadow-sm inline-flex items-center gap-1"><i class="fas fa-file-medical"></i> Lihat Surat</a>
+                    ${canEdit ? `<button onclick="hapusBuktiAbsen('${d.nisn}', '${d.tanggal}')" class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white border border-red-200 px-2 py-1 rounded-lg text-[10px] font-bold transition shadow-sm inline-flex items-center"><i class="fas fa-trash"></i></button>` : ''}
+                </div>`;
             }
             else if (rawKet.includes("Terlambat")) { ketHtml = `<span class="text-rose-600 font-bold bg-rose-50 px-2 py-1 rounded border border-rose-100 text-[10px] whitespace-nowrap"><i class="fas fa-history mr-1"></i>${rawKet}</span>`; }  
             else if (rawKet.includes("Pulang Cepat")) { ketHtml = `<span class="text-orange-600 font-bold bg-orange-50 px-2 py-1 rounded border border-orange-100 text-[10px] whitespace-nowrap"><i class="fas fa-running mr-1"></i>${rawKet}</span>`; } 
@@ -4078,6 +4083,11 @@ function renderTabelRekapSiswa(data) {
             });
             ketHtml += `</div>`;
         } 
+
+        else if (rawKet.includes("Surat:")) {
+            let suratLink = rawKet.replace('Surat:', '').trim();
+            ketHtml = `<a href="${suratLink}" target="_blank" class="bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-200 px-3 py-1.5 rounded-lg text-[10px] font-bold transition shadow-sm inline-flex items-center gap-2"><i class="fas fa-file-medical"></i> Lihat Surat</a>`;
+        }
         else if (rawKet.includes("Terlambat")) { 
             ketHtml = `<span class="text-rose-600 font-bold bg-rose-50 px-2 py-1 rounded border border-rose-100 text-[10px] whitespace-nowrap"><i class="fas fa-history mr-1"></i>${rawKet}</span>`; 
         }  
@@ -4641,6 +4651,44 @@ async function submitIzinSiswa(e) {
     } catch (error) {
         hideLoading(); showAlert('error', 'Gagal koneksi server!'); btn.disabled = false; btn.innerHTML = originalText;
     }
+}
+
+// ============================================================
+// FUNGSI HAPUS BUKTI WFH / SURAT OLEH GURU/ADMIN
+// ============================================================
+function hapusBuktiAbsen(nisn, tanggal) {
+    Swal.fire({
+        title: 'Hapus Bukti & Reset Status?',
+        text: 'Data absensi hari ini dan file foto/surat di Google Drive akan dihapus permanen. Status siswa akan kembali menjadi "Belum Absen".',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#EF4444',
+        cancelButtonColor: '#6B7280',
+        confirmButtonText: 'Ya, Hapus & Reset!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            showLoading();
+            try {
+                const res = await fetchAPI('deleteAbsenRecord', { 
+                    token: currentUser.token, 
+                    nisn: nisn, 
+                    tanggal: tanggal 
+                });
+                hideLoading();
+                if(res.success) {
+                    showAlert('success', res.message);
+                    refreshData('monitoring'); // Refresh tabel guru/admin otomatis
+                } else {
+                    showAlert('error', res.message);
+                }
+            } catch(e) {
+                hideLoading();
+                showAlert('error', 'Error koneksi ke server');
+            }
+        }
+    });
 }
 
 // ============================================================
