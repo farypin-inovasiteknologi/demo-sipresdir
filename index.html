@@ -2006,170 +2006,182 @@
             window.requestAnimationFrame(step);
         }
 
-      async function loadSiswaDashboard() {
-    stopAndBack(false); 
-    setActiveMenu('Dashboard'); 
-    showView('view-siswa-dashboard'); 
-    // LOADING DIMATIKAN DISINI!
-
-    try {
-        if (currentUser) {
-            const firstName = currentUser.nama ? currentUser.nama.split(' ')[0] : 'Siswa';
-            document.getElementById('dashGreeting').textContent = firstName;
-            document.getElementById('profileNameSidebar').textContent = currentUser.nama;
-            document.getElementById('profileNisnSidebar').textContent = currentUser.nisn;
-            document.getElementById('profileKelasSidebar').textContent = currentUser.kelas;
-            
-            let tglLahir = currentUser.tanggalLahir || '-';
-            if(tglLahir.includes("T")) {
-                tglLahir = new Date(tglLahir).toLocaleDateString('id-ID'); 
-            }
-
-            document.getElementById('profileJKSidebar').textContent = currentUser.jenisKelamin || '-';
-            document.getElementById('profileLahirSidebar').textContent = tglLahir;
-        }
-        document.getElementById('dashDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    } catch (e) {}
-
-    try {
-        // Ambil data tanpa mengganggu layar (Background fetch)
-        const result = await fetchAPI('getAbsensiToday', { nisn: currentUser.nisn });
+     async function loadSiswaDashboard() {
+        stopAndBack(false); 
+        setActiveMenu('Dashboard'); 
+        showView('view-siswa-dashboard'); 
         
-        if (result) {
-            const absensi = result.success ? result.data : null;
-            const isLibur = result.isLibur; 
-            const infoLibur = result.keteranganLibur;
-            const isWFH = result.isWFH; 
-
-            const elHero = document.getElementById('heroCard');
-            const elBadge = document.getElementById('dashStatusBadge');
-            const elValMasuk = document.getElementById('valMasuk');
-            const elValPulang = document.getElementById('valPulang');
-            const elAlert = document.getElementById('alertBelumAbsen');
-            const labelMasuk = document.getElementById('labelMasuk');
-            const labelPulang = document.getElementById('labelPulang');
-
-            // Kembalikan styling dasar (jaga-jaga kalau sebelumnya diubah oleh state lain)
-            elValPulang.className = "font-mono text-2xl font-bold tracking-tight";
-            elValPulang.parentElement.style.display = 'block';
-            elValMasuk.parentElement.classList.remove('col-span-2');
-            
-            // ===============================================
-            // SKENARIO 1: HARI LIBUR / HARI MINGGU
-            // ===============================================
-            if (isLibur) {
-                elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 to-red-800 p-6 text-white shadow-xl shadow-rose-200 transition-all duration-500 group";
-                elBadge.innerHTML = `<i class="fas fa-calendar-times mr-2"></i> HARI LIBUR`;
+        try {
+            if (currentUser) {
+                const firstName = currentUser.nama ? currentUser.nama.split(' ')[0] : 'Siswa';
+                document.getElementById('dashGreeting').textContent = firstName;
+                document.getElementById('profileNameSidebar').textContent = currentUser.nama;
+                document.getElementById('profileNisnSidebar').textContent = currentUser.nisn;
+                document.getElementById('profileKelasSidebar').textContent = currentUser.kelas;
                 
-                // Ubah teksnya tanpa merusak struktur HTML / ID
-                labelMasuk.innerHTML = "KETERANGAN";
-                elValMasuk.innerHTML = `<span class="text-sm font-bold uppercase tracking-widest">${infoLibur}</span>`;
-                
-                elValPulang.parentElement.style.display = 'none'; // Sembunyikan blok pulang
-                elValMasuk.parentElement.classList.add('col-span-2'); // Bikin blok masuk penuh ke samping
-                elAlert.classList.add('hidden');
-                return; // STOP DISINI
+                let tglLahir = currentUser.tanggalLahir || '-';
+                if(tglLahir.includes("T")) {
+                    tglLahir = new Date(tglLahir).toLocaleDateString('id-ID'); 
+                }
+
+                document.getElementById('profileJKSidebar').textContent = currentUser.jenisKelamin || '-';
+                document.getElementById('profileLahirSidebar').textContent = tglLahir;
             }
+            document.getElementById('dashDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        } catch (e) {}
 
-            // ===============================================
-            // SKENARIO 2: JADWAL WFH (BELAJAR DARI RUMAH)
-            // ===============================================
-            if (isWFH) {
-                labelMasuk.innerHTML = "JAM PAGI";
-                labelPulang.innerHTML = "JAM SORE";
+        try {
+            const result = await fetchAPI('getAbsensiToday', { nisn: currentUser.nisn });
+            
+            if (result) {
+                const absensi = result.success ? result.data : null;
+                const isLibur = result.isLibur; 
+                const infoLibur = result.keteranganLibur;
+                const isWFH = result.isWFH; 
 
-                if (!absensi) {
-                    // --- Belum Absen Pagi ---
-                    elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
-                    elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; 
-                    elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN PAGI`;
-                    elValMasuk.textContent = "--:--";
-                    elValPulang.textContent = "--:--";
+                const elHero = document.getElementById('heroCard');
+                const elBadge = document.getElementById('dashStatusBadge');
+                const elValMasuk = document.getElementById('valMasuk');
+                const elValPulang = document.getElementById('valPulang');
+                const elAlert = document.getElementById('alertBelumAbsen');
+                const labelMasuk = document.getElementById('labelMasuk');
+                const labelPulang = document.getElementById('labelPulang');
+
+                // --- [BARU] Variabel untuk kotak dan status ---
+                const boxMasuk = document.getElementById('boxMasuk');
+                const boxPulang = document.getElementById('boxPulang');
+                const statusMasuk = document.getElementById('statusMasuk');
+                const statusPulang = document.getElementById('statusPulang');
+
+                // Reset tampilan kotak
+                boxPulang.style.display = 'block';
+                boxMasuk.classList.remove('col-span-2');
+                statusMasuk.textContent = "";
+                statusPulang.textContent = "";
+                // ----------------------------------------------
+
+                // --- [BARU] PARSING STATUS KETERANGAN ---
+                let ketPagi = ""; let ketSore = "";
+                if (absensi && absensi.keterangan) {
+                    let textKet = absensi.keterangan;
+                    if (isWFH) {
+                        if(textKet.includes("PAGI:")) ketPagi = textKet.split("PAGI:")[1].split("|")[0].trim();
+                        if(textKet.includes("SORE:")) ketSore = textKet.split("SORE:")[1].split("|")[0].trim();
+                    } else {
+                        if (textKet.includes("&")) {
+                            let parts = textKet.split("&");
+                            ketPagi = parts[0].trim(); ketSore = parts[1].trim();
+                        } else if (textKet.includes("Pulang")) {
+                            ketPagi = "Tepat Waktu"; ketSore = textKet.trim();
+                        } else {
+                            ketPagi = textKet.trim();
+                        }
+                    }
+                }
+                // ----------------------------------------
+                
+                if (isLibur) {
+                    elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 to-red-800 p-6 text-white shadow-xl shadow-rose-200 transition-all duration-500 group";
+                    elBadge.innerHTML = `<i class="fas fa-calendar-times mr-2"></i> HARI LIBUR`;
                     
-                    elAlert.innerHTML = `
-                        <div class="bg-white p-2 rounded-full text-indigo-500 shadow-sm"><i class="fas fa-camera-retro"></i></div>
-                        <div>
-                            <h4 class="text-sm font-bold text-indigo-800 mb-0.5">Waktunya Presensi Pagi WFH</h4>
-                            <p class="text-xs font-medium text-indigo-600/80 leading-relaxed">Ketuk menu WFH di bawah untuk melakukan perekaman kamera (Pagi).</p>
-                        </div>`;
-                    elAlert.className = "bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
-                    elAlert.classList.remove('hidden');
-                } else {
-                    // --- Sudah Absen Pagi ---
-                    elValMasuk.textContent = absensi.jamDatang || "--:--";
+                    labelMasuk.innerHTML = "KETERANGAN";
+                    elValMasuk.innerHTML = `<span class="text-sm font-bold uppercase tracking-widest">${infoLibur}</span>`;
+                    
+                    // Sembunyikan kotak kanan, bikin kotak kiri penuhi layar
+                    boxPulang.style.display = 'none'; 
+                    boxMasuk.classList.add('col-span-2'); 
+                    elAlert.classList.add('hidden');
+                    return; 
+                }
 
-                    if (!absensi.jamPulang || absensi.jamPulang === '-') {
-                        // Belum Absen Sore
-                        elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 to-orange-600 p-6 text-white shadow-xl shadow-amber-200 transition-all duration-500 group";
-                        elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm animate-pulse";
-                        elBadge.innerHTML = `<i class="fas fa-clock mr-2"></i> BELUM ABSEN SORE`;
+                if (isWFH) {
+                    labelMasuk.innerHTML = "JAM PAGI";
+                    labelPulang.innerHTML = "JAM SORE";
+
+                    if (!absensi) {
+                        elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
+                        elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; 
+                        elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN PAGI`;
+                        elValMasuk.textContent = "--:--";
                         elValPulang.textContent = "--:--";
                         
                         elAlert.innerHTML = `
-                            <div class="bg-white p-2 rounded-full text-orange-500 shadow-sm"><i class="fas fa-sun"></i></div>
+                            <div class="bg-white p-2 rounded-full text-indigo-500 shadow-sm"><i class="fas fa-camera-retro"></i></div>
                             <div>
-                                <h4 class="text-sm font-bold text-orange-800 mb-0.5">Jangan Lupa Presensi Sore!</h4>
-                                <p class="text-xs font-medium text-orange-600/80 leading-relaxed">Jika jam sore sudah tiba, ketuk menu WFH lagi. Jarak Anda maksimal 200m dari titik Pagi.</p>
+                                <h4 class="text-sm font-bold text-indigo-800 mb-0.5">Waktunya Presensi Pagi WFH</h4>
+                                <p class="text-xs font-medium text-indigo-600/80 leading-relaxed">Ketuk menu WFH di bawah untuk melakukan perekaman kamera (Pagi).</p>
                             </div>`;
-                        elAlert.className = "bg-orange-50 border border-orange-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
+                        elAlert.className = "bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
                         elAlert.classList.remove('hidden');
                     } else {
-                        // Selesai Pagi & Sore
-                        elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
-                        elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm";
-                        elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> WFH SELESAI`;
-                        elValPulang.className = "font-mono text-2xl font-bold tracking-tight"; 
-                        elValPulang.textContent = absensi.jamPulang;
-                        elAlert.classList.add('hidden');
+                        elValMasuk.textContent = absensi.jamDatang || "--:--";
+                        statusMasuk.textContent = ketPagi; // Set status pagi
+
+                        if (!absensi.jamPulang || absensi.jamPulang === '-') {
+                            elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 to-orange-600 p-6 text-white shadow-xl shadow-amber-200 transition-all duration-500 group";
+                            elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm animate-pulse";
+                            elBadge.innerHTML = `<i class="fas fa-clock mr-2"></i> BELUM ABSEN SORE`;
+                            elValPulang.textContent = "--:--";
+                            
+                            elAlert.innerHTML = `
+                                <div class="bg-white p-2 rounded-full text-orange-500 shadow-sm"><i class="fas fa-sun"></i></div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-orange-800 mb-0.5">Jangan Lupa Presensi Sore!</h4>
+                                    <p class="text-xs font-medium text-orange-600/80 leading-relaxed">Jika jam sore sudah tiba, ketuk menu WFH lagi. Jarak Anda maksimal 200m dari titik Pagi.</p>
+                                </div>`;
+                            elAlert.className = "bg-orange-50 border border-orange-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
+                            elAlert.classList.remove('hidden');
+                        } else {
+                            elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
+                            elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm";
+                            elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> WFH SELESAI`;
+                            elValPulang.textContent = absensi.jamPulang;
+                            statusPulang.textContent = ketSore; // Set status sore
+                            elAlert.classList.add('hidden');
+                        }
                     }
-                }
-            } 
-            // ===============================================
-            // SKENARIO 3: HARI BIASA (SCAN QR SEKOLAH)
-            // ===============================================
-            else {
-                labelMasuk.innerHTML = "JAM DATANG";
-                labelPulang.innerHTML = "JAM PULANG";
+                } 
+                else {
+                    labelMasuk.innerHTML = "JAM DATANG";
+                    labelPulang.innerHTML = "JAM PULANG";
 
-                if (!absensi) {
-                    // --- Belum Scan ---
-                    elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
-                    elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; 
-                    elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN`;
-                    elValMasuk.textContent = "--:--";
-                    elValPulang.textContent = "--:--";
-                    
-                    elAlert.innerHTML = `
-                        <div class="bg-white p-2 rounded-full text-rose-500 shadow-sm"><i class="fas fa-exclamation"></i></div>
-                        <div>
-                            <h4 class="text-sm font-bold text-rose-800 mb-0.5">Peringatan Presensi</h4>
-                            <p class="text-xs font-medium text-rose-600/80 leading-relaxed">Anda belum melakukan scan presensi hari ini.</p>
-                        </div>`;
-                    elAlert.className = "bg-rose-50 border border-rose-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
-                    elAlert.classList.remove('hidden');
-                } else {
-                    // --- Sudah Scan Datang ---
-                    elValMasuk.textContent = absensi.jamDatang || "--:--";
-                    elAlert.classList.add('hidden');
-
-                    if (!absensi.jamPulang || absensi.jamPulang === '-') {
-                        // Sedang di Sekolah
-                        elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-800 p-6 text-white shadow-xl shadow-emerald-200 transition-all duration-500 group";
-                        elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm animate-pulse";
-                        elBadge.innerHTML = `<i class="fas fa-clock mr-2"></i> SEDANG DI SEKOLAH`;
+                    if (!absensi) {
+                        elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
+                        elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; 
+                        elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN`;
+                        elValMasuk.textContent = "--:--";
                         elValPulang.textContent = "--:--";
+                        
+                        elAlert.innerHTML = `
+                            <div class="bg-white p-2 rounded-full text-rose-500 shadow-sm"><i class="fas fa-exclamation"></i></div>
+                            <div>
+                                <h4 class="text-sm font-bold text-rose-800 mb-0.5">Peringatan Presensi</h4>
+                                <p class="text-xs font-medium text-rose-600/80 leading-relaxed">Anda belum melakukan scan presensi hari ini.</p>
+                            </div>`;
+                        elAlert.className = "bg-rose-50 border border-rose-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
+                        elAlert.classList.remove('hidden');
                     } else {
-                        // Sudah Scan Pulang
-                        elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
-                        elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm";
-                        elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> SELESAI HARI INI`;
-                        elValPulang.textContent = absensi.jamPulang;
+                        elValMasuk.textContent = absensi.jamDatang || "--:--";
+                        statusMasuk.textContent = ketPagi; // Set status pagi
+                        elAlert.classList.add('hidden');
+
+                        if (!absensi.jamPulang || absensi.jamPulang === '-') {
+                            elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-800 p-6 text-white shadow-xl shadow-emerald-200 transition-all duration-500 group";
+                            elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm animate-pulse";
+                            elBadge.innerHTML = `<i class="fas fa-clock mr-2"></i> SEDANG DI SEKOLAH`;
+                            elValPulang.textContent = "--:--";
+                        } else {
+                            elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
+                            elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm";
+                            elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> SELESAI HARI INI`;
+                            elValPulang.textContent = absensi.jamPulang;
+                            statusPulang.textContent = ketSore; // Set status sore
+                        }
                     }
                 }
             }
-        }
-    } catch(error) {}
-}
+        } catch(error) {}
+    }
 
 
         async function loadKelolaAbsen() {
