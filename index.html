@@ -4204,30 +4204,41 @@ async function loadAbsenWFH() {
     stopAndBack(false); 
     setActiveMenu('Absen WFH'); 
     
-    // LANGSUNG BUKA KAMERA & LOKASI TANPA LOADING SCREEN
     showView('view-absen-wfh');
     startWFHCamera();
     getLocation();
 
     try {
-        // Mengecek jadwal ke server di latar belakang
         const cek = await fetchAPI('cekWFHToday');
 
-        if (cek && cek.isWFH) {
-            // Jika ada jadwal, tampilkan notifikasi kecil saja
-            const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-            Toast.fire({ icon: 'info', title: cek.keterangan });
-        } else {
-            // Jika TIDAK ADA jadwal WFH, matikan kamera dan munculkan peringatan
-            if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
-            Swal.fire({
-                title: 'Akses Ditolak!',
-                text: 'Hari ini bukan jadwal WFH. Silakan lakukan presensi scan QR di sekolah.',
-                icon: 'error',
-                confirmButtonColor: '#4f46e5'
-            }).then(() => {
-                loadSiswaDashboard(); 
-            });
+        if (cek) {
+            if (cek.isLibur) {
+                // JIKA HARI LIBUR / HARI MINGGU
+                if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
+                Swal.fire({
+                    title: 'Perekaman Ditolak!',
+                    text: `Anda tidak bisa melakukan perekaman karena hari ini adalah Hari Libur (${cek.keterangan}).`,
+                    icon: 'error',
+                    confirmButtonColor: '#4f46e5'
+                }).then(() => {
+                    loadSiswaDashboard(); 
+                });
+            } else if (cek.isWFH) {
+                // JIKA JADWAL WFH BENAR
+                const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+                Toast.fire({ icon: 'info', title: cek.keterangan });
+            } else {
+                // JIKA HARI BIASA
+                if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
+                Swal.fire({
+                    title: 'Akses Ditolak!',
+                    text: 'Hari ini bukan jadwal WFH. Silakan lakukan presensi scan QR di sekolah.',
+                    icon: 'error',
+                    confirmButtonColor: '#4f46e5'
+                }).then(() => {
+                    loadSiswaDashboard(); 
+                });
+            }
         }
     } catch (e) {
         if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
@@ -4239,41 +4250,30 @@ async function loadAbsenWFH() {
 function getLocation() {
     const gpsText = document.getElementById('gpsLocationText');
     if (navigator.geolocation) {
-        // Tampilkan loading saat sedang mencari satelit
         gpsText.innerHTML = `<i class="fas fa-spinner fa-spin text-indigo-500"></i> Memeriksa sensor lokasi...`;
         
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-                const acc = position.coords.accuracy; // Tingkat akurasi dalam meter
+                const acc = position.coords.accuracy; // Tingkat akurasi
                 
-                // --- [BARU] PERANGKAP ANTI-FAKE GPS ---
-                
-                // 1. Jika akurasi lebih dari 100 meter (Sinyal jelek/manipulasi)
-                if (acc > 100) {
-                    gpsText.innerHTML = `<span class="text-red-500 font-bold"><i class="fas fa-exclamation-triangle"></i> Sinyal Lemah (${Math.round(acc)}m). Pindah ke ruang terbuka!</span>`;
-                    currentGPS.lat = null; currentGPS.lon = null;
-                    checkWFHReady();
-                    return;
-                }
-                
-                // 2. Deteksi Angka Bulat Khas Fake GPS (10, 20, 65, 100)
-                // Fake GPS di PlayStore sering menggunakan angka akurasi hardcode ini
+                // --- [BARU] PERANGKAP ANTI-FAKE GPS (DILONGGARKAN) ---
+                // Hanya mendeteksi pola angka bulat buatan aplikasi tuyul (10, 20, 65, 100)
+                // Siswa bebas absen di dalam ruangan walau akurasi ratusan meter
                 if (acc === 10 || acc === 20 || acc === 65 || acc === 100 || (acc % 10 === 0 && acc > 5)) {
                     gpsText.innerHTML = `<span class="text-rose-600 font-bold"><i class="fas fa-ban"></i> Terdeteksi Fake GPS / Mock Location!</span>`;
                     currentGPS.lat = null; currentGPS.lon = null;
                     
-                    // Opsional: Munculkan popup peringatan keras
                     Swal.fire('Peringatan!', 'Harap matikan aplikasi Fake GPS / Lokasi Palsu Anda sebelum melakukan presensi.', 'error');
                     checkWFHReady();
                     return;
                 }
-                // ----------------------------------------
+                // ----------------------------------------------------
 
                 currentGPS.lat = lat;
                 currentGPS.lon = lon;
-                currentGPS.acc = Math.round(acc); // Simpan data akurasi untuk dikirim ke server
+                currentGPS.acc = Math.round(acc); 
                 
                 gpsText.innerHTML = `${lat.toFixed(5)}, ${lon.toFixed(5)} <br><span class="text-[9px] text-green-600">Akurasi: ${Math.round(acc)}m <i class="fas fa-check-circle"></i></span>`;
                 checkWFHReady();
@@ -4285,8 +4285,6 @@ function getLocation() {
                 
                 gpsText.innerHTML = `<span class="text-red-500 font-bold"><i class="fas fa-exclamation-triangle"></i> ${errMsg}</span>`;
             },
-            // maximumAge: 0 = Mencegah browser menggunakan lokasi history/cache
-            // enableHighAccuracy: true = Memaksa HP menyalakan chip GPS aslinya
             { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 } 
         );
     } else {
