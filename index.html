@@ -412,7 +412,7 @@
                                     <button onclick="loadScanAbsensi()" class="w-full flex items-center p-3 rounded-xl border border-gray-100 hover:bg-indigo-50 hover:border-indigo-200 transition-all group text-left">
                                         <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3 group-hover:scale-110 transition"><i class="fas fa-qrcode"></i></div>
                                         <div>
-                                            <div class="font-bold text-xs text-gray-700">Scan Presensi</div>
+                                            <div class="font-bold text-xs text-gray-700">Scan Kehadiran</div>
                                             <div class="text-[10px] text-gray-400">Mode scanner kamera</div>
                                         </div>
                                     </button>
@@ -756,140 +756,138 @@
                     </div>
                 </div>
 
-                <div id="view-kelola-absen" class="view-section animate-fade-in">
-                    
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                        <div class="lg:col-span-1">
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-24">
-                                <div class="p-5 border-b border-gray-100 bg-indigo-50/50">
-                                    <h3 class="font-bold text-gray-800 flex items-center"><i class="fas fa-school text-indigo-600 mr-2"></i> Waktu Sekolah</h3>
-                                    <p class="text-xs text-gray-500 mt-1">Konfigurasi jam scan QR (Tatap Muka).</p>
-                                </div>
-                                <div class="p-5">
-                                    <div class="space-y-4">
-                                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                                            <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Datang</p>
-                                            <div class="grid grid-cols-2 gap-3">
-                                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_masuk_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Batas Terlambat</label><input type="time" id="conf_masuk_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                            </div>
-                                            <p class="text-[9px] text-orange-500 mt-1.5"><i class="fas fa-info-circle"></i> Lewat batas ini status: <b>Terlambat</b></p>
-                                        </div>
-                                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                                            <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Pulang</p>
-                                            <div class="grid grid-cols-2 gap-3">
-                                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_pulang_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Tutup Absen</label><input type="time" id="conf_pulang_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                            </div>
-                                            <p class="text-[9px] text-orange-500 mt-1.5"><i class="fas fa-info-circle"></i> Pulang sebelum dibuka: <b>Pulang Cepat</b></p>
-                                        </div>
-                                        <button type="button" onclick="saveGlobalConfig(this)" class="w-full mt-2 bg-indigo-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 transition transform active:scale-95 flex items-center justify-center gap-2"><i class="fas fa-save"></i> Simpan Waktu Sekolah</button>
-                                    </div>
-                                </div>
+   <div id="view-kelola-absen" class="view-section animate-fade-in">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-24">
+                <div class="p-5 border-b border-gray-100 bg-indigo-50/50">
+                    <h3 class="font-bold text-gray-800 flex items-center"><i class="fas fa-school text-indigo-600 mr-2"></i> Waktu Sekolah</h3>
+                    <p class="text-xs text-gray-500 mt-1">Konfigurasi jam scan QR (Tatap Muka).</p>
+                </div>
+                <div class="p-5">
+                    <div class="space-y-4">
+                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                            <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Datang</p>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_masuk_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
+                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Batas Terlambat</label><input type="time" id="conf_masuk_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
                             </div>
+                            <p class="text-[9px] text-orange-500 mt-1.5"><i class="fas fa-info-circle"></i> Lewat batas ini status: <b>Terlambat</b></p>
                         </div>
-                        <div class="lg:col-span-2">
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
-                                <div class="p-5 border-b border-gray-100 bg-gray-50/30 flex justify-between items-end">
-                                    <div><h3 class="font-bold text-gray-800">Daftar Hari Libur</h3><p class="text-xs text-gray-500 mt-1">Siswa tidak bisa absen pada tanggal ini.</p></div>
-                                </div>
-                                <div class="p-5 border-b border-gray-100">
-                                    <form onsubmit="handleAddLibur(event)" class="flex flex-col md:flex-row gap-3 items-end">
-                                        <div class="flex-1 w-full"><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tanggal</label><input type="date" name="tanggal" required class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
-                                        <div class="flex-[2] w-full"><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Keterangan</label><input type="text" name="keterangan" required placeholder="Contoh: Maulid Nabi / Cuti Bersama" class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
-                                        <button type="submit" class="bg-emerald-600 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-emerald-700 transition w-full md:w-auto"><i class="fas fa-plus mr-1"></i> Tambah</button>
-                                    </form>
-                                </div>
-                                <div class="overflow-x-auto flex-1">
-                                    <table class="w-full text-left">
-                                        <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-semibold">
-                                            <tr><th class="p-4 w-10 text-center">No</th><th class="p-4">Tanggal</th><th class="p-4">Keterangan</th><th class="p-4 text-center w-20">Aksi</th></tr>
-                                        </thead>
-                                        <tbody id="tbody-libur" class="divide-y divide-gray-50 text-sm"></tbody>
-                                    </table>
-                                </div>
-                                <div id="footer-libur" class="p-4 border-t border-gray-100 bg-gray-50/30 flex justify-between items-center text-xs text-gray-500 mt-auto">
-                                    <span id="info-libur">Menampilkan 0 data</span>
-                                    <div class="flex gap-1">
-                                        <button onclick="changePage('libur', -1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50" id="btn-prev-libur">Prev</button>
-                                        <button onclick="changePage('libur', 1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50" id="btn-next-libur">Next</button>
-                                    </div>
-                                </div>
+                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                            <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Pulang</p>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_pulang_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
+                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Tutup Absen</label><input type="time" id="conf_pulang_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
                             </div>
+                            <p class="text-[9px] text-orange-500 mt-1.5"><i class="fas fa-info-circle"></i> Pulang sebelum dibuka: <b>Pulang Cepat</b></p>
                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-1">
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-24">
-                                <div class="p-5 border-b border-gray-100 bg-purple-50/50">
-                                    <h3 class="font-bold text-gray-800 flex items-center"><i class="fas fa-home text-purple-600 mr-2"></i> Waktu WFH</h3>
-                                    <p class="text-xs text-gray-500 mt-1">Konfigurasi jam absen dari rumah.</p>
-                                </div>
-                                <div class="p-5">
-                                    <div class="space-y-4">
-                                        <div class="bg-purple-50/30 p-3 rounded-lg border border-purple-100">
-                                            <p class="text-[10px] uppercase font-bold text-purple-600 mb-2">Absen Pagi (WFH)</p>
-                                            <div class="grid grid-cols-2 gap-3">
-                                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_wfh_masuk_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-purple-500 focus:border-purple-500"></div>
-                                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Batas Terlambat</label><input type="time" id="conf_wfh_masuk_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-purple-500 focus:border-purple-500"></div>
-                                            </div>
-                                            <p class="text-[9px] text-purple-500 mt-1.5"><i class="fas fa-info-circle"></i> Absen ditolak jika melebihi jam Mulai Sore.</p>
-                                        </div>
-                                        <div class="bg-purple-50/30 p-3 rounded-lg border border-purple-100">
-                                            <p class="text-[10px] uppercase font-bold text-purple-600 mb-2">Absen Sore (WFH)</p>
-                                            <div class="grid grid-cols-2 gap-3">
-                                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_wfh_pulang_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-purple-500 focus:border-purple-500"></div>
-                                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Tutup Absen</label><input type="time" id="conf_wfh_pulang_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-purple-500 focus:border-purple-500"></div>
-                                            </div>
-                                            <p class="text-[9px] text-purple-500 mt-1.5"><i class="fas fa-map-marker-alt"></i> Radius wajib di bawah 200m dari lokasi Pagi.</p>
-                                        </div>
-                                        <button type="button" onclick="saveGlobalConfig(this)" class="w-full mt-2 bg-purple-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-purple-700 transition transform active:scale-95 flex items-center justify-center gap-2"><i class="fas fa-save"></i> Simpan Waktu WFH</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="lg:col-span-2">
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
-                                <div class="p-5 border-b border-gray-100 bg-indigo-50/30 flex justify-between items-end">
-                                    <div>
-                                        <h3 class="font-bold text-gray-800 text-lg"><i class="fas fa-laptop-house text-indigo-600 mr-2"></i>Daftar Jadwal WFH</h3>
-                                        <p class="text-xs text-gray-500 mt-1">Siswa hanya bisa absen kamera pada tanggal ini.</p>
-                                    </div>
-                                </div>
-                                <div class="p-5 border-b border-gray-100">
-                                    <form onsubmit="handleAddWfh(event)" class="flex flex-col md:flex-row gap-3 items-end">
-                                        <div class="flex-1 w-full">
-                                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tanggal WFH</label>
-                                            <input type="date" name="tanggal" required class="w-full border-gray-300 rounded-lg text-sm p-2.5">
-                                        </div>
-                                        <div class="flex-[2] w-full">
-                                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Keterangan WFH</label>
-                                            <input type="text" name="keterangan" required placeholder="Contoh: WFH Asesmen / Belajar Mandiri" class="w-full border-gray-300 rounded-lg text-sm p-2.5">
-                                        </div>
-                                        <button type="submit" class="bg-indigo-600 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 transition w-full md:w-auto"><i class="fas fa-plus mr-1"></i> Tambah</button>
-                                    </form>
-                                </div>
-                                <div class="overflow-x-auto flex-1">
-                                    <table class="w-full text-left">
-                                        <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-semibold">
-                                            <tr><th class="p-4 w-10 text-center">No</th><th class="p-4">Tanggal</th><th class="p-4">Keterangan WFH</th><th class="p-4 text-center w-20">Aksi</th></tr>
-                                        </thead>
-                                        <tbody id="tbody-wfh" class="divide-y divide-gray-50 text-sm"></tbody>
-                                    </table>
-                                </div>
-                                <div id="footer-wfh" class="p-4 border-t border-gray-100 bg-gray-50/30 flex justify-between items-center text-xs text-gray-500 mt-auto">
-                                    <span id="info-wfh">Menampilkan 0 data</span>
-                                    <div class="flex gap-1">
-                                        <button onclick="changePage('wfh', -1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50" id="btn-prev-wfh">Prev</button>
-                                        <button onclick="changePage('wfh', 1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50" id="btn-next-wfh">Next</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <button type="button" onclick="saveGlobalConfig(this)" class="w-full mt-2 bg-indigo-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 transition transform active:scale-95 flex items-center justify-center gap-2"><i class="fas fa-save"></i> Simpan Waktu Sekolah</button>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full">
+                <div class="p-5 border-b border-gray-100 bg-gray-50/30 flex justify-between items-end">
+                    <div><h3 class="font-bold text-gray-800">Daftar Hari Libur</h3><p class="text-xs text-gray-500 mt-1">Siswa tidak bisa rekam kehadiran pada tanggal ini.</p></div>
+                </div>
+                <div class="p-5 border-b border-gray-100">
+                    <form onsubmit="handleAddLibur(event)" class="flex flex-col md:flex-row gap-3 items-end">
+                        <div class="flex-1 w-full"><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tanggal</label><input type="date" name="tanggal" required class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
+                        <div class="flex-[2] w-full"><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Keterangan</label><input type="text" name="keterangan" required placeholder="Contoh: Maulid Nabi / Cuti Bersama" class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
+                        <button type="submit" class="bg-emerald-600 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-emerald-700 transition w-full md:w-auto"><i class="fas fa-plus mr-1"></i> Tambah</button>
+                    </form>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-semibold">
+                            <tr><th class="p-4 w-10 text-center">No</th><th class="p-4">Tanggal</th><th class="p-4">Keterangan</th><th class="p-4 text-center w-20">Aksi</th></tr>
+                        </thead>
+                        <tbody id="tbody-libur" class="divide-y divide-gray-50 text-sm"></tbody>
+                    </table>
+                </div>
+                <div id="footer-libur" class="p-4 border-t border-gray-100 bg-gray-50/30 flex justify-between items-center text-xs text-gray-500">
+                    <span id="info-libur">Menampilkan 0 data</span>
+                    <div class="flex gap-1">
+                        <button onclick="changePage('libur', -1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50" id="btn-prev-libur">Prev</button>
+                        <button onclick="changePage('libur', 1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50" id="btn-next-libur">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-24">
+                <div class="p-5 border-b border-gray-100 bg-purple-50/50">
+                    <h3 class="font-bold text-gray-800 flex items-center"><i class="fas fa-home text-purple-600 mr-2"></i> Waktu WFH</h3>
+                    <p class="text-xs text-gray-500 mt-1">Konfigurasi jam perekaman kehadiran dari rumah.</p>
+                </div>
+                <div class="p-5">
+                    <div class="space-y-4">
+                        <div class="bg-purple-50/30 p-3 rounded-lg border border-purple-100">
+                            <p class="text-[10px] uppercase font-bold text-purple-600 mb-2">Absen Pagi (WFH)</p>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_wfh_masuk_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-purple-500 focus:border-purple-500"></div>
+                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Batas Terlambat</label><input type="time" id="conf_wfh_masuk_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-purple-500 focus:border-purple-500"></div>
+                            </div>
+                            <p class="text-[9px] text-purple-500 mt-1.5"><i class="fas fa-info-circle"></i> Rekam kehadiran ditolak jika melebihi jam Mulai Sore.</p>
+                        </div>
+                        <div class="bg-purple-50/30 p-3 rounded-lg border border-purple-100">
+                            <p class="text-[10px] uppercase font-bold text-purple-600 mb-2">Absen Sore (WFH)</p>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_wfh_pulang_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-purple-500 focus:border-purple-500"></div>
+                                <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Tutup Absen</label><input type="time" id="conf_wfh_pulang_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-purple-500 focus:border-purple-500"></div>
+                            </div>
+                            <p class="text-[9px] text-purple-500 mt-1.5"><i class="fas fa-map-marker-alt"></i> Radius wajib di bawah 200m dari lokasi Pagi.</p>
+                        </div>
+                        <button type="button" onclick="saveGlobalConfig(this)" class="w-full mt-2 bg-purple-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-purple-700 transition transform active:scale-95 flex items-center justify-center gap-2"><i class="fas fa-save"></i> Simpan Waktu WFH</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <div class="lg:col-span-2">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
+                <div class="p-5 border-b border-gray-100 bg-indigo-50/30 flex justify-between items-end">
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-lg"><i class="fas fa-laptop-house text-indigo-600 mr-2"></i>Daftar Jadwal WFH</h3>
+                        <p class="text-xs text-gray-500 mt-1">Siswa hanya bisa rekam kehadiran WFH pada tanggal ini.</p>
+                    </div>
+                </div>
+                <div class="p-5 border-b border-gray-100">
+                    <form onsubmit="handleAddWfh(event)" class="flex flex-col md:flex-row gap-3 items-end">
+                        <div class="flex-1 w-full">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tanggal WFH</label>
+                            <input type="date" name="tanggal" required class="w-full border-gray-300 rounded-lg text-sm p-2.5">
+                        </div>
+                        <div class="flex-[2] w-full">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Keterangan WFH</label>
+                            <input type="text" name="keterangan" required placeholder="Contoh: WFH Asesmen / Belajar Mandiri" class="w-full border-gray-300 rounded-lg text-sm p-2.5">
+                        </div>
+                        <button type="submit" class="bg-indigo-600 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 transition w-full md:w-auto"><i class="fas fa-plus mr-1"></i> Tambah</button>
+                    </form>
+                </div>
+                <div class="overflow-x-auto flex-1">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-semibold">
+                            <tr><th class="p-4 w-10 text-center">No</th><th class="p-4">Tanggal</th><th class="p-4">Keterangan WFH</th><th class="p-4 text-center w-20">Aksi</th></tr>
+                        </thead>
+                        <tbody id="tbody-wfh" class="divide-y divide-gray-50 text-sm"></tbody>
+                    </table>
+                </div>
+                <div id="footer-wfh" class="p-4 border-t border-gray-100 bg-gray-50/30 flex justify-between items-center text-xs text-gray-500 mt-auto">
+                    <span id="info-wfh">Menampilkan 0 data</span>
+                    <div class="flex gap-1">
+                        <button onclick="changePage('wfh', -1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50" id="btn-prev-wfh">Prev</button>
+                        <button onclick="changePage('wfh', 1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50" id="btn-next-wfh">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                 <div id="view-monitoring" class="view-section animate-fade-in">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="p-4 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-gray-50/30">
@@ -1143,7 +1141,7 @@
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
                         
                         <div class="text-center md:text-left">
-                            <p>&copy; <span class="dyn-tahun"></span> SiPresDiR - <span class="dyn-namasekolah"></span></p>
+                            <p class="font-semibold text-gray-700">© <span class="dyn-tahun"></span> SiPresDiR - <span class="dyn-namasekolah"></span></p>
                             <p class="mt-1">Sistem Presensi Digital Realtime | All Rights Reserved.</p>
                         </div>
 
@@ -1186,7 +1184,7 @@
         </div>
     </div>
 
-    <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-[9999] hidden flex items-center justify-center flex-col transition-opacity pointer-events-none">
+    <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-[9999] hidden flex items-center justify-center flex-col transition-opacity">
         <div class="p-6 bg-white rounded-3xl shadow-2xl flex flex-col items-center min-w-[160px] transform scale-110">
             <div class="w-14 h-14 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin mb-4 relative flex items-center justify-center">
                 <div class="absolute inset-0 flex items-center justify-center animate-[spin_1s_linear_infinite_reverse]">
@@ -1355,10 +1353,10 @@
         const tableState = {
             siswa: { fullData: [], filtered: [], limit: 10, page: 1, search: '', classFilter: '' },
             guru: { fullData: [], filtered: [], limit: 10, page: 1, search: '', classFilter: '' },
-            libur: { fullData: [], filtered: [], limit: 5, page: 1, search: '' },
+            libur: { fullData: [], filtered: [], limit: 5, page: 1, search: '' }, // <-- Limit 5
             rekap: { fullData: [], filtered: [], limit: 10, page: 1, search: '' },
             monitoring: { fullData: [], filtered: [], limit: 10, page: 1, search: '', statusFilter: '' },
-            wfh: { fullData: [], filtered: [], limit: 5, page: 1, search: '' }
+            wfh: { fullData: [], filtered: [], limit: 5, page: 1, search: '' } // <-- BARU, Limit 5
         };
 
         function handleTableSearch(type, query) { 
@@ -1430,7 +1428,7 @@
             else if (type === 'libur') renderLiburRows(pagedData, startIdx);
             else if (type === 'rekap') renderRekapRows(pagedData);
             else if (type === 'monitoring') renderMonitoringRows(pagedData, startIdx);
-            else if (type === 'wfh') renderWfhRows(pagedData, startIdx);
+            else if (type === 'wfh') renderWfhRows(pagedData, startIdx); // <-- BARU DITAMBAHKAN
             
             updatePaginationUI(type, startIdx, pagedData.length, total, state.page, totalPages);
         }
@@ -1486,7 +1484,7 @@
             switch (viewId) {
                 case 'view-data-siswa': title = "Direktori Siswa"; break;
                 case 'view-data-guru': title = "Manajemen Guru"; break;
-                case 'view-kelola-absen': title = "Kelola Presensi"; break;
+                case 'view-kelola-absen': title = "Kelola Hari Libur & WFH"; break;
                 case 'view-scanner': title = "Scan Presensi"; break;
                 case 'view-monitoring': title = "Monitoring Realtime"; break;
                 case 'view-rekap-absensi': title = "Laporan Kehadiran"; break;
@@ -1498,6 +1496,8 @@
             
             document.getElementById('pageTitle').textContent = title;
             closeSidebarMobile();
+            
+            // [PERBAIKAN BUG] Paksa layar kembali ke atas setiap kali ganti menu!
             scrollToTop();
         }
 
@@ -1605,7 +1605,10 @@
             event.preventDefault(); 
             showLoading(); 
 
+            // Cek tab mana yang sedang aktif
             const isSiswa = !document.getElementById('formSiswaLogin').classList.contains('hidden');
+            
+            // Ambil value sesuai tab yang aktif
             const nisnVal = isSiswa ? document.getElementById('nisn').value : "";
             const userVal = isSiswa ? "" : document.getElementById('username').value;
             const passVal = isSiswa ? document.getElementById('passwordSiswa').value : document.getElementById('password').value;
@@ -1703,6 +1706,7 @@
             const role = currentUser.role;
             document.getElementById('mobileHeaderRole').textContent = role;
             
+            // Tarik elemen tombol header atas
             const btnLaporan = document.getElementById('btnMobileLaporan');
             const btnSettings = document.getElementById('btnMobileSettings');
             const btnLogout = document.getElementById('btnMobileLogout');
@@ -1729,11 +1733,13 @@
             };
 
             if (role === 'admin') {
+                // Header Admin: Tampil 3 Tombol Kanan, Sembunyikan Text Sekolah
                 btnLaporan.classList.remove('hidden'); btnLaporan.classList.add('flex');
                 btnSettings.classList.remove('hidden'); btnSettings.classList.add('flex');
                 btnLogout.classList.remove('hidden'); btnLogout.classList.add('flex');
                 schoolInfo.classList.remove('flex'); schoolInfo.classList.add('hidden');
                 
+                // Menu Bawah Admin
                 navHTML += createBottomNav('Home', 'fa-home', 'loadAdminDashboard()');
                 navHTML += createBottomNav('Siswa', 'fa-users', 'loadDataSiswa()');
                 navHTML += createBottomNav('Scan', 'fa-qrcode', 'loadScanAbsensi()', true);
@@ -1741,11 +1747,13 @@
                 navHTML += createBottomNav('Libur', 'fa-calendar-times', 'loadKelolaAbsen()');
 
             } else if (role === 'guru') {
+                // Header Guru: Sembunyikan Semua Tombol Kanan, Tampilkan Text Sekolah
                 btnLaporan.classList.remove('flex'); btnLaporan.classList.add('hidden');
                 btnSettings.classList.remove('flex'); btnSettings.classList.add('hidden');
                 btnLogout.classList.remove('flex'); btnLogout.classList.add('hidden');
                 schoolInfo.classList.remove('hidden'); schoolInfo.classList.add('flex');
                 
+                // Menu Bawah Guru: 5 Item
                 navHTML += createBottomNav('Home', 'fa-home', 'loadGuruDashboard()');
                 navHTML += createBottomNav('Akun', 'fa-user-circle', 'showProfilGuruMobile()');
                 navHTML += createBottomNav('Scan', 'fa-qrcode', 'loadScanAbsensi()', true);
@@ -1753,11 +1761,13 @@
                 navHTML += createBottomNav('Keluar', 'fa-sign-out-alt', 'logout()');
 
             } else if (role === 'siswa') {
+                // Header Siswa: Sembunyikan Semua Tombol Kanan, Tampilkan Text Sekolah
                 btnLaporan.classList.remove('flex'); btnLaporan.classList.add('hidden');
                 btnSettings.classList.remove('flex'); btnSettings.classList.add('hidden');
                 btnLogout.classList.remove('flex'); btnLogout.classList.add('hidden');
                 schoolInfo.classList.remove('hidden'); schoolInfo.classList.add('flex');
                 
+                // Menu Bawah Siswa: 5 Item (WFH di Tengah)
                 navHTML += createBottomNav('Home', 'fa-home', 'loadSiswaDashboard()');
                 navHTML += createBottomNav('Kartu', 'fa-id-card', 'loadQRCodeSiswa()'); 
                 navHTML += createBottomNav('WFH', 'fa-camera-retro', 'loadAbsenWFH()', true); 
@@ -1768,7 +1778,9 @@
             document.getElementById('mobileBottomNav').innerHTML = navHTML;
         }
 
+        // Fungsi Baru: Popup Profil Khusus Guru di Mobile
         function showProfilGuruMobile() {
+            // Menarik data "Total Siswa" langsung dari angka yang sudah di-load di dashboard
             const totalSiswa = document.getElementById('statGuruTotal') ? document.getElementById('statGuruTotal').innerText : '0';
             const namaKelas = currentUser.kelas ? currentUser.kelas : 'Semua Kelas';
             const namaGuru = currentUser.nama || currentUser.username || 'Guru';
@@ -1990,233 +2002,252 @@
             window.requestAnimationFrame(step);
         }
 
-        async function loadSiswaDashboard() {
-            stopAndBack(false); 
-            setActiveMenu('Dashboard'); 
-            showView('view-siswa-dashboard'); 
-            // LOADING DIMATIKAN DISINI!
+      async function loadSiswaDashboard() {
+    stopAndBack(false); 
+    setActiveMenu('Dashboard'); 
+    showView('view-siswa-dashboard'); 
+    // LOADING DIMATIKAN DISINI!
 
-            try {
-                if (currentUser) {
-                    const firstName = currentUser.nama ? currentUser.nama.split(' ')[0] : 'Siswa';
-                    document.getElementById('dashGreeting').textContent = firstName;
-                    document.getElementById('profileNameSidebar').textContent = currentUser.nama;
-                    document.getElementById('profileNisnSidebar').textContent = currentUser.nisn;
-                    document.getElementById('profileKelasSidebar').textContent = currentUser.kelas;
-                    
-                    let tglLahir = currentUser.tanggalLahir || '-';
-                    if(tglLahir.includes("T")) {
-                        tglLahir = new Date(tglLahir).toLocaleDateString('id-ID'); 
-                    }
+    try {
+        if (currentUser) {
+            const firstName = currentUser.nama ? currentUser.nama.split(' ')[0] : 'Siswa';
+            document.getElementById('dashGreeting').textContent = firstName;
+            document.getElementById('profileNameSidebar').textContent = currentUser.nama;
+            document.getElementById('profileNisnSidebar').textContent = currentUser.nisn;
+            document.getElementById('profileKelasSidebar').textContent = currentUser.kelas;
+            
+            let tglLahir = currentUser.tanggalLahir || '-';
+            if(tglLahir.includes("T")) {
+                tglLahir = new Date(tglLahir).toLocaleDateString('id-ID'); 
+            }
 
-                    document.getElementById('profileJKSidebar').textContent = currentUser.jenisKelamin || '-';
-                    document.getElementById('profileLahirSidebar').textContent = tglLahir;
-                }
-                document.getElementById('dashDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            } catch (e) {}
-
-            try {
-                const result = await fetchAPI('getAbsensiToday', { nisn: currentUser.nisn });
-                
-                if (result) {
-                    const absensi = result.success ? result.data : null;
-                    const isLibur = result.isLibur; 
-                    const infoLibur = result.keteranganLibur;
-                    const isWFH = result.isWFH; 
-
-                    const elHero = document.getElementById('heroCard');
-                    const elBadge = document.getElementById('dashStatusBadge');
-                    const elValMasuk = document.getElementById('valMasuk');
-                    const elValPulang = document.getElementById('valPulang');
-                    const elAlert = document.getElementById('alertBelumAbsen');
-                    const labelMasuk = document.getElementById('labelMasuk');
-                    const labelPulang = document.getElementById('labelPulang');
-
-                    // Kembalikan styling dasar (jaga-jaga kalau sebelumnya diubah oleh state lain)
-                    elValPulang.className = "font-mono text-2xl font-bold tracking-tight";
-                    elValPulang.parentElement.style.display = 'block';
-                    elValMasuk.parentElement.classList.remove('col-span-2');
-                    
-                    // ===============================================
-                    // SKENARIO 1: HARI LIBUR / HARI MINGGU
-                    // ===============================================
-                    if (isLibur) {
-                        elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 to-red-800 p-6 text-white shadow-xl shadow-rose-200 transition-all duration-500 group";
-                        elBadge.innerHTML = `<i class="fas fa-calendar-times mr-2"></i> HARI LIBUR`;
-                        
-                        labelMasuk.innerHTML = "KETERANGAN";
-                        elValMasuk.innerHTML = `<span class="text-sm font-bold uppercase tracking-widest">${infoLibur}</span>`;
-                        
-                        elValPulang.parentElement.style.display = 'none'; 
-                        elValMasuk.parentElement.classList.add('col-span-2'); 
-                        elAlert.classList.add('hidden');
-                        return; 
-                    }
-
-                    // ===============================================
-                    // SKENARIO 2: JADWAL WFH (BELAJAR DARI RUMAH)
-                    // ===============================================
-                    if (isWFH) {
-                        labelMasuk.innerHTML = "JAM PAGI";
-                        labelPulang.innerHTML = "JAM SORE";
-
-                        if (!absensi) {
-                            elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
-                            elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; 
-                            elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN PAGI`;
-                            elValMasuk.textContent = "--:--";
-                            elValPulang.textContent = "--:--";
-                            
-                            elAlert.innerHTML = `
-                                <div class="bg-white p-2 rounded-full text-indigo-500 shadow-sm"><i class="fas fa-camera-retro"></i></div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-indigo-800 mb-0.5">Waktunya Presensi Pagi WFH</h4>
-                                    <p class="text-xs font-medium text-indigo-600/80 leading-relaxed">Ketuk menu WFH di bawah untuk melakukan perekaman kamera (Pagi).</p>
-                                </div>`;
-                            elAlert.className = "bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
-                            elAlert.classList.remove('hidden');
-                        } else {
-                            elValMasuk.textContent = absensi.jamDatang || "--:--";
-
-                            if (!absensi.jamPulang || absensi.jamPulang === '-') {
-                                elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 to-orange-600 p-6 text-white shadow-xl shadow-amber-200 transition-all duration-500 group";
-                                elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm animate-pulse";
-                                elBadge.innerHTML = `<i class="fas fa-clock mr-2"></i> BELUM ABSEN SORE`;
-                                elValPulang.textContent = "--:--";
-                                
-                                elAlert.innerHTML = `
-                                    <div class="bg-white p-2 rounded-full text-orange-500 shadow-sm"><i class="fas fa-sun"></i></div>
-                                    <div>
-                                        <h4 class="text-sm font-bold text-orange-800 mb-0.5">Jangan Lupa Presensi Sore!</h4>
-                                        <p class="text-xs font-medium text-orange-600/80 leading-relaxed">Jika jam sore sudah tiba, ketuk menu WFH lagi. Jarak Anda maksimal 200m dari titik Pagi.</p>
-                                    </div>`;
-                                elAlert.className = "bg-orange-50 border border-orange-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
-                                elAlert.classList.remove('hidden');
-                            } else {
-                                elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
-                                elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm";
-                                elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> WFH SELESAI`;
-                                elValPulang.className = "font-mono text-2xl font-bold tracking-tight"; 
-                                elValPulang.textContent = absensi.jamPulang;
-                                elAlert.classList.add('hidden');
-                            }
-                        }
-                    } 
-                    // ===============================================
-                    // SKENARIO 3: HARI BIASA (SCAN QR SEKOLAH)
-                    // ===============================================
-                    else {
-                        labelMasuk.innerHTML = "JAM DATANG";
-                        labelPulang.innerHTML = "JAM PULANG";
-
-                        if (!absensi) {
-                            elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
-                            elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; 
-                            elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN`;
-                            elValMasuk.textContent = "--:--";
-                            elValPulang.textContent = "--:--";
-                            
-                            elAlert.innerHTML = `
-                                <div class="bg-white p-2 rounded-full text-rose-500 shadow-sm"><i class="fas fa-exclamation"></i></div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-rose-800 mb-0.5">Peringatan Presensi</h4>
-                                    <p class="text-xs font-medium text-rose-600/80 leading-relaxed">Anda belum melakukan scan presensi hari ini.</p>
-                                </div>`;
-                            elAlert.className = "bg-rose-50 border border-rose-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
-                            elAlert.classList.remove('hidden');
-                        } else {
-                            elValMasuk.textContent = absensi.jamDatang || "--:--";
-                            elAlert.classList.add('hidden');
-
-                            if (!absensi.jamPulang || absensi.jamPulang === '-') {
-                                elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-800 p-6 text-white shadow-xl shadow-emerald-200 transition-all duration-500 group";
-                                elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm animate-pulse";
-                                elBadge.innerHTML = `<i class="fas fa-clock mr-2"></i> SEDANG DI SEKOLAH`;
-                                elValPulang.textContent = "--:--";
-                            } else {
-                                elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
-                                elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm";
-                                elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> SELESAI HARI INI`;
-                                elValPulang.textContent = absensi.jamPulang;
-                            }
-                        }
-                    }
-                }
-            } catch(error) {}
+            document.getElementById('profileJKSidebar').textContent = currentUser.jenisKelamin || '-';
+            document.getElementById('profileLahirSidebar').textContent = tglLahir;
         }
+        document.getElementById('dashDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    } catch (e) {}
+
+    try {
+        // Ambil data tanpa mengganggu layar (Background fetch)
+        const result = await fetchAPI('getAbsensiToday', { nisn: currentUser.nisn });
+        
+        if (result) {
+            const absensi = result.success ? result.data : null;
+            const isLibur = result.isLibur; 
+            const infoLibur = result.keteranganLibur;
+            const isWFH = result.isWFH; 
+
+            const elHero = document.getElementById('heroCard');
+            const elBadge = document.getElementById('dashStatusBadge');
+            const elValMasuk = document.getElementById('valMasuk');
+            const elValPulang = document.getElementById('valPulang');
+            const elAlert = document.getElementById('alertBelumAbsen');
+            const labelMasuk = document.getElementById('labelMasuk');
+            const labelPulang = document.getElementById('labelPulang');
+
+            // Kembalikan styling dasar (jaga-jaga kalau sebelumnya diubah oleh state lain)
+            elValPulang.className = "font-mono text-2xl font-bold tracking-tight";
+            elValPulang.parentElement.style.display = 'block';
+            elValMasuk.parentElement.classList.remove('col-span-2');
+            
+            // ===============================================
+            // SKENARIO 1: HARI LIBUR / HARI MINGGU
+            // ===============================================
+            if (isLibur) {
+                elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 to-red-800 p-6 text-white shadow-xl shadow-rose-200 transition-all duration-500 group";
+                elBadge.innerHTML = `<i class="fas fa-calendar-times mr-2"></i> HARI LIBUR`;
+                
+                // Ubah teksnya tanpa merusak struktur HTML / ID
+                labelMasuk.innerHTML = "KETERANGAN";
+                elValMasuk.innerHTML = `<span class="text-sm font-bold uppercase tracking-widest">${infoLibur}</span>`;
+                
+                elValPulang.parentElement.style.display = 'none'; // Sembunyikan blok pulang
+                elValMasuk.parentElement.classList.add('col-span-2'); // Bikin blok masuk penuh ke samping
+                elAlert.classList.add('hidden');
+                return; // STOP DISINI
+            }
+
+            // ===============================================
+            // SKENARIO 2: JADWAL WFH (BELAJAR DARI RUMAH)
+            // ===============================================
+            if (isWFH) {
+                labelMasuk.innerHTML = "JAM PAGI";
+                labelPulang.innerHTML = "JAM SORE";
+
+                if (!absensi) {
+                    // --- Belum Absen Pagi ---
+                    elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
+                    elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; 
+                    elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN PAGI`;
+                    elValMasuk.textContent = "--:--";
+                    elValPulang.textContent = "--:--";
+                    
+                    elAlert.innerHTML = `
+                        <div class="bg-white p-2 rounded-full text-indigo-500 shadow-sm"><i class="fas fa-camera-retro"></i></div>
+                        <div>
+                            <h4 class="text-sm font-bold text-indigo-800 mb-0.5">Waktunya Presensi Pagi WFH</h4>
+                            <p class="text-xs font-medium text-indigo-600/80 leading-relaxed">Ketuk menu WFH di bawah untuk melakukan perekaman kamera (Pagi).</p>
+                        </div>`;
+                    elAlert.className = "bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
+                    elAlert.classList.remove('hidden');
+                } else {
+                    // --- Sudah Absen Pagi ---
+                    elValMasuk.textContent = absensi.jamDatang || "--:--";
+
+                    if (!absensi.jamPulang || absensi.jamPulang === '-') {
+                        // Belum Absen Sore
+                        elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 to-orange-600 p-6 text-white shadow-xl shadow-amber-200 transition-all duration-500 group";
+                        elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm animate-pulse";
+                        elBadge.innerHTML = `<i class="fas fa-clock mr-2"></i> BELUM ABSEN SORE`;
+                        elValPulang.textContent = "--:--";
+                        
+                        elAlert.innerHTML = `
+                            <div class="bg-white p-2 rounded-full text-orange-500 shadow-sm"><i class="fas fa-sun"></i></div>
+                            <div>
+                                <h4 class="text-sm font-bold text-orange-800 mb-0.5">Jangan Lupa Presensi Sore!</h4>
+                                <p class="text-xs font-medium text-orange-600/80 leading-relaxed">Jika jam sore sudah tiba, ketuk menu WFH lagi. Jarak Anda maksimal 200m dari titik Pagi.</p>
+                            </div>`;
+                        elAlert.className = "bg-orange-50 border border-orange-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
+                        elAlert.classList.remove('hidden');
+                    } else {
+                        // Selesai Pagi & Sore
+                        elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
+                        elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm";
+                        elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> WFH SELESAI`;
+                        elValPulang.className = "font-mono text-2xl font-bold tracking-tight"; 
+                        elValPulang.textContent = absensi.jamPulang;
+                        elAlert.classList.add('hidden');
+                    }
+                }
+            } 
+            // ===============================================
+            // SKENARIO 3: HARI BIASA (SCAN QR SEKOLAH)
+            // ===============================================
+            else {
+                labelMasuk.innerHTML = "JAM DATANG";
+                labelPulang.innerHTML = "JAM PULANG";
+
+                if (!absensi) {
+                    // --- Belum Scan ---
+                    elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
+                    elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; 
+                    elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN`;
+                    elValMasuk.textContent = "--:--";
+                    elValPulang.textContent = "--:--";
+                    
+                    elAlert.innerHTML = `
+                        <div class="bg-white p-2 rounded-full text-rose-500 shadow-sm"><i class="fas fa-exclamation"></i></div>
+                        <div>
+                            <h4 class="text-sm font-bold text-rose-800 mb-0.5">Peringatan Presensi</h4>
+                            <p class="text-xs font-medium text-rose-600/80 leading-relaxed">Anda belum melakukan scan presensi hari ini.</p>
+                        </div>`;
+                    elAlert.className = "bg-rose-50 border border-rose-100 rounded-xl p-4 flex gap-3 items-start shadow-sm mb-6";
+                    elAlert.classList.remove('hidden');
+                } else {
+                    // --- Sudah Scan Datang ---
+                    elValMasuk.textContent = absensi.jamDatang || "--:--";
+                    elAlert.classList.add('hidden');
+
+                    if (!absensi.jamPulang || absensi.jamPulang === '-') {
+                        // Sedang di Sekolah
+                        elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-800 p-6 text-white shadow-xl shadow-emerald-200 transition-all duration-500 group";
+                        elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm animate-pulse";
+                        elBadge.innerHTML = `<i class="fas fa-clock mr-2"></i> SEDANG DI SEKOLAH`;
+                        elValPulang.textContent = "--:--";
+                    } else {
+                        // Sudah Scan Pulang
+                        elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-800 p-6 text-white shadow-xl shadow-indigo-200 transition-all duration-500 group";
+                        elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm";
+                        elBadge.innerHTML = `<i class="fas fa-check-circle mr-2"></i> SELESAI HARI INI`;
+                        elValPulang.textContent = absensi.jamPulang;
+                    }
+                }
+            }
+        }
+    } catch(error) {}
+}
+
 
         async function loadKelolaAbsen() {
-            stopAndBack(false); 
-            setActiveMenu('Kelola Presensi'); 
-            showView('view-kelola-absen');
+            stopAndBack(false); setActiveMenu('Kelola Absen'); showView('view-kelola-absen');
             document.getElementById('tbody-libur').innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat...</td></tr>';
             document.getElementById('tbody-wfh').innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat...</td></tr>';
             
             try {
                 // Load Libur
                 const resLibur = await fetchAPI('getHariLibur');
-                if (resLibur.success) { tableState.libur.fullData = resLibur.data; processTableData('libur'); } 
+                if (resLibur.success) { 
+                    tableState.libur.fullData = resLibur.data; 
+                    processTableData('libur'); 
+                } 
                 
                 // Load WFH
-                const resWfh = await fetchAPI('getJadwalWFH');
-                if (resWfh.success) { tableState.wfh.fullData = resWfh.data; processTableData('wfh'); }
+        const resWfh = await fetchAPI('getJadwalWFH');
+        if (resWfh.success) { 
+            tableState.wfh.fullData = resWfh.data; 
+            processTableData('wfh'); // <- Panggil proses tabel agar pagination jalan
+        }
+
             } catch(e) {}
             loadGlobalConfig();
         }
 
-        async function loadGlobalConfig() {
-            const inputs = document.querySelectorAll('#view-kelola-absen input[type="time"]');
-            inputs.forEach(el => el.disabled = true);
-            try {
-                const res = await fetchAPI('getAppConfig');
-                inputs.forEach(el => el.disabled = false);
-                if(res.success) {
-                    const conf = res.data;
-                    document.getElementById('conf_masuk_mulai').value = conf.jam_masuk_mulai || '06:00';
-                    document.getElementById('conf_masuk_akhir').value = conf.jam_masuk_akhir || '07:15';
-                    document.getElementById('conf_pulang_mulai').value = conf.jam_pulang_mulai || '15:00';
-                    document.getElementById('conf_pulang_akhir').value = conf.jam_pulang_akhir || '18:00';
-                    
-                    document.getElementById('conf_wfh_masuk_mulai').value = conf.wfh_masuk_mulai || '06:00';
-                    document.getElementById('conf_wfh_masuk_akhir').value = conf.wfh_masuk_akhir || '08:00';
-                    document.getElementById('conf_wfh_pulang_mulai').value = conf.wfh_pulang_mulai || '15:00';
-                    document.getElementById('conf_wfh_pulang_akhir').value = conf.wfh_pulang_akhir || '18:00';
-                }
-            } catch(e) {}
-        }
 
-        async function saveGlobalConfig(btnElement) {
-            const originalText = btnElement.innerHTML;
-            btnElement.disabled = true; 
-            btnElement.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Menyimpan...'; 
-            
-            const newConfig = { 
-                jam_masuk_mulai: document.getElementById('conf_masuk_mulai').value,
-                jam_masuk_akhir: document.getElementById('conf_masuk_akhir').value,
-                jam_pulang_mulai: document.getElementById('conf_pulang_mulai').value,
-                jam_pulang_akhir: document.getElementById('conf_pulang_akhir').value,
-                wfh_masuk_mulai: document.getElementById('conf_wfh_masuk_mulai').value,
-                wfh_masuk_akhir: document.getElementById('conf_wfh_masuk_akhir').value,
-                wfh_pulang_mulai: document.getElementById('conf_wfh_pulang_mulai').value,
-                wfh_pulang_akhir: document.getElementById('conf_wfh_pulang_akhir').value
-            };
-            
-            try {
-                const res = await fetchAPI('saveAppConfig', { newConfig: newConfig });
-                btnElement.disabled = false; 
-                btnElement.innerHTML = originalText;
-                
-                if(res.success) {
-                    showAlert('success', 'Pengaturan waktu berhasil disimpan!'); 
-                } else {
-                    showAlert('error', res.message);
-                }
-            } catch(err) {
-                btnElement.disabled = false; 
-                btnElement.innerHTML = originalText; 
-                showAlert('error', 'Gagal koneksi: ' + err);
-            }
+        async function loadGlobalConfig() {
+    const inputs = document.querySelectorAll('#view-kelola-absen input[type="time"]');
+    inputs.forEach(el => el.disabled = true);
+    try {
+        const res = await fetchAPI('getAppConfig');
+        inputs.forEach(el => el.disabled = false);
+        if(res.success) {
+            const conf = res.data;
+            // Config Normal
+            document.getElementById('conf_masuk_mulai').value = conf.jam_masuk_mulai || '06:00';
+            document.getElementById('conf_masuk_akhir').value = conf.jam_masuk_akhir || '07:15';
+            document.getElementById('conf_pulang_mulai').value = conf.jam_pulang_mulai || '15:00';
+            document.getElementById('conf_pulang_akhir').value = conf.jam_pulang_akhir || '18:00';
+            // Config WFH
+            document.getElementById('conf_wfh_masuk_mulai').value = conf.wfh_masuk_mulai || '06:00';
+            document.getElementById('conf_wfh_masuk_akhir').value = conf.wfh_masuk_akhir || '08:00';
+            document.getElementById('conf_wfh_pulang_mulai').value = conf.wfh_pulang_mulai || '15:00';
+            document.getElementById('conf_wfh_pulang_akhir').value = conf.wfh_pulang_akhir || '18:00';
         }
+    } catch(e) {}
+}
+
+async function saveGlobalConfig(btnElement) {
+    const originalText = btnElement.innerHTML;
+    btnElement.disabled = true; 
+    btnElement.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Menyimpan...'; 
+    
+    // Tarik nilai dari ID langsung (tidak butuh form submit)
+    const newConfig = { 
+        jam_masuk_mulai: document.getElementById('conf_masuk_mulai').value,
+        jam_masuk_akhir: document.getElementById('conf_masuk_akhir').value,
+        jam_pulang_mulai: document.getElementById('conf_pulang_mulai').value,
+        jam_pulang_akhir: document.getElementById('conf_pulang_akhir').value,
+        wfh_masuk_mulai: document.getElementById('conf_wfh_masuk_mulai').value,
+        wfh_masuk_akhir: document.getElementById('conf_wfh_masuk_akhir').value,
+        wfh_pulang_mulai: document.getElementById('conf_wfh_pulang_mulai').value,
+        wfh_pulang_akhir: document.getElementById('conf_wfh_pulang_akhir').value
+    };
+    
+    try {
+        const res = await fetchAPI('saveAppConfig', { newConfig: newConfig });
+        btnElement.disabled = false; 
+        btnElement.innerHTML = originalText;
+        
+        if(res.success) {
+            showAlert('success', 'Pengaturan waktu berhasil disimpan!'); 
+        } else {
+            showAlert('error', res.message);
+        }
+    } catch(err) {
+        btnElement.disabled = false; 
+        btnElement.innerHTML = originalText; 
+        showAlert('error', 'Gagal koneksi: ' + err);
+    }
+}
 
         function renderLiburRows(data, startIdx) {
             const tbody = document.getElementById('tbody-libur');
@@ -3045,6 +3076,8 @@
                 let rawKet = String(d.keterangan || "-");
                 let ketHtml = `<span class="text-gray-400 font-mono text-[10px]">${rawKet}</span>`; 
                 
+                // JIKA INI ABSEN WFH
+                // LOGIKA RENDER FOTO WFH (Mendukung Multi-Foto Pagi/Sore)
         if (rawKet.includes("Maps:") && rawKet.includes("Foto:")) {
             const wfhSessions = rawKet.split('||'); // Pisahkan Pagi dan Sore
             ketHtml = `<div class="flex flex-col items-start gap-2">`; // Container
@@ -3056,7 +3089,7 @@
                 parts.forEach(p => {
                     if(p.includes("Maps:")) mapsLink = p.replace('Maps:', '').trim();
                     else if(p.includes("Foto:")) fotoLink = p.replace('Foto:', '').trim();
-                    else if(p.trim() !== "" && !p.includes("Akurasi:") && !p.includes("[LAT:")) statusWfh = p.trim(); 
+                    else if(p.trim() !== "" && !p.includes("Akurasi:")) statusWfh = p.trim(); 
                 });
                 
                 // Hilangkan teks tersembunyi [LAT..] di tampilan
@@ -3244,7 +3277,6 @@
             }
         }
 
-
         async function loadQRCodeSiswa(nisnParam, namaParam, kelasParam) {
             stopAndBack(false); 
             if(currentUser && currentUser.role === 'siswa') setActiveMenu('Kartu Saya');
@@ -3263,7 +3295,7 @@
                  const logoBase64 = dataServer.logo;
                  const logoInstansiBase64 = dataServer.logoInstansi;
                  const namaSekolah = dataServer.sekolah;
-                 const namaInstansi = dataServer.instansi;
+                 const namaInstansi = dataServer.instansi;;
 
                 container.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-5">
@@ -3281,7 +3313,7 @@
 
                         <div style="flex: 1; padding: 15px 20px; text-align: center; background: white; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                             <div style="width: 130px; height: 130px; margin: 0 auto 10px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); box-sizing: border-box;">
-                                <div id="hiddenQrTarget" style="width: 100%; height: 100%;"></div>
+                                <img id="qrImageTarget" src="" style="width: 100%; height: 100%; display: block; border-radius: 4px;" alt="Memuat QR...">
                             </div>
                             
                             <div style="font-size: 16px; font-weight: 800; color: #1f2937; margin-bottom: 2px; line-height: 1.2;">${nama}</div>
@@ -3314,11 +3346,20 @@
                 </div>`;
 
                 setTimeout(() => {
-                    const qrTarget = document.getElementById('hiddenQrTarget');
-                    if (qrTarget) {
-                        new QRCode(qrTarget, { text: String(nisn), width: 114, height: 114, correctLevel : QRCode.CorrectLevel.H });
-                    }
-                }, 150);
+                    const tempDiv = document.createElement("div");
+                    new QRCode(tempDiv, { text: String(nisn), width: 124, height: 124, correctLevel : QRCode.CorrectLevel.H });
+                    setTimeout(() => {
+                        const canvas = tempDiv.querySelector("canvas");
+                        const imgInTemp = tempDiv.querySelector("img");
+                        const targetImg = document.getElementById("qrImageTarget");
+                        if (targetImg) {
+                            if (canvas) { targetImg.src = canvas.toDataURL("image/png"); } 
+                            else if (imgInTemp) { targetImg.src = imgInTemp.src; }
+                        }
+                    }, 100);
+                }, 50);
+
+                initAppConfigs();
 
             } catch(e) {}
         }
@@ -3344,368 +3385,120 @@
             });
         }
 
-        async function cetakSemuaKartuSiswa() {
-            const dataToPrint = tableState.siswa.filtered;
-            if (!dataToPrint || dataToPrint.length === 0) {
-                showAlert('error', 'Tidak ada data siswa untuk dicetak.');
-                return;
-            }
+       async function loadPengaturan() {
+            stopAndBack(false); setActiveMenu('Pengaturan'); showView('view-pengaturan');
+            const form = document.querySelector('#view-pengaturan form');
+            const token = currentUser ? currentUser.token : null;
+            try {
+                const res = await fetchAPI('getLinkSettings', { token: token });
+                if(res.success) {
+                    form.elements['namaInstansi'].value = res.data.namaInstansi;
+                    form.elements['namasekolah'].value = res.data.namasekolah;
+                    form.elements['alamat'].value = res.data.alamat;
+                    form.elements['tahun'].value = res.data.tahun;
+                    form.elements['website'].value = res.data.website;
+                    form.elements['runningtext'].value = res.data.runningtext;
+                    
+                    const defLogo = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfzGqA11LudTtI5aqUk93_GUJWPoHCR2uNbhgSgZhv71Bmx48aW6zBg7l7U6KoVNNmQpC7zai4T3KeV6DfH1VXfpwQDaxYPEiaCZ8opxte2Koje_yoSzejOD3eKTGt8tHeMuVVrldPZjsXCeRjUe1dbFibHnjpxZYcYlsGBz3YKr_ZU9E9n4z1y0dUrYXC/s425/logo%20sipresdir.png';
+                    document.getElementById('finalLogoData').value = res.data.logo;
+                    document.getElementById('previewLogoSetting').src = res.data.logo || defLogo;
+                    document.getElementById('finalLogoInstansiData').value = res.data.logoInstansi;
+                    document.getElementById('previewLogoInstansiSetting').src = res.data.logoInstansi || defLogo;
+                }
+            } catch(e) {}
+        }
+
+        async function saveLinkData(e) {
+            e.preventDefault(); const fd = new FormData(e.target); const token = currentUser ? currentUser.token : null;
+            const data = { 
+                namaInstansi: fd.get('namaInstansi'), 
+                logoInstansi: document.getElementById('finalLogoInstansiData').value,
+                namasekolah: fd.get('namasekolah'), 
+                logo: document.getElementById('finalLogoData').value, 
+                alamat: fd.get('alamat'), 
+                tahun: fd.get('tahun'), 
+                website: fd.get('website'), 
+                runningtext: fd.get('runningtext') 
+            };
             showLoading();
             try {
-                const dataServer = await fetchAPI('getCardDataServer');
-                const logoBase64 = dataServer.logo;
-                const logoInstansiBase64 = dataServer.logoInstansi;
-                const namaSekolah = dataServer.sekolah;
-                const namaInstansi = dataServer.instansi;
-                
-                let container = document.getElementById('hiddenCardFactory');
-                if (!container) {
-                    container = document.createElement('div');
-                    container.id = 'hiddenCardFactory';
-                    container.style.cssText = 'position: fixed; top: 0; left: -9999px; z-index: -9999; pointer-events: none; background: white;';
-                    document.body.appendChild(container);
-                }
-
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('p', 'mm', 'a4');
-
-                const cardW = 54; 
-                const cardH = 86; 
-                const marginX = (210 - (3 * cardW)) / 4; 
-                const marginY = (297 - (3 * cardH)) / 4; 
-
-                for (let i = 0; i < dataToPrint.length; i++) {
-                    const siswa = dataToPrint[i];
-                    document.getElementById('loadingText').innerHTML = `Memproses Kartu... <br><span class="text-[10px] text-gray-500 font-normal">${i + 1} dari ${dataToPrint.length} Siswa</span>`;
-
-                    container.innerHTML = `
-                    <div id="printCardTemplate" style="width: 320px; height: 510px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; position: relative; font-family: sans-serif; box-sizing: border-box; display: flex; flex-direction: column;">
-                        <div style="background: #312e81; padding: 25px 15px 15px 15px; text-align: center; color: white; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 160px;">
-                            <div style="display: flex; gap: 15px; margin-bottom: 10px; justify-content: center;">
-                                <img src="${logoInstansiBase64}" style="height: 40px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
-                                <img src="${logoBase64}" style="height: 40px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
-                            </div>
-                            <div style="font-weight: 700; font-size: 10px; text-transform: uppercase; margin-bottom: 3px; opacity: 0.9; letter-spacing: 0.5px;">${namaInstansi}</div>
-                            <div style="font-weight: 900; font-size: 13px; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; line-height: 1.4; padding: 0 5px; word-wrap: break-word;">${namaSekolah}</div>
-                            <div style="font-size: 8px; text-transform: uppercase; letter-spacing: 1.5px; color: #cbd5e1; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
-                        </div>
-                        <div style="flex: 1; padding: 15px 20px; text-align: center; background: white; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                            <div style="width: 130px; height: 130px; margin: 0 auto 10px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); box-sizing: border-box;">
-                                <div id="hiddenQrTarget" style="width: 100%; height: 100%;"></div>
-                            </div>
-                            <div style="font-size: 16px; font-weight: 800; color: #1f2937; margin-bottom: 2px; line-height: 1.2;">${siswa.nama}</div>
-                            <div style="font-size: 12px; color: #6b7280; margin-bottom: 10px; font-family: monospace;">${siswa.nisn}</div>
-                            <div style="margin-bottom: auto;">
-                                <span style="background: #eef2ff; color: #4f46e5; padding: 6px 16px; border-radius: 99px; font-size: 11px; font-weight: 800; text-transform: uppercase; border: 1px solid #e0e7ff;">${siswa.kelas}</span>
-                            </div>
-                            <div style="width: 100%; border-top: 2px dashed #f3f4f6; padding-top: 10px; font-size: 9px; color: #9ca3af; display: flex; justify-content: space-between; margin-top: 15px;">
-                                <span>ID: ${siswa.nisn}</span>
-                                <span>VALID: ${new Date().getFullYear()}</span>
-                            </div>
-                        </div>
-                    </div>`;
-
-                    const qrTarget = document.getElementById('hiddenQrTarget');
-                    new QRCode(qrTarget, { text: String(siswa.nisn), width: 114, height: 114, correctLevel : QRCode.CorrectLevel.H });
-                    
-                    await new Promise(resolve => setTimeout(resolve, 150));
-
-                    const cardEl = document.getElementById('printCardTemplate');
-                    const canvas = await html2canvas(cardEl, { scale: 3, useCORS: true, backgroundColor: "#ffffff", logging: false });
-                    const imgData = canvas.toDataURL('image/jpeg', 1.0); 
-
-                    const col = i % 3;
-                    const row = Math.floor((i % 9) / 3);
-                    const x = marginX + col * (cardW + marginX);
-                    const y = marginY + row * (cardH + marginY);
-
-                    doc.addImage(imgData, 'JPEG', x, y, cardW, cardH);
-
-                    if ((i + 1) % 9 === 0 && i !== dataToPrint.length - 1) {
-                        doc.addPage();
-                    }
-                }
-
-                const pdfFileName = `Cetak_Kartu_Siswa_${new Date().getTime()}.pdf`;
-                doc.save(pdfFileName);
-                showAlert('success', 'PDF berhasil diunduh!');
-            } catch (error) {
-                showAlert('error', 'Gagal mencetak kartu: ' + error.message);
-            } finally {
-                hideLoading();
-            }
-        }
-
-        // ============================================================
-        // LOGIKA UPLOAD & CROP LOGO 1:1
-        //============================================================
-
-        let cropperInstance = null;
-        let targetCropInput = '';
-        let targetCropPreview = '';
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const dateInput = document.getElementById('tgl_export_harian');
-            if (dateInput) {
-                const d = new Date();
-                dateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-            }
-            
-            function setupLogoUpload(inputId, hiddenInputId, previewId) {
-                const fileInput = document.getElementById(inputId);
-                if(fileInput) {
-                    fileInput.addEventListener('change', function(e) {
-                        const file = e.target.files[0];
-                        if (file) {
-                            if(file.size > 2 * 1024 * 1024) { showAlert('error', 'Ukuran maksimal 2MB!'); this.value = ''; return; }
-                            targetCropInput = hiddenInputId;
-                            targetCropPreview = previewId;
-                            const reader = new FileReader();
-                            reader.onload = function(event) { openCropModal(event.target.result); };
-                            reader.readAsDataURL(file);
-                        }
-                    });
-                }
-            }
-
-            setupLogoUpload('inputLogoFile', 'finalLogoData', 'previewLogoSetting');
-            setupLogoUpload('inputLogoInstansiFile', 'finalLogoInstansiData', 'previewLogoInstansiSetting');
-        });
-
-        function openCropModal(imageSrc) {
-            const modal = document.getElementById('cropModal');
-            const image = document.getElementById('imageToCrop');
-            modal.classList.remove('hidden');
-            image.src = imageSrc;
-            if (cropperInstance) { cropperInstance.destroy(); }
-            cropperInstance = new Cropper(image, { aspectRatio: 1 / 1, viewMode: 1, background: false, autoCropArea: 0.8, dragMode: 'move' });
-        }
-
-        function closeCropModal() {
-            document.getElementById('cropModal').classList.add('hidden');
-            if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
-            document.getElementById('inputLogoFile').value = ''; 
-            document.getElementById('inputLogoInstansiFile').value = ''; 
-        }
-
-        function applyCrop() {
-            if (!cropperInstance) return;
-            const canvas = cropperInstance.getCroppedCanvas({ width: 400, height: 400 });
-            const croppedBase64 = canvas.toDataURL('image/png');
-            
-            document.getElementById(targetCropPreview).src = croppedBase64;
-            document.getElementById(targetCropInput).value = croppedBase64;
-            closeCropModal();
-        }
-
-        // ============================================================
-        // FITUR WFH & LOKASI (GPS, KAMERA, ANTI-FAKE GPS)
-        // ============================================================
-        
-        let wfhStream = null;
-        let currentGPS = { lat: null, lon: null };
-
-        async function loadAbsenWFH() {
-            stopAndBack(false); 
-            setActiveMenu('Rekam-WFH'); 
-            
-            showView('view-absen-wfh');
-            startWFHCamera();
-            getLocation();
-
-            try {
-                const cek = await fetchAPI('cekWFHToday');
-                if (cek) {
-                    if (cek.isLibur) {
-                        if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
-                        Swal.fire({
-                            title: 'Perekaman Ditolak!',
-                            text: `Anda tidak bisa melakukan perekaman karena hari ini adalah Hari Libur (${cek.keterangan}).`,
-                            icon: 'error',
-                            confirmButtonColor: '#4f46e5'
-                        }).then(() => { loadSiswaDashboard(); });
-                    } else if (cek.isWFH) {
-                        const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-                        Toast.fire({ icon: 'info', title: cek.keterangan });
-                    } else {
-                        if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
-                        Swal.fire({
-                            title: 'Akses Ditolak!',
-                            text: 'Hari ini bukan jadwal WFH. Silakan lakukan presensi scan QR di sekolah.',
-                            icon: 'error',
-                            confirmButtonColor: '#4f46e5'
-                        }).then(() => { loadSiswaDashboard(); });
-                    }
-                }
-            } catch (e) {
-                if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
-                showAlert('error', 'Gagal mengecek jadwal ke server.');
-                loadSiswaDashboard();
-            }
-        }
-
-        function getLocation() {
-            const gpsText = document.getElementById('gpsLocationText');
-            if (navigator.geolocation) {
-                gpsText.innerHTML = `<i class="fas fa-spinner fa-spin text-indigo-500"></i> Memeriksa sensor lokasi...`;
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const lat = position.coords.latitude;
-                        const lon = position.coords.longitude;
-                        const acc = position.coords.accuracy;
-                        
-                        if (acc === 10 || acc === 20 || acc === 65 || acc === 100 || (acc % 10 === 0 && acc > 5)) {
-                            gpsText.innerHTML = `<span class="text-rose-600 font-bold"><i class="fas fa-ban"></i> Terdeteksi Fake GPS / Mock Location!</span>`;
-                            currentGPS.lat = null; currentGPS.lon = null;
-                            Swal.fire('Peringatan!', 'Harap matikan aplikasi Fake GPS / Lokasi Palsu Anda sebelum melakukan presensi.', 'error');
-                            checkWFHReady();
-                            return;
-                        }
-
-                        currentGPS.lat = lat;
-                        currentGPS.lon = lon;
-                        currentGPS.acc = Math.round(acc); 
-                        gpsText.innerHTML = `${lat.toFixed(5)}, ${lon.toFixed(5)} <br><span class="text-[9px] text-green-600">Akurasi: ${Math.round(acc)}m <i class="fas fa-check-circle"></i></span>`;
-                        checkWFHReady();
-                    },
-                    (error) => {
-                        let errMsg = "Izin Lokasi Ditolak!";
-                        if (error.code === 2) errMsg = "Sinyal GPS mati / tidak ditemukan.";
-                        else if (error.code === 3) errMsg = "Timeout pencarian lokasi.";
-                        gpsText.innerHTML = `<span class="text-red-500 font-bold"><i class="fas fa-exclamation-triangle"></i> ${errMsg}</span>`;
-                    },
-                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 } 
-                );
-            } else {
-                gpsText.innerHTML = "GPS tidak didukung browser ini.";
-            }
-        }
-
-        async function startWFHCamera() {
-            const video = document.getElementById('wfhVideo');
-            const preview = document.getElementById('wfhPreview');
-            const loading = document.getElementById('wfhLoading');
-            
-            video.classList.remove('hidden');
-            preview.classList.add('hidden');
-            loading.classList.remove('hidden');
-            document.getElementById('wfhLoadingText').innerText = "Menyiapkan Kamera...";
-
-            if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
-
-            try {
-                wfhStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } }, 
-                    audio: false 
-                });
-                video.srcObject = wfhStream;
-                video.onloadedmetadata = () => { video.play(); loading.classList.add('hidden'); checkWFHReady(); };
-            } catch (err) {
-                loading.classList.remove('hidden');
-                document.getElementById('wfhLoadingText').innerHTML = `<span class="text-red-400">Kamera error/ditolak.</span>`;
-            }
-        }
-
-        function checkWFHReady() {
-            const btn = document.getElementById('btnCaptureWFH');
-            if (wfhStream && currentGPS.lat) { btn.disabled = false; } 
-            else { btn.disabled = true; }
-        }
-
-        async function captureAndSendWFH() {
-            const video = document.getElementById('wfhVideo');
-            const preview = document.getElementById('wfhPreview');
-            const btn = document.getElementById('btnCaptureWFH');
-            
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengompres...';
-
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            const MAX_WIDTH = 240; 
-            const scaleSize = MAX_WIDTH / video.videoWidth;
-            canvas.width = MAX_WIDTH;
-            canvas.height = video.videoHeight * scaleSize;
-            
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.3);
-
-            preview.src = compressedBase64;
-            video.classList.add('hidden');
-            preview.classList.remove('hidden');
-            if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
-
-            btn.innerHTML = '<i class="fas fa-paper-plane animate-pulse"></i> Mengirim Data...';
-            showLoading(); 
-
-            try {
-                const res = await fetchAPI('absenWFH', {
-                    token: currentUser.token,
-                    nisn: currentUser.nisn,
-                    foto: compressedBase64,
-                    lokasi: currentGPS
-                });
-
-                hideLoading();
-                if (res.success) {
-                    showAlert('success', 'Rekam Kehadiran WFH Berhasil Pukul ' + res.waktu);
-                    setTimeout(() => { loadSiswaDashboard(); }, 2000); 
-                } else {
-                    showAlert('error', res.message);
-                    btn.innerHTML = '<i class="fas fa-camera"></i> Coba Lagi';
-                    btn.disabled = false;
-                }
-            } catch (error) {
-                hideLoading();
-                showAlert('error', 'Gagal koneksi server!');
-                btn.innerHTML = '<i class="fas fa-camera"></i> Coba Lagi';
-                btn.disabled = false;
-            }
-        }
-
-        // ============================================================
-        // LOGIKA MENU JADWAL WFH
-        // ============================================================
-        function renderWfhRows(data, startIdx) {
-            const tbody = document.getElementById('tbody-wfh');
-            if (data.length === 0) { 
-                tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-400 italic">Tidak ada jadwal WFH terdaftar.</td></tr>'; 
-                return; 
-            }
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            tbody.innerHTML = data.map((item, i) => `
-                <tr class="hover:bg-gray-50 border-b border-gray-50 transition group">
-                    <td class="p-4 text-center text-gray-500">${startIdx + i + 1}</td>
-                    <td class="p-4 font-mono font-medium text-indigo-700">${new Date(item.tanggal).toLocaleDateString('id-ID', options)}</td>
-                    <td class="p-4 font-bold text-gray-700">${item.keterangan}</td>
-                    <td class="p-4 text-center"><button onclick="deleteWfhConfirm('${item.tanggal}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition opacity-80 group-hover:opacity-100"><i class="fas fa-trash"></i></button></td>
-                </tr>`).join('');
-        }
-
-        async function handleAddWfh(e) {
-            e.preventDefault(); showLoading(); const fd = new FormData(e.target);
-            try {
-                const res = await fetchAPI('addJadwalWFH', { tanggal: fd.get('tanggal'), keterangan: fd.get('keterangan') });
+                const res = await fetchAPI('updateLinkSettings', { token: token, data: data });
                 hideLoading(); 
-                if (res.success) { e.target.reset(); loadKelolaAbsen(); showAlert('success', 'Jadwal WFH ditambahkan'); } 
-                else showAlert('error', res.message);
+                if(res.success) { showAlert('success', res.message); initAppConfigs(); } 
+                else { showAlert('error', res.message); }
             } catch(err) { hideLoading(); }
         }
 
-        async function deleteWfhConfirm(tgl) {
-            if (confirm('Hapus jadwal WFH ini?')) { 
-                showLoading(); 
-                try {
-                    await fetchAPI('deleteJadwalWFH', { tanggal: tgl });
-                    hideLoading(); loadKelolaAbsen(); showAlert('success', 'Jadwal WFH dihapus');
-                } catch(e) {}
+        async function changeAdminPass(e) {
+            e.preventDefault(); 
+            const fd = new FormData(e.target); 
+            const token = currentUser ? currentUser.token : null;
+            
+            if(fd.get('newPass').length < 6) { 
+                showAlert('error', 'Password minimal 6 karakter'); 
+                return; 
             }
+            showLoading();
+            try {
+                const res = await fetchAPI('changeAdminPassword', { 
+                    token: token, 
+                    username: currentUser.username, 
+                    oldPass: fd.get('oldPass'), 
+                    newPass: fd.get('newPass') 
+                });
+                hideLoading(); 
+                if(res.success) { 
+                    e.target.reset(); 
+                    showAlert('success', res.message); 
+                } else {
+                    showAlert('error', res.message);
+                }
+            } catch(err) { hideLoading(); }
         }
 
-        // ============================================================
-        // LOGIKA SCAN QR KAMERA
-        // ============================================================
+        function showChangeGuruPassModal(username) {
+            showModal(`
+            <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full relative overflow-hidden">
+                <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
+                <div class="text-center mb-6">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-sm"><i class="fas fa-key"></i></div>
+                    <h3 class="font-bold text-xl text-gray-800">Reset Password</h3>
+                    <p class="text-xs text-gray-500 mt-1">Guru: <b>${username}</b></p>
+                </div>
+                <form onsubmit="saveGuruPass(event, '${username}')">
+                    <label class="block mb-1 text-xs font-bold text-gray-500 uppercase">Password Baru</label>
+                    <input type="text" name="newPass" required placeholder="Minimal 6 karakter" class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 transition-all mb-4">
+                    <div class="flex gap-3 mt-4">
+                        <button type="button" onclick="closeModal()" class="flex-1 bg-gray-100 text-gray-600 py-3 rounded-xl font-bold hover:bg-gray-200 transition">Batal</button>
+                        <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">Simpan</button>
+                    </div>
+                </form>
+            </div>`);
+        }
+
+        async function saveGuruPass(e, username) {
+            e.preventDefault(); 
+            const fd = new FormData(e.target); 
+            const newPass = fd.get('newPass'); 
+            const token = currentUser ? currentUser.token : null;
+            
+            if(newPass.length < 6) { 
+                showAlert('error', 'Password terlalu pendek'); 
+                return; 
+            }
+            showLoading();
+            try {
+                const res = await fetchAPI('resetGuruPassword', { token: token, username: username, newPass: newPass });
+                hideLoading(); 
+                if(res.success) { 
+                    closeModal(); 
+                    showAlert('success', res.message); 
+                } else {
+                    showAlert('error', res.message);
+                }
+            } catch(err) { hideLoading(); }
+        }
+
         function loadScanAbsensi() { 
             isScanning = false; 
             setActiveMenu('Scan Presensi'); 
@@ -3745,599 +3538,1029 @@
             });
         }
 
-        async function onScanSuccess(decodedText) {
-            if (!decodedText || decodedText.trim() === "" || decodedText === "undefined") return;
-            if (isScanning) return; 
-            isScanning = true;
+////========BATAS SUDAH DI RAPIKAN===============////
 
-            playScanSound(); 
 
-            const resultDiv = document.getElementById('scanResult');
-            resultDiv.classList.remove('hidden');
-            resultDiv.innerHTML = `<div class="bg-indigo-50 text-indigo-700 p-4 rounded-xl border border-indigo-100 flex items-center justify-center animate-pulse font-bold shadow-sm"><i class="fas fa-circle-notch fa-spin mr-3"></i> Memproses Data...</div>`;
-            
-            const myRole = currentUser ? currentUser.role : '';
-            const myKelas = currentUser ? currentUser.kelas : '';
-            
-            try {
-                const result = await fetchAPI('scanAbsensi', {
-                    nisn: decodedText,
-                    role: myRole,
-                    kelasGuru: myKelas,
-                    apiKey: "SIPRESDIR_RAHASIA_2026_TIDAK_BOLEH_BOCOR"
-                });
+async function onScanSuccess(decodedText) {
+    if (!decodedText || decodedText.trim() === "" || decodedText === "undefined") return;
+    if (isScanning) return; 
+    isScanning = true;
 
-                if (result.success) {
-                    const color = result.type === 'datang' ? 'green' : 'blue';
-                    resultDiv.innerHTML = `<div class="bg-${color}-50 text-${color}-900 p-6 rounded-2xl border border-${color}-100 shadow-md animate-fade-in relative overflow-hidden"><div class="absolute top-0 right-0 p-4 opacity-10"><i class="fas fa-check-circle text-6xl"></i></div><h3 class="font-bold text-xl uppercase mb-1 tracking-tight">${result.nama || "Siswa"}</h3><p class="text-sm font-semibold opacity-70 mb-4">${result.kelas || ""}</p><div class="bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-${color}-200 inline-block"><div class="text-xs uppercase tracking-widest font-bold opacity-60 mb-1">${result.message}</div><div class="text-3xl font-mono font-bold">${result.type === 'datang' ? result.jamDatang : result.jamPulang}</div></div><p class="text-xs mt-4 font-bold uppercase tracking-wide opacity-50 animate-pulse">Siap untuk siswa berikutnya...</p></div>`;
-                    setTimeout(() => { isScanning = false; }, 3000);
-                } else {
-                    resultDiv.innerHTML = `<div class="bg-red-50 text-red-700 p-5 rounded-2xl border border-red-100 shadow-sm flex items-center space-x-4"><div class="bg-red-100 p-3 rounded-full"><i class="fas fa-times text-xl"></i></div><div class="text-left"><h4 class="font-bold">Gagal!</h4><p class="text-sm opacity-90">${result.message}</p></div></div>`;
-                    setTimeout(() => { isScanning = false; }, 4000);
-                }
-            } catch(err) {
-                resultDiv.innerHTML = `<div class="bg-red-50 text-red-700 p-5 rounded-2xl border border-red-100 shadow-sm flex items-center space-x-4"><div class="bg-red-100 p-3 rounded-full"><i class="fas fa-times text-xl"></i></div><div class="text-left"><h4 class="font-bold">Error Koneksi!</h4><p class="text-sm opacity-90">Gagal terhubung ke server.</p></div></div>`;
-                setTimeout(() => { isScanning = false; }, 4000);
-            }
+    playScanSound(); 
+
+    const resultDiv = document.getElementById('scanResult');
+    resultDiv.classList.remove('hidden');
+    resultDiv.innerHTML = `<div class="bg-indigo-50 text-indigo-700 p-4 rounded-xl border border-indigo-100 flex items-center justify-center animate-pulse font-bold shadow-sm"><i class="fas fa-circle-notch fa-spin mr-3"></i> Memproses Data...</div>`;
+    
+    const myRole = currentUser ? currentUser.role : '';
+    const myKelas = currentUser ? currentUser.kelas : '';
+    
+    try {
+        const result = await fetchAPI('scanAbsensi', {
+            nisn: decodedText,
+            role: myRole,
+            kelasGuru: myKelas,
+            apiKey: "SIPRESDIR_RAHASIA_2026_TIDAK_BOLEH_BOCOR" // <-- Tambahkan baris ini
+        });
+
+        if (result.success) {
+            const color = result.type === 'datang' ? 'green' : 'blue';
+            resultDiv.innerHTML = `<div class="bg-${color}-50 text-${color}-900 p-6 rounded-2xl border border-${color}-100 shadow-md animate-fade-in relative overflow-hidden"><div class="absolute top-0 right-0 p-4 opacity-10"><i class="fas fa-check-circle text-6xl"></i></div><h3 class="font-bold text-xl uppercase mb-1 tracking-tight">${result.nama || "Siswa"}</h3><p class="text-sm font-semibold opacity-70 mb-4">${result.kelas || ""}</p><div class="bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-${color}-200 inline-block"><div class="text-xs uppercase tracking-widest font-bold opacity-60 mb-1">${result.message}</div><div class="text-3xl font-mono font-bold">${result.type === 'datang' ? result.jamDatang : result.jamPulang}</div></div><p class="text-xs mt-4 font-bold uppercase tracking-wide opacity-50 animate-pulse">Siap untuk siswa berikutnya...</p></div>`;
+            setTimeout(() => { isScanning = false; }, 3000);
+        } else {
+            resultDiv.innerHTML = `<div class="bg-red-50 text-red-700 p-5 rounded-2xl border border-red-100 shadow-sm flex items-center space-x-4"><div class="bg-red-100 p-3 rounded-full"><i class="fas fa-times text-xl"></i></div><div class="text-left"><h4 class="font-bold">Gagal!</h4><p class="text-sm opacity-90">${result.message}</p></div></div>`;
+            setTimeout(() => { isScanning = false; }, 4000);
         }
+    } catch(err) {
+        resultDiv.innerHTML = `<div class="bg-red-50 text-red-700 p-5 rounded-2xl border border-red-100 shadow-sm flex items-center space-x-4"><div class="bg-red-100 p-3 rounded-full"><i class="fas fa-times text-xl"></i></div><div class="text-left"><h4 class="font-bold">Error Koneksi!</h4><p class="text-sm opacity-90">Gagal terhubung ke server.</p></div></div>`;
+        setTimeout(() => { isScanning = false; }, 4000);
+    }
+}
 
-        function playScanSound() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-                if (ctx.state === 'suspended') { ctx.resume(); }
+function playScanSound() {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        if (ctx.state === 'suspended') { ctx.resume(); }
 
-                const oscillator = ctx.createOscillator();
-                const gainNode = ctx.createGain();
-                oscillator.connect(gainNode);
-                gainNode.connect(ctx.destination);
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
 
-                oscillator.type = "square"; 
-                oscillator.frequency.value = 1200; 
-                gainNode.gain.value = 0.15; 
+        oscillator.type = "square"; 
+        oscillator.frequency.value = 1200; 
+        gainNode.gain.value = 0.15; 
 
-                oscillator.start();
-                setTimeout(() => { oscillator.stop(); ctx.close(); }, 150); 
-            } catch (e) { console.error("Audio error: " + e); }
-        }
+        oscillator.start();
+        setTimeout(() => { oscillator.stop(); ctx.close(); }, 150); 
+    } catch (e) { console.error("Audio error: " + e); }
+}
 
-        function stopAndBack(redirect = true) {
-            if (html5QrCode) { 
-                html5QrCode.stop().then(() => { 
-                    html5QrCode.clear(); 
-                    html5QrCode = null; 
-                    isScanning = false; 
-                    if (redirect && currentUser) returnToDashboard(); 
-                }).catch(() => { 
-                    html5QrCode = null; 
-                    if (redirect && currentUser) returnToDashboard(); 
-                }); 
-            } 
-            else if (redirect && currentUser) returnToDashboard();
-        }
+function stopAndBack(redirect = true) {
+    if (html5QrCode) { html5QrCode.stop().then(() => { html5QrCode.clear(); html5QrCode = null; isScanning = false; if (redirect && currentUser) returnToDashboard(); }).catch(() => { html5QrCode = null; if (redirect && currentUser) returnToDashboard(); }); } 
+    else if (redirect && currentUser) returnToDashboard();
+}
 
-        function returnToDashboard() {
-            if(currentUser.role === 'admin') loadAdminDashboard(); 
-            else if(currentUser.role === 'guru') loadGuruDashboard(); 
-            else loadSiswaDashboard();
-        }
+function returnToDashboard() {
+    if(currentUser.role === 'admin') loadAdminDashboard(); else if(currentUser.role === 'guru') loadGuruDashboard(); else loadSiswaDashboard();
+}
 
-        // ============================================================
-        // UTILITIES UI (ALERT, MODAL, LOADING)
-        // ============================================================
-        let loadingInterval;
+// VARIABEL GLOBAL UNTUK TIMER LOADING
+let loadingInterval;
 
-        function showLoading() { 
-            const overlay = document.getElementById('loadingOverlay');
-            const countdownEl = document.getElementById('loadingCountdown');
-            const textEl = document.getElementById('loadingText');
-            
-            overlay.classList.remove('hidden'); 
-            
-            let timeLeft = 8;
+function showLoading() { 
+    const overlay = document.getElementById('loadingOverlay');
+    const countdownEl = document.getElementById('loadingCountdown');
+    const textEl = document.getElementById('loadingText');
+    
+    // Tampilkan overlay
+    overlay.classList.remove('hidden'); 
+    
+    // Setel ulang teks dan waktu awal
+    let timeLeft = 8;
+    countdownEl.textContent = timeLeft;
+    countdownEl.parentElement.style.display = 'flex'; // Tampilkan lingkaran angka
+    textEl.innerHTML = 'Memproses... <br><span class="text-[10px] text-gray-500 font-normal">Mohon tunggu</span>';
+
+    // Bersihkan interval yang mungkin masih berjalan sebelumnya
+    clearInterval(loadingInterval);
+    
+    // Mulai hitung mundur
+    loadingInterval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
             countdownEl.textContent = timeLeft;
-            countdownEl.parentElement.style.display = 'flex'; 
-            textEl.innerHTML = 'Memproses... <br><span class="text-[10px] text-gray-500 font-normal">Mohon tunggu</span>';
-
-            clearInterval(loadingInterval);
-            
-            loadingInterval = setInterval(() => {
-                timeLeft--;
-                if (timeLeft > 0) {
-                    countdownEl.textContent = timeLeft;
-                } else if (timeLeft === 0) {
-                    countdownEl.parentElement.style.display = 'none';
-                    textEl.innerHTML = 'Sedang memproses data... <br><span class="text-[10px] text-orange-600 font-bold">Tunggu sebentar..</span>';
-                }
-            }, 1000);
+        } else if (timeLeft === 0) {
+            // Ketika waktu habis, sembunyikan angka dan ubah teks peringatan
+            countdownEl.parentElement.style.display = 'none';
+            textEl.innerHTML = 'Sedang memproses data... <br><span class="text-[10px] text-orange-600 font-bold">Tunggu sebentar..</span>';
         }
+    }, 1000); // Turun setiap 1 detik (1000 ms)
+}
 
-        function hideLoading() { 
-            document.getElementById('loadingOverlay').classList.add('hidden'); 
-            clearInterval(loadingInterval);
-        }
+function hideLoading() { 
+    // Sembunyikan layar dan hentikan waktu berjalan agar tidak jalan diam-diam di background
+    document.getElementById('loadingOverlay').classList.add('hidden'); 
+    clearInterval(loadingInterval);
+}
 
-        function logout() { 
-            Swal.fire({
-                title: 'Konfirmasi Keluar',
-                text: "Apakah Anda yakin ingin keluar dari aplikasi?",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#EF4444',
-                cancelButtonColor: '#6B7280',
-                confirmButtonText: 'Ya, Keluar!',
-                cancelButtonText: 'Batal',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    executeLogout();
-                }
-            });
+function logout() { 
+    // Tampilkan Popup Konfirmasi SweetAlert2 sebelum memproses keluar
+    Swal.fire({
+        title: 'Konfirmasi Keluar',
+        text: "Apakah Anda yakin ingin keluar dari aplikasi?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#EF4444',
+        cancelButtonColor: '#6B7280',
+        confirmButtonText: 'Ya, Keluar!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            executeLogout();
         }
+    });
+}
 
-        function executeLogout() {
-            stopAndBack(false); 
-            localStorage.removeItem('absensiAppSession'); 
-            currentUser = null; 
-            appCache = { siswa: null, guru: null }; 
-            document.getElementById('dashboardContainer').classList.add('hidden'); 
-            document.getElementById('loginPage').classList.remove('hidden'); 
-            
-            if(document.getElementById('username')) document.getElementById('username').value = ''; 
-            if(document.getElementById('password')) document.getElementById('password').value = ''; 
-            if(document.getElementById('nisn')) document.getElementById('nisn').value = ''; 
-            
-            document.getElementById('sidebar').classList.add('-translate-x-full');
-        }
+// Fungsi eksekusi logout (Dijalankan jika user klik "Ya, Keluar!")
+function executeLogout() {
+    stopAndBack(false); 
+    localStorage.removeItem('absensiAppSession'); 
+    currentUser = null; 
+    appCache = { siswa: null, guru: null }; 
+    document.getElementById('dashboardContainer').classList.add('hidden'); 
+    document.getElementById('loginPage').classList.remove('hidden'); 
+    
+    // Kosongkan form login
+    if(document.getElementById('username')) document.getElementById('username').value = ''; 
+    if(document.getElementById('password')) document.getElementById('password').value = ''; 
+    if(document.getElementById('nisn')) document.getElementById('nisn').value = ''; 
+    
+    document.getElementById('sidebar').classList.add('-translate-x-full');
+}
 
-        function showModal(content) { 
-            const container = document.getElementById('modalContainer'); 
-            container.innerHTML = `<div class="fixed inset-0 z-50 flex items-center justify-center p-4"><div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div><div class="relative w-full max-w-2xl transform transition-all animate-fade-in">${content}</div></div>`; 
-        }
+
+
+function showModal(content) { const container = document.getElementById('modalContainer'); container.innerHTML = `<div class="fixed inset-0 z-50 flex items-center justify-center p-4"><div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div><div class="relative w-full max-w-2xl transform transition-all animate-fade-in">${content}</div></div>`; }
+function closeModal() { document.getElementById('modalContainer').innerHTML = ''; }
+function showAlert(type, message) {
+    const bg = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+    const div = document.createElement('div');
+    div.className = `fixed top-6 right-6 ${bg} text-white px-6 py-4 rounded-xl shadow-2xl z-[80] flex items-center font-medium animate-fade-in transform translate-y-2`;
+    div.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} mr-3 text-xl"></i> ${message}`;
+    document.body.appendChild(div); setTimeout(() => { div.style.opacity = '0'; setTimeout(() => div.remove(), 300); }, 3000);
+}
+
+function showImportSiswaModal() { showModal(createImportModal('Siswa')); }
+function showImportGuruModal() { showModal(createImportModal('Guru')); }
+
+function createImportModal(type) {
+    return `<div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full relative overflow-hidden animate-fade-in"><button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button><div class="text-center mb-6"><div class="w-14 h-14 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-sm"><i class="fas fa-file-excel"></i></div><h3 class="font-bold text-xl text-gray-800">Import Data ${type}</h3><p class="text-xs text-gray-500 mt-1">Upload file Excel (.xlsx)</p></div><div class="mb-4 text-center"><button onclick="downloadTemplate('${type}')" class="text-xs text-indigo-600 hover:text-indigo-800 underline font-bold mb-3 block"><i class="fas fa-download mr-1"></i> Download Template ${type}</button><p class="text-xs text-gray-500 mb-2">Pastikan format kolom sesuai template.</p></div><input type="file" id="importFile" accept=".xlsx, .xls" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 mb-4"/><button onclick="processImport('${type}')" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold shadow-lg transition">Upload & Proses</button></div>`;
+}
+
+function downloadTemplate(type) {
+    let headers = [], fileName = "";
+    if(type === 'Siswa') { headers = [["nama", "nisn", "jenisKelamin", "tanggalLahir", "agama", "namaAyah", "namaIbu", "noHp", "kelas", "alamat"]]; fileName = "Template_Import_Siswa.xlsx"; } 
+    else { headers = [["username", "password", "kelas"]]; fileName = "Template_Import_Guru.xlsx"; }
+    const wb = XLSX.utils.book_new(); const ws = XLSX.utils.aoa_to_sheet(headers); XLSX.utils.book_append_sheet(wb, ws, "Template"); XLSX.writeFile(wb, fileName);
+}
+
+function processImport(type) {
+    const fileInput = document.getElementById('importFile');
+    if(!fileInput.files.length) { 
+        showAlert('error', 'Pilih file terlebih dahulu'); 
+        return; 
+    }
+    
+    showLoading(); 
+    const file = fileInput.files[0]; 
+    const reader = new FileReader();
+    
+    reader.onload = async function(e) {
+        const data = new Uint8Array(e.target.result); 
+        const workbook = XLSX.read(data, {type: 'array'});
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]]; 
         
-        function closeModal() { 
-            document.getElementById('modalContainer').innerHTML = ''; 
-        }
+        // [PERBAIKAN BUG TANGGAL EXCEL] 
+        // Tambahkan { raw: false, defval: "" } agar Tanggal & Nomor HP dibaca sebagai Teks murni, bukan Nomor Seri.
+        const jsonData = XLSX.utils.sheet_to_json(firstSheet, { raw: false, defval: "" });
         
-        function showAlert(type, message) {
-            const bg = type === 'success' ? 'bg-green-600' : 'bg-red-600';
-            const div = document.createElement('div');
-            div.className = `fixed top-6 right-6 ${bg} text-white px-6 py-4 rounded-xl shadow-2xl z-[80] flex items-center font-medium animate-fade-in transform translate-y-2`;
-            div.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} mr-3 text-xl"></i> ${message}`;
-            document.body.appendChild(div); 
-            setTimeout(() => { div.style.opacity = '0'; setTimeout(() => div.remove(), 300); }, 3000);
-        }
-
-        function showImportSiswaModal() { showModal(createImportModal('Siswa')); }
-        function showImportGuruModal() { showModal(createImportModal('Guru')); }
-
-        function createImportModal(type) {
-            return `<div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full relative overflow-hidden animate-fade-in"><button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button><div class="text-center mb-6"><div class="w-14 h-14 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-sm"><i class="fas fa-file-excel"></i></div><h3 class="font-bold text-xl text-gray-800">Import Data ${type}</h3><p class="text-xs text-gray-500 mt-1">Upload file Excel (.xlsx)</p></div><div class="mb-4 text-center"><button onclick="downloadTemplate('${type}')" class="text-xs text-indigo-600 hover:text-indigo-800 underline font-bold mb-3 block"><i class="fas fa-download mr-1"></i> Download Template ${type}</button><p class="text-xs text-gray-500 mb-2">Pastikan format kolom sesuai template.</p></div><input type="file" id="importFile" accept=".xlsx, .xls" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 mb-4"/><button onclick="processImport('${type}')" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold shadow-lg transition">Upload & Proses</button></div>`;
-        }
-
-        function downloadTemplate(type) {
-            let headers = [], fileName = "";
-            if(type === 'Siswa') { headers = [["nama", "nisn", "jenisKelamin", "tanggalLahir", "agama", "namaAyah", "namaIbu", "noHp", "kelas", "alamat"]]; fileName = "Template_Import_Siswa.xlsx"; } 
-            else { headers = [["username", "password", "kelas"]]; fileName = "Template_Import_Guru.xlsx"; }
-            const wb = XLSX.utils.book_new(); const ws = XLSX.utils.aoa_to_sheet(headers); XLSX.utils.book_append_sheet(wb, ws, "Template"); XLSX.writeFile(wb, fileName);
-        }
-
-        function processImport(type) {
-            const fileInput = document.getElementById('importFile');
-            if(!fileInput.files.length) { 
-                showAlert('error', 'Pilih file terlebih dahulu'); 
-                return; 
-            }
-            
-            showLoading(); 
-            const file = fileInput.files[0]; 
-            const reader = new FileReader();
-            
-            reader.onload = async function(e) {
-                const data = new Uint8Array(e.target.result); 
-                const workbook = XLSX.read(data, {type: 'array'});
-                const firstSheet = workbook.Sheets[workbook.SheetNames[0]]; 
-                
-                const jsonData = XLSX.utils.sheet_to_json(firstSheet, { raw: false, defval: "" });
-                
-                try {
-                    let res;
-                    if(type === 'Siswa') {
-                        res = await fetchAPI('importSiswaBulk', { arr: jsonData });
-                        hideLoading(); 
-                        closeModal(); 
-                        if(res.success) { 
-                            tableState.siswa.fullData = []; 
-                            loadDataSiswa(); 
-                            showAlert('success', res.message); 
-                        } else {
-                            showAlert('error', res.message);
-                        }
-                    } else {
-                        res = await fetchAPI('importGuruBulk', { arr: jsonData });
-                        hideLoading(); 
-                        closeModal(); 
-                        if(res.success) { 
-                            tableState.guru.fullData = []; 
-                            loadDataGuru(); 
-                            showAlert('success', res.message); 
-                        } else {
-                            showAlert('error', res.message);
-                        }
-                    }
-                } catch(err) { 
-                    hideLoading(); 
-                    showAlert('error', err); 
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        function openKelasDropdown() {
-            const list = document.getElementById('dropdownKelasList');
-            if (!list) return;
-            renderDropdownItems(existingClasses);
-            list.classList.remove('hidden');
-        }
-
-        function closeKelasDropdown() {
-            setTimeout(() => { const list = document.getElementById('dropdownKelasList'); if(list) list.classList.add('hidden'); }, 200);
-        }
-
-        function filterKelasDropdown(query) {
-            const list = document.getElementById('dropdownKelasList');
-            if (!list) return;
-            if (!query) { renderDropdownItems(existingClasses); return; }
-            const filtered = existingClasses.filter(c => c.toLowerCase().includes(query.toLowerCase()));
-            renderDropdownItems(filtered);
-        }
-
-        function renderDropdownItems(arr) {
-            const list = document.getElementById('dropdownKelasList');
-            if (!list) return;
-            if (arr.length === 0) { list.innerHTML = '<div class="p-2 text-xs text-gray-400">Kelas tidak ditemukan</div>'; return; }
-            list.innerHTML = arr.map(kelas => `<div onclick="selectKelasItem('${kelas}')" class="p-2 hover:bg-indigo-50 cursor-pointer text-sm text-gray-700 transition">${kelas}</div>`).join('');
-        }
-
-        function selectKelasItem(val) {
-            const input = document.getElementById('inputKelas');
-            if (input) input.value = val;
-            closeKelasDropdown();
-        }
-
-        async function processDailyExportCustom(btnElement) {
-            const tglDipilih = document.getElementById('tgl_export_harian').value;
-            if (!tglDipilih) { showAlert('error', 'Pilih tanggal dulu!'); return; }
-            
-            let filterKelas = "";
-            if (typeof currentUser !== 'undefined' && currentUser.role === 'guru' && currentUser.kelas) { filterKelas = currentUser.kelas; }
-
-            const originalText = btnElement.innerHTML;
-            btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-            btnElement.disabled = true;
-
-            try {
-                const res = await fetchAPI('tarikDataExcelHarian', { tglString: tglDipilih, filterKelas: filterKelas });
-                btnElement.innerHTML = originalText; btnElement.disabled = false;
-
-                if (!res || !res.success) { showAlert('error', res ? res.message : 'Gagal mengambil data.'); return; }
-                const data = res.data;
-                if (!data || data.length === 0) { showAlert('warning', 'Tidak ada data presensi pada tanggal tersebut.'); return; }
-
-                let headers = ["No", "NISN", "Nama Siswa", "Kelas", "Jam Datang", "Jam Pulang", "Status", "Keterangan"];
-                let excelRows = [headers];
-
-                data.forEach((row, idx) => {
-                    let jd = String(row.jamDatang || "-"); if(jd.length > 5) jd = jd.substring(0, 5);
-                    let jp = String(row.jamPulang || "-"); if(jp.length > 5) jp = jp.substring(0, 5);
-                    excelRows.push([idx + 1, row.nisn, row.nama, row.kelas, jd, jp, row.status, row.keterangan]);
-                });
-
-                const ws = XLSX.utils.aoa_to_sheet(excelRows);
-                ws['!cols'] = [{wch:5}, {wch:15}, {wch:30}, {wch:10}, {wch:10}, {wch:10}, {wch:10}, {wch:25}];
-                
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, "Harian");
-                
-                const fileName = `Absensi_${tglDipilih}_${filterKelas || 'Semua'}.xlsx`;
-                XLSX.writeFile(wb, fileName);
-                showAlert('success', 'Download Berhasil!');
-
-            } catch(err) {
-                btnElement.innerHTML = originalText; btnElement.disabled = false;
-                showAlert('error', 'Koneksi Server Gagal: ' + err.message);
-            }
-        }
-
-        // ============================================================
-        // LOGIKA MENU PROFIL SISWA
-        // ============================================================
-        async function showProfilSiswa() {
-            showLoading();
-            let dataSiswa = { nama: currentUser.nama, nisn: currentUser.nisn, kelas: currentUser.kelas, jenisKelamin: '-', tanggalLahir: '-' };
-            try {
-                const result = await fetchAPI('getSiswaList');
-                if (result.success) {
-                    const findSiswa = result.data.find(s => s.nisn == currentUser.nisn);
-                    if (findSiswa) { dataSiswa = findSiswa; }
-                }
-            } catch(e) {}
-            hideLoading();
-
-            const modalContent = `
-            <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-8 max-w-[320px] w-full relative overflow-hidden animate-slide-up mx-auto mt-20 md:mt-0 border border-gray-100">
-                <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-500 bg-gray-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
-
-                <div class="text-center mb-6 mt-2">
-                    <div class="w-20 h-20 bg-gradient-to-br from-teal-400 to-emerald-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 border-4 border-teal-50 shadow-md text-3xl">
-                        <i class="fas fa-user-graduate"></i>
-                    </div>
-                    <h3 class="font-bold text-lg text-gray-800 tracking-tight leading-tight">${dataSiswa.nama}</h3>
-                    <p class="text-[10px] font-bold text-teal-600 uppercase tracking-widest mt-1.5 bg-teal-50 inline-block px-3 py-1 rounded-full border border-teal-100">Profil Siswa</p>
-                </div>
-
-                <div class="space-y-2 mb-4">
-                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
-                        <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="far fa-id-card text-teal-500 w-4 text-center mr-1"></i> NISN</span>
-                        <span class="text-sm font-bold text-gray-800 font-mono">${dataSiswa.nisn}</span>
-                    </div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
-                        <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="fas fa-chalkboard text-teal-500 w-4 text-center mr-1"></i> Kelas</span>
-                        <span class="text-sm font-bold text-gray-800">${dataSiswa.kelas}</span>
-                    </div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
-                        <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="fas fa-venus-mars text-teal-500 w-4 text-center mr-1"></i> L/P</span>
-                        <span class="text-sm font-bold text-gray-800">${dataSiswa.jenisKelamin}</span>
-                    </div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
-                        <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="fas fa-birthday-cake text-teal-500 w-4 text-center mr-1"></i> Lahir</span>
-                        <span class="text-sm font-bold text-gray-800">${dataSiswa.tanggalLahir || '-'}</span>
-                    </div>
-                </div>
-                
-                <button onclick="showUbahPasswordSiswaModal()" class="w-full bg-teal-50 hover:bg-teal-100 text-teal-700 py-3 rounded-xl text-xs font-bold border border-teal-200 transition-colors flex items-center justify-center gap-2 shadow-sm">
-                    <i class="fas fa-key"></i> Ubah Password Akun
-                </button>
-            </div>`;
-            showModal(modalContent);
-        }
-
-        function showUbahPasswordSiswaModal() {
-            const content = `
-            <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full relative overflow-hidden animate-slide-up mx-auto mt-20 md:mt-0">
-                <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-600 bg-gray-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
-                <div class="text-center mb-6">
-                    <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-sm"><i class="fas fa-user-lock"></i></div>
-                    <h3 class="font-bold text-xl text-gray-800">Ubah Password</h3>
-                    <p class="text-xs text-gray-500 mt-1">Amankan akun presensi kamu.</p>
-                </div>
-                <form onsubmit="submitUbahPasswordSiswa(event)">
-                    <label class="block mb-1 text-xs font-bold text-gray-500 uppercase">Password Lama</label>
-                    <div class="relative group mb-4">
-                        <input type="password" id="oldPassSiswa" required class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-3 pr-10 transition-all">
-                        <button type="button" onclick="toggleInputPass('oldPassSiswa', 'eyeOldPass')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-600"><i class="fas fa-eye" id="eyeOldPass"></i></button>
-                    </div>
-                    <label class="block mb-1 text-xs font-bold text-gray-500 uppercase">Password Baru</label>
-                    <div class="relative group mb-6">
-                        <input type="password" id="newPassSiswa" required minlength="6" class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-3 pr-10 transition-all">
-                        <button type="button" onclick="toggleInputPass('newPassSiswa', 'eyeNewPass')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-600"><i class="fas fa-eye" id="eyeNewPass"></i></button>
-                    </div>
-                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-bold shadow-lg transition transform active:scale-95">Simpan Password Baru</button>
-                </form>
-            </div>`;
-            showModal(content);
-        }
-
-        async function submitUbahPasswordSiswa(e) {
-            e.preventDefault();
-            const oldPass = document.getElementById('oldPassSiswa').value;
-            const newPass = document.getElementById('newPassSiswa').value;
-            
-            showLoading();
-            try {
-                const res = await fetchAPI('changeSiswaPassword', { token: currentUser.token, oldPass: oldPass, newPass: newPass });
-                hideLoading();
-                if(res.success) {
-                    showAlert('success', res.message);
-                    closeModal();
+        try {
+            let res;
+            if(type === 'Siswa') {
+                res = await fetchAPI('importSiswaBulk', { arr: jsonData });
+                hideLoading(); 
+                closeModal(); 
+                if(res.success) { 
+                    tableState.siswa.fullData = []; 
+                    loadDataSiswa(); 
+                    showAlert('success', res.message); 
                 } else {
                     showAlert('error', res.message);
                 }
-            } catch(err) {
-                hideLoading();
-                showAlert('error', 'Koneksi error: ' + err);
-            }
-        }
-
-        // ============================================================
-        // LOGIKA REKAP ABSEN SISWA
-        // ============================================================
-        let rs_currentData = [];
-
-        function loadRekapSiswa() {
-            stopAndBack(false); setActiveMenu('Rekap Kehadiran'); showView('view-rekap-siswa');
-            
-            const curDate = new Date();
-            const yearInput = document.getElementById('rs_tahun');
-            if(yearInput && !yearInput.value) yearInput.value = curDate.getFullYear();
-            
-            const monthSelect = document.getElementById('rs_bulan');
-            if(monthSelect && monthSelect.options.length === 0) {
-                const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-                months.forEach((m, i) => { monthSelect.innerHTML += `<option value="${i+1}" ${i === curDate.getMonth() ? 'selected' : ''}>${m}</option>`; });
-            }
-            document.getElementById('rs_result').classList.add('hidden');
-        }
-
-        async function cariRekapSiswa() {
-            const bln = document.getElementById('rs_bulan').value;
-            const thn = document.getElementById('rs_tahun').value;
-            if(!bln || !thn) return;
-
-            document.getElementById('rs_result').classList.add('hidden');
-            document.getElementById('rs_loading').classList.remove('hidden');
-
-            const startStr = `${thn}-${String(bln).padStart(2,'0')}-01`;
-            const lastDay = new Date(thn, bln, 0).getDate();
-            const endStr = `${thn}-${String(bln).padStart(2,'0')}-${lastDay}`;
-
-            try {
-                const filter = { tanggalMulai: startStr, tanggalAkhir: endStr, kelas: currentUser.kelas };
-                const res = await fetchAPI('getAbsensiList', { filter: filter });
-                
-                document.getElementById('rs_loading').classList.add('hidden');
-                document.getElementById('rs_result').classList.remove('hidden');
-
-                if(res.success) {
-                    rs_currentData = res.data.filter(d => d.nisn == currentUser.nisn);
-                    renderTabelRekapSiswa(rs_currentData);
+            } else {
+                res = await fetchAPI('importGuruBulk', { arr: jsonData });
+                hideLoading(); 
+                closeModal(); 
+                if(res.success) { 
+                    tableState.guru.fullData = []; 
+                    loadDataGuru(); 
+                    showAlert('success', res.message); 
                 } else {
-                    rs_currentData = []; renderTabelRekapSiswa([]);
+                    showAlert('error', res.message);
                 }
-            } catch(e) {
-                document.getElementById('rs_loading').classList.add('hidden');
-                showAlert('error', 'Gagal memuat rekap server.');
             }
+        } catch(err) { 
+            hideLoading(); 
+            showAlert('error', err); 
         }
+    };
+    reader.readAsArrayBuffer(file);
+}
 
-        function renderTabelRekapSiswa(data) {
-            const tbody = document.getElementById('tbody-rekap-siswa');
-            if(data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="p-5 text-center text-gray-400 italic">Tidak ada data kehadiran bulan ini.</td></tr>';
-                return;
-            }
-            
-            data.sort((a,b) => new Date(a.tanggal) - new Date(b.tanggal));
-            
-            const getStatusColor = (s) => { 
-                if(s === 'Hadir') return 'bg-green-100 text-green-700'; 
-                if(s === 'Izin') return 'bg-blue-100 text-blue-700'; 
-                if(s === 'Sakit') return 'bg-yellow-100 text-yellow-700'; 
-                if(s === 'Alpa') return 'bg-red-100 text-red-700'; return 'bg-gray-100 text-gray-600'; 
-            };
+function generateQRForSiswa(nisn, nama, kelas) { loadQRCodeSiswa(nisn, nama, kelas); }
 
-            tbody.innerHTML = data.map(d => {
-                let rawKet = String(d.keterangan || "-");
-                let ketHtml = `<span class="text-gray-400 font-mono text-[10px]">${rawKet}</span>`; 
+function openKelasDropdown() {
+    const list = document.getElementById('dropdownKelasList');
+    if (!list) return;
+    renderDropdownItems(existingClasses);
+    list.classList.remove('hidden');
+}
 
-                if (rawKet.includes("Maps:") && rawKet.includes("Foto:")) {
-                    const wfhSessions = rawKet.split('||'); 
-                    ketHtml = `<div class="flex flex-col items-start gap-2">`;
+function closeKelasDropdown() {
+    setTimeout(() => { const list = document.getElementById('dropdownKelasList'); if(list) list.classList.add('hidden'); }, 200);
+}
 
-                    wfhSessions.forEach(session => {
-                        const parts = session.split('|');
-                        let mapsLink = "", fotoLink = "", statusWfh = "";
+function filterKelasDropdown(query) {
+    const list = document.getElementById('dropdownKelasList');
+    if (!list) return;
+    if (!query) { renderDropdownItems(existingClasses); return; }
+    const filtered = existingClasses.filter(c => c.toLowerCase().includes(query.toLowerCase()));
+    renderDropdownItems(filtered);
+}
 
-                        parts.forEach(p => {
-                            if(p.includes("Maps:")) mapsLink = p.replace('Maps:', '').trim();
-                            else if(p.includes("Foto:")) fotoLink = p.replace('Foto:', '').trim();
-                            else if(p.trim() !== "" && !p.includes("Akurasi:") && !p.includes("[LAT:")) statusWfh = p.trim(); 
-                        });
-                        
-                        statusWfh = statusWfh.replace(/\[LAT:.*\]/, '').trim();
+function renderDropdownItems(arr) {
+    const list = document.getElementById('dropdownKelasList');
+    if (!list) return;
+    if (arr.length === 0) { list.innerHTML = '<div class="p-2 text-xs text-gray-400">Kelas tidak ditemukan</div>'; return; }
+    list.innerHTML = arr.map(kelas => `<div onclick="selectKelasItem('${kelas}')" class="p-2 hover:bg-indigo-50 cursor-pointer text-sm text-gray-700 transition">${kelas}</div>`).join('');
+}
 
-                        let badgeHtml = "";
-                        if(statusWfh.includes("Terlambat")) {
-                            badgeHtml = `<span class="text-rose-600 font-bold bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100 text-[9px]"><i class="fas fa-history"></i> ${statusWfh}</span>`;
-                        } else {
-                            badgeHtml = `<span class="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 text-[9px]"><i class="fas fa-check-double"></i> ${statusWfh}</span>`;
-                        }
+function selectKelasItem(val) {
+    const input = document.getElementById('inputKelas');
+    if (input) input.value = val;
+    closeKelasDropdown();
+}
 
-                        ketHtml += `
-                        <div class="flex flex-col items-start gap-1 p-1.5 bg-gray-50 rounded-lg w-full">
-                            ${badgeHtml}
-                            <div class="flex gap-1 mt-0.5 w-full">
-                                <a href="${fotoLink}" target="_blank" class="flex-1 text-center bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-200 py-1 rounded text-[9px] font-bold transition shadow-sm"><i class="fas fa-image"></i> Foto</a>
-                                <a href="${mapsLink}" target="_blank" class="flex-1 text-center bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border border-rose-200 py-1 rounded text-[9px] font-bold transition shadow-sm"><i class="fas fa-map-marker-alt"></i> Map</a>
-                            </div>
-                        </div>`;
-                    });
-                    ketHtml += `</div>`;
-                } 
-                else if (rawKet.includes("Terlambat")) { 
-                    ketHtml = `<span class="text-rose-600 font-bold bg-rose-50 px-2 py-1 rounded border border-rose-100 text-[10px] whitespace-nowrap"><i class="fas fa-history mr-1"></i>${rawKet}</span>`; 
-                }  
-                else if (rawKet.includes("Pulang Cepat")) { 
-                    ketHtml = `<span class="text-orange-600 font-bold bg-orange-50 px-2 py-1 rounded border border-orange-100 text-[10px] whitespace-nowrap"><i class="fas fa-running mr-1"></i>${rawKet}</span>`; 
-                } 
-                else if (rawKet === "Tepat Waktu") { 
-                    ketHtml = `<span class="text-emerald-600 font-bold text-[10px] whitespace-nowrap"><i class="fas fa-check-double mr-1"></i>${rawKet}</span>`; 
-                }
+async function processDailyExportCustom(btnElement) {
+    const tglDipilih = document.getElementById('tgl_export_harian').value;
+    if (!tglDipilih) { showAlert('error', 'Pilih tanggal dulu!'); return; }
+    
+    let filterKelas = "";
+    if (typeof currentUser !== 'undefined' && currentUser.role === 'guru' && currentUser.kelas) { filterKelas = currentUser.kelas; }
 
-                return `<tr class="hover:bg-gray-50 transition border-b border-gray-100">
-                    <td class="p-3 text-center text-gray-700 font-medium">${new Date(d.tanggal).toLocaleDateString('id-ID', {weekday:'short', day: 'numeric', month: 'short'})}</td>
-                    <td class="p-3 text-center"><span class="${getStatusColor(d.status)} px-2 py-1 rounded-lg text-[10px] font-bold">${d.status}</span></td>
-                    <td class="p-3">${ketHtml}</td>
-                </tr>`;
-            }).join('');
+    const originalText = btnElement.innerHTML;
+    btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+    btnElement.disabled = true;
+
+    try {
+        const res = await fetchAPI('tarikDataExcelHarian', { tglString: tglDipilih, filterKelas: filterKelas });
+        btnElement.innerHTML = originalText; btnElement.disabled = false;
+
+        if (!res || !res.success) { showAlert('error', res ? res.message : 'Gagal mengambil data.'); return; }
+        const data = res.data;
+        if (!data || data.length === 0) { showAlert('warning', 'Tidak ada data presensi pada tanggal tersebut.'); return; }
+
+        let headers = ["No", "NISN", "Nama Siswa", "Kelas", "Jam Datang", "Jam Pulang", "Status", "Keterangan"];
+        let excelRows = [headers];
+
+        data.forEach((row, idx) => {
+            let jd = String(row.jamDatang || "-"); if(jd.length > 5) jd = jd.substring(0, 5);
+            let jp = String(row.jamPulang || "-"); if(jp.length > 5) jp = jp.substring(0, 5);
+            excelRows.push([idx + 1, row.nisn, row.nama, row.kelas, jd, jp, row.status, row.keterangan]);
+        });
+
+        const ws = XLSX.utils.aoa_to_sheet(excelRows);
+        ws['!cols'] = [{wch:5}, {wch:15}, {wch:30}, {wch:10}, {wch:10}, {wch:10}, {wch:10}, {wch:25}];
+        
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Harian");
+        
+        const fileName = `Absensi_${tglDipilih}_${filterKelas || 'Semua'}.xlsx`;
+        XLSX.writeFile(wb, fileName);
+        showAlert('success', 'Download Berhasil!');
+
+    } catch(err) {
+        btnElement.innerHTML = originalText; btnElement.disabled = false;
+        showAlert('error', 'Koneksi Server Gagal: ' + err.message);
+    }
+}
+
+
+// ============================================================
+// LOGIKA KHUSUS MENU SISWA (PROFIL & REKAP PDF)
+// ============================================================
+
+async function showProfilSiswa() {
+    showLoading();
+    let dataSiswa = { nama: currentUser.nama, nisn: currentUser.nisn, kelas: currentUser.kelas, jenisKelamin: '-', tanggalLahir: '-' };
+    try {
+        const result = await fetchAPI('getSiswaList');
+        if (result.success) {
+            const findSiswa = result.data.find(s => s.nisn == currentUser.nisn);
+            if (findSiswa) { dataSiswa = findSiswa; }
         }
+    } catch(e) {}
+    hideLoading();
 
-        async function downloadPDFRekapSiswa() {
-            if(rs_currentData.length === 0) { showAlert('error', 'Tidak ada data untuk diunduh'); return; }
-            
-            const btn = document.getElementById('btnDownloadPDFSiswa');
-            const originalTxt = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Proses PDF...'; btn.disabled = true;
+    const modalContent = `
+    <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-8 max-w-[320px] w-full relative overflow-hidden animate-slide-up mx-auto mt-20 md:mt-0 border border-gray-100">
+        <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-500 bg-gray-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
 
-            try {
-                const blnText = document.getElementById('rs_bulan').options[document.getElementById('rs_bulan').selectedIndex].text;
-                const thnText = document.getElementById('rs_tahun').value;
-                
-                document.getElementById('printLogoSiswa').src = document.querySelector('.dyn-logo').src;
-                document.getElementById('printNamaSekolah').textContent = document.querySelector('.dyn-namasekolah').textContent;
-                document.getElementById('printProvinsi').textContent = document.querySelector('.dyn-provinsi').textContent;
-                
-                document.getElementById('printSiswaNama').textContent = currentUser.nama;
-                document.getElementById('printSiswaNISN').textContent = currentUser.nisn;
-                document.getElementById('printSiswaKelas').textContent = currentUser.kelas;
-                document.getElementById('printSiswaPeriode').textContent = `${blnText} ${thnText}`;
+        <div class="text-center mb-6 mt-2">
+            <div class="w-20 h-20 bg-gradient-to-br from-teal-400 to-emerald-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 border-4 border-teal-50 shadow-md text-3xl">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <h3 class="font-bold text-lg text-gray-800 tracking-tight leading-tight">${dataSiswa.nama}</h3>
+            <p class="text-[10px] font-bold text-teal-600 uppercase tracking-widest mt-1.5 bg-teal-50 inline-block px-3 py-1 rounded-full border border-teal-100">Profil Siswa</p>
+        </div>
 
-                const tbodyPrint = document.getElementById('printTbodyRekapSiswa');
-                tbodyPrint.innerHTML = rs_currentData.map((d, i) => `
-                    <tr>
-                        <td style="border: 1px solid #000; padding: 0px 4px 8px 4px; text-align: center; font-size: 10px;">${i+1}</td>
-                        <td style="border: 1px solid #000; padding: 0px 4px 8px 4px; text-align: center; font-size: 10px;">${new Date(d.tanggal).toLocaleDateString('id-ID', {weekday:'long', day: 'numeric', month: 'long', year: 'numeric'})}</td>
-                        <td style="border: 1px solid #000; padding: 0px 4px 8px 4px; text-align: center; font-weight: bold; font-size: 10px;">${d.status}</td>
-                        <td style="border: 1px solid #000; padding: 0px 4px 8px 4px; text-align: center; font-size: 10px;">${d.keterangan || '-'}</td>
-                    </tr>
-                `).join('');
+        <div class="space-y-2 mb-4">
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="far fa-id-card text-teal-500 w-4 text-center mr-1"></i> NISN</span>
+                <span class="text-sm font-bold text-gray-800 font-mono">${dataSiswa.nisn}</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="fas fa-chalkboard text-teal-500 w-4 text-center mr-1"></i> Kelas</span>
+                <span class="text-sm font-bold text-gray-800">${dataSiswa.kelas}</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="fas fa-venus-mars text-teal-500 w-4 text-center mr-1"></i> L/P</span>
+                <span class="text-sm font-bold text-gray-800">${dataSiswa.jenisKelamin}</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <span class="text-[11px] font-bold text-gray-500 uppercase"><i class="fas fa-birthday-cake text-teal-500 w-4 text-center mr-1"></i> Lahir</span>
+                <span class="text-sm font-bold text-gray-800">${dataSiswa.tanggalLahir || '-'}</span>
+            </div>
+        </div>
+        
+        <button onclick="showUbahPasswordSiswaModal()" class="w-full bg-teal-50 hover:bg-teal-100 text-teal-700 py-3 rounded-xl text-xs font-bold border border-teal-200 transition-colors flex items-center justify-center gap-2 shadow-sm">
+            <i class="fas fa-key"></i> Ubah Password Akun
+        </button>
+    </div>`;
+    showModal(modalContent);
+}
 
-                const printArea = document.getElementById('printAreaRekapSiswa');
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('p', 'mm', 'a4');
-                
-                const canvas = await html2canvas(printArea, { 
-                    scale: 1.5, 
-                    useCORS: true, 
-                    backgroundColor: "#ffffff",
-                    windowWidth: 800
+// LOGIKA MODAL & API UBAH PASSWORD SISWA
+function showUbahPasswordSiswaModal() {
+    // Kita menimpa modal profil dengan modal ganti password
+    const content = `
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full relative overflow-hidden animate-slide-up mx-auto mt-20 md:mt-0">
+        <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-600 bg-gray-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+        <div class="text-center mb-6">
+            <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-sm"><i class="fas fa-user-lock"></i></div>
+            <h3 class="font-bold text-xl text-gray-800">Ubah Password</h3>
+            <p class="text-xs text-gray-500 mt-1">Amankan akun presensi kamu.</p>
+        </div>
+        <form onsubmit="submitUbahPasswordSiswa(event)">
+            <label class="block mb-1 text-xs font-bold text-gray-500 uppercase">Password Lama</label>
+            <div class="relative group mb-4">
+                <input type="password" id="oldPassSiswa" required class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-3 pr-10 transition-all">
+                <button type="button" onclick="toggleInputPass('oldPassSiswa', 'eyeOldPass')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-600"><i class="fas fa-eye" id="eyeOldPass"></i></button>
+            </div>
+            <label class="block mb-1 text-xs font-bold text-gray-500 uppercase">Password Baru</label>
+            <div class="relative group mb-6">
+                <input type="password" id="newPassSiswa" required minlength="6" class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-3 pr-10 transition-all">
+                <button type="button" onclick="toggleInputPass('newPassSiswa', 'eyeNewPass')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-600"><i class="fas fa-eye" id="eyeNewPass"></i></button>
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-bold shadow-lg transition transform active:scale-95">Simpan Password Baru</button>
+        </form>
+    </div>`;
+    showModal(content);
+}
+
+function toggleInputPass(inputId, iconId) {
+    const inp = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    if (inp.type === "password") { inp.type = "text"; icon.classList.replace('fa-eye', 'fa-eye-slash'); } 
+    else { inp.type = "password"; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
+}
+
+async function submitUbahPasswordSiswa(e) {
+    e.preventDefault();
+    const oldPass = document.getElementById('oldPassSiswa').value;
+    const newPass = document.getElementById('newPassSiswa').value;
+    
+    showLoading();
+    try {
+        const res = await fetchAPI('changeSiswaPassword', { token: currentUser.token, oldPass: oldPass, newPass: newPass });
+        hideLoading();
+        // Ganti baris di submitUbahPasswordSiswa:
+        if(res.success) {
+            showAlert('success', res.message);
+            closeModal(); // <--- Ganti showProfilSiswa() jadi closeModal()
+        } else {
+            showAlert('error', res.message);
+        }
+    } catch(err) {
+        hideLoading();
+        showAlert('error', 'Koneksi error: ' + err);
+    }
+}
+
+
+
+let rs_currentData = []; // Simpan data sementara untuk PDF
+
+function loadRekapSiswa() {
+    stopAndBack(false); setActiveMenu('Rekap Presensi'); showView('view-rekap-siswa');
+    
+    const curDate = new Date();
+    const yearInput = document.getElementById('rs_tahun');
+    if(yearInput && !yearInput.value) yearInput.value = curDate.getFullYear();
+    
+    const monthSelect = document.getElementById('rs_bulan');
+    if(monthSelect && monthSelect.options.length === 0) {
+        const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        months.forEach((m, i) => { monthSelect.innerHTML += `<option value="${i+1}" ${i === curDate.getMonth() ? 'selected' : ''}>${m}</option>`; });
+    }
+    document.getElementById('rs_result').classList.add('hidden');
+}
+
+async function cariRekapSiswa() {
+    const bln = document.getElementById('rs_bulan').value;
+    const thn = document.getElementById('rs_tahun').value;
+    if(!bln || !thn) return;
+
+    document.getElementById('rs_result').classList.add('hidden');
+    document.getElementById('rs_loading').classList.remove('hidden');
+
+    const startStr = `${thn}-${String(bln).padStart(2,'0')}-01`;
+    const lastDay = new Date(thn, bln, 0).getDate();
+    const endStr = `${thn}-${String(bln).padStart(2,'0')}-${lastDay}`;
+
+    try {
+        const filter = { tanggalMulai: startStr, tanggalAkhir: endStr, kelas: currentUser.kelas };
+        const res = await fetchAPI('getAbsensiList', { filter: filter });
+        
+        document.getElementById('rs_loading').classList.add('hidden');
+        document.getElementById('rs_result').classList.remove('hidden');
+
+        if(res.success) {
+            // Saring agar hanya menampilkan absensi milik siswa yang sedang login
+            rs_currentData = res.data.filter(d => d.nisn == currentUser.nisn);
+            renderTabelRekapSiswa(rs_currentData);
+        } else {
+            rs_currentData = []; renderTabelRekapSiswa([]);
+        }
+    } catch(e) {
+        document.getElementById('rs_loading').classList.add('hidden');
+        showAlert('error', 'Gagal memuat rekap server.');
+    }
+}
+
+function renderTabelRekapSiswa(data) {
+    const tbody = document.getElementById('tbody-rekap-siswa');
+    if(data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="p-5 text-center text-gray-400 italic">Tidak ada data kehadiran bulan ini.</td></tr>';
+        return;
+    }
+    
+    data.sort((a,b) => new Date(a.tanggal) - new Date(b.tanggal));
+    
+    const getStatusColor = (s) => { 
+        if(s === 'Hadir') return 'bg-green-100 text-green-700'; 
+        if(s === 'Izin') return 'bg-blue-100 text-blue-700'; 
+        if(s === 'Sakit') return 'bg-yellow-100 text-yellow-700'; 
+        if(s === 'Alpa') return 'bg-red-100 text-red-700'; return 'bg-gray-100 text-gray-600'; 
+    };
+
+    tbody.innerHTML = data.map(d => {
+        // [PERBAIKAN] Pastikan dibaca sebagai string
+        let rawKet = String(d.keterangan || "-");
+        let ketHtml = `<span class="text-gray-400 font-mono text-[10px]">${rawKet}</span>`; 
+
+        // LOGIKA TOMBOL WFH (Sama persis dengan Admin)
+        // LOGIKA RENDER FOTO WFH (Mendukung Multi-Foto Pagi/Sore)
+        if (rawKet.includes("Maps:") && rawKet.includes("Foto:")) {
+            const wfhSessions = rawKet.split('||'); // Pisahkan Pagi dan Sore
+            ketHtml = `<div class="flex flex-col items-start gap-2">`; // Container
+
+            wfhSessions.forEach(session => {
+                const parts = session.split('|');
+                let mapsLink = "", fotoLink = "", statusWfh = "";
+
+                parts.forEach(p => {
+                    if(p.includes("Maps:")) mapsLink = p.replace('Maps:', '').trim();
+                    else if(p.includes("Foto:")) fotoLink = p.replace('Foto:', '').trim();
+                    else if(p.trim() !== "" && !p.includes("Akurasi:")) statusWfh = p.trim(); 
                 });
                 
-                const imgData = canvas.toDataURL('image/jpeg', 0.6);
+                // Hilangkan teks tersembunyi [LAT..] di tampilan
+                statusWfh = statusWfh.replace(/\[LAT:.*\]/, '').trim();
+
+                let badgeHtml = "";
+                if(statusWfh.includes("Terlambat")) {
+                    badgeHtml = `<span class="text-rose-600 font-bold bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100 text-[9px]"><i class="fas fa-history"></i> ${statusWfh}</span>`;
+                } else {
+                    badgeHtml = `<span class="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 text-[9px]"><i class="fas fa-check-double"></i> ${statusWfh}</span>`;
+                }
+
+                ketHtml += `
+                <div class="flex flex-col items-start gap-1 p-1.5 bg-gray-50 rounded-lg w-full">
+                    ${badgeHtml}
+                    <div class="flex gap-1 mt-0.5 w-full">
+                        <a href="${fotoLink}" target="_blank" class="flex-1 text-center bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-200 py-1 rounded text-[9px] font-bold transition shadow-sm"><i class="fas fa-image"></i> Foto</a>
+                        <a href="${mapsLink}" target="_blank" class="flex-1 text-center bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border border-rose-200 py-1 rounded text-[9px] font-bold transition shadow-sm"><i class="fas fa-map-marker-alt"></i> Map</a>
+                    </div>
+                </div>`;
+            });
+            ketHtml += `</div>`;
+        } 
+        else if (rawKet.includes("Terlambat")) { 
+            ketHtml = `<span class="text-rose-600 font-bold bg-rose-50 px-2 py-1 rounded border border-rose-100 text-[10px] whitespace-nowrap"><i class="fas fa-history mr-1"></i>${rawKet}</span>`; 
+        }  
+        else if (rawKet.includes("Pulang Cepat")) { 
+            ketHtml = `<span class="text-orange-600 font-bold bg-orange-50 px-2 py-1 rounded border border-orange-100 text-[10px] whitespace-nowrap"><i class="fas fa-running mr-1"></i>${rawKet}</span>`; 
+        } 
+        else if (rawKet === "Tepat Waktu") { 
+            ketHtml = `<span class="text-emerald-600 font-bold text-[10px] whitespace-nowrap"><i class="fas fa-check-double mr-1"></i>${rawKet}</span>`; 
+        } else {
+            ketHtml = `<span class="text-gray-400 font-mono text-[10px]">${rawKet}</span>`;
+        }
+
+        return `<tr class="hover:bg-gray-50 transition border-b border-gray-100">
+            <td class="p-3 text-center text-gray-700 font-medium">${new Date(d.tanggal).toLocaleDateString('id-ID', {weekday:'short', day: 'numeric', month: 'short'})}</td>
+            <td class="p-3 text-center"><span class="${getStatusColor(d.status)} px-2 py-1 rounded-lg text-[10px] font-bold">${d.status}</span></td>
+            <td class="p-3">${ketHtml}</td>
+        </tr>`;
+    }).join('');
+}
+
+async function downloadPDFRekapSiswa() {
+    if(rs_currentData.length === 0) { showAlert('error', 'Tidak ada data untuk diunduh'); return; }
+    
+    const btn = document.getElementById('btnDownloadPDFSiswa');
+    const originalTxt = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Proses PDF...'; btn.disabled = true;
+
+    try {
+        const blnText = document.getElementById('rs_bulan').options[document.getElementById('rs_bulan').selectedIndex].text;
+        const thnText = document.getElementById('rs_tahun').value;
+        
+        // Ambil Data Kop Surat dari Header yang sudah terisi
+        document.getElementById('printLogoSiswa').src = document.querySelector('.dyn-logo').src;
+        document.getElementById('printNamaSekolah').textContent = document.querySelector('.dyn-namasekolah').textContent;
+        document.getElementById('printProvinsi').textContent = document.querySelector('.dyn-provinsi').textContent;
+        
+        // Isi Identitas
+        document.getElementById('printSiswaNama').textContent = currentUser.nama;
+        document.getElementById('printSiswaNISN').textContent = currentUser.nisn;
+        document.getElementById('printSiswaKelas').textContent = currentUser.kelas;
+        document.getElementById('printSiswaPeriode').textContent = `${blnText} ${thnText}`;
+
+
+    // Isi Tabel Print (Font 10px dan padding bawah 8px agar muat 31 hari)
+        const tbodyPrint = document.getElementById('printTbodyRekapSiswa');
+        tbodyPrint.innerHTML = rs_currentData.map((d, i) => `
+            <tr>
+                <td style="border: 1px solid #000; padding: 0px 4px 8px 4px; text-align: center; font-size: 10px;">${i+1}</td>
+                <td style="border: 1px solid #000; padding: 0px 4px 8px 4px; text-align: center; font-size: 10px;">${new Date(d.tanggal).toLocaleDateString('id-ID', {weekday:'long', day: 'numeric', month: 'long', year: 'numeric'})}</td>
+                <td style="border: 1px solid #000; padding: 0px 4px 8px 4px; text-align: center; font-weight: bold; font-size: 10px;">${d.status}</td>
+                <td style="border: 1px solid #000; padding: 0px 4px 8px 4px; text-align: center; font-size: 10px;">${d.keterangan || '-'}</td>
+            </tr>
+        `).join('');
+
+        const printArea = document.getElementById('printAreaRekapSiswa');
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4');
+        
+        // Render Element dengan scale diturunkan jadi 1.5 agar hemat ukuran
+        const canvas = await html2canvas(printArea, { 
+            scale: 1.5, 
+            useCORS: true, 
+            backgroundColor: "#ffffff",
+            windowWidth: 800
+        });
+        
+        // UBAH FORMAT KE JPEG (Kompresi 60%) - Ini kunci agar file menjadi < 500KB
+        const imgData = canvas.toDataURL('image/jpeg', 0.6);
+        
+        const pdfWidth = 210; 
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        
+        // Gunakan parameter 'JPEG' untuk menyuntikkan gambar ke doc
+        doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        doc.save(`Rekap_Absen_${currentUser.nama}_${blnText}_${thnText}.pdf`);
+        
+        showAlert('success', 'PDF Berhasil Diunduh!');
+    } catch (error) {
+        showAlert('error', 'Gagal membuat PDF. Coba kembali.');
+    } finally {
+        btn.innerHTML = originalTxt; btn.disabled = false;
+    }
+}
+
+// ============================================================
+// FITUR: CETAK SEMUA KARTU SISWA (A4, 3x3 COLUMNS, COLOR) - FIXED PROPORTION
+// ============================================================
+async function cetakSemuaKartuSiswa() {
+    const dataToPrint = tableState.siswa.filtered;
+    
+    if (!dataToPrint || dataToPrint.length === 0) {
+        showAlert('error', 'Tidak ada data siswa untuk dicetak. Hapus filter pencarian jika perlu.');
+        return;
+    }
+
+    showLoading();
+
+    try {
+        const dataServer = await fetchAPI('getCardDataServer');
+        const logoBase64 = dataServer.logo;
+        const logoInstansiBase64 = dataServer.logoInstansi;
+        const namaSekolah = dataServer.sekolah;
+        const namaInstansi = dataServer.instansi;
+        
+        let container = document.getElementById('hiddenCardFactory');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'hiddenCardFactory';
+            container.style.cssText = 'position: fixed; top: 0; left: -9999px; z-index: -9999; pointer-events: none; background: white;';
+            document.body.appendChild(container);
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4');
+
+        const cardW = 54; 
+        const cardH = 86; 
+        const marginX = (210 - (3 * cardW)) / 4; 
+        const marginY = (297 - (3 * cardH)) / 4; 
+
+        for (let i = 0; i < dataToPrint.length; i++) {
+            const siswa = dataToPrint[i];
+
+            document.getElementById('loadingText').innerHTML = `Memproses Kartu... <br><span class="text-[10px] text-gray-500 font-normal">${i + 1} dari ${dataToPrint.length} Siswa</span>`;
+
+            // Struktur HTML disamakan: Menggunakan Flexbox, Header dinamis, Body adaptif
+            container.innerHTML = `
+            <div id="printCardTemplate" style="width: 320px; height: 510px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; position: relative; font-family: sans-serif; box-sizing: border-box; display: flex; flex-direction: column;">
                 
-                const pdfWidth = 210; 
-                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                
-                doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-                doc.save(`Rekap_Absen_${currentUser.nama}_${blnText}_${thnText}.pdf`);
-                
-                showAlert('success', 'PDF Berhasil Diunduh!');
-            } catch (error) {
-                showAlert('error', 'Gagal membuat PDF. Coba kembali.');
-            } finally {
-                btn.innerHTML = originalTxt; btn.disabled = false;
+                <div style="background: #312e81; padding: 25px 15px 15px 15px; text-align: center; color: white; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 160px;">
+                    <div style="display: flex; gap: 15px; margin-bottom: 10px; justify-content: center;">
+                        <img src="${logoInstansiBase64}" style="height: 40px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                        <img src="${logoBase64}" style="height: 40px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                    </div>
+                    <div style="font-weight: 700; font-size: 10px; text-transform: uppercase; margin-bottom: 3px; opacity: 0.9; letter-spacing: 0.5px;">${namaInstansi}</div>
+                    <div style="font-weight: 900; font-size: 13px; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; line-height: 1.4; padding: 0 5px; word-wrap: break-word;">${namaSekolah}</div>
+                    <div style="font-size: 8px; text-transform: uppercase; letter-spacing: 1.5px; color: #cbd5e1; font-weight: 600;">KARTU PRESENSI DIGITAL</div>
+                </div>
+
+                <div style="flex: 1; padding: 15px 20px; text-align: center; background: white; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div style="width: 130px; height: 130px; margin: 0 auto 10px auto; padding: 8px; background: white; border: 1px solid #f3f4f6; border-radius: 10px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); box-sizing: border-box;">
+                        <div id="hiddenQrTarget" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    
+                    <div style="font-size: 16px; font-weight: 800; color: #1f2937; margin-bottom: 2px; line-height: 1.2;">${siswa.nama}</div>
+                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 10px; font-family: monospace;">${siswa.nisn}</div>
+                    
+                    <div style="margin-bottom: auto;">
+                        <span style="background: #eef2ff; color: #4f46e5; padding: 6px 16px; border-radius: 99px; font-size: 11px; font-weight: 800; text-transform: uppercase; border: 1px solid #e0e7ff;">${siswa.kelas}</span>
+                    </div>
+                    
+                    <div style="width: 100%; border-top: 2px dashed #f3f4f6; padding-top: 10px; font-size: 9px; color: #9ca3af; display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span>ID: ${siswa.nisn}</span>
+                        <span>VALID: ${new Date().getFullYear()}</span>
+                    </div>
+                </div>
+            </div>`;
+
+            const qrTarget = document.getElementById('hiddenQrTarget');
+            new QRCode(qrTarget, { text: String(siswa.nisn), width: 124, height: 124, correctLevel : QRCode.CorrectLevel.H });
+            
+            await new Promise(resolve => setTimeout(resolve, 150));
+
+            const cardEl = document.getElementById('printCardTemplate');
+            const canvas = await html2canvas(cardEl, { scale: 3, useCORS: true, backgroundColor: "#ffffff", logging: false });
+            
+            const imgData = canvas.toDataURL('image/jpeg', 1.0); 
+
+            const col = i % 3;
+            const row = Math.floor((i % 9) / 3);
+            const x = marginX + col * (cardW + marginX);
+            const y = marginY + row * (cardH + marginY);
+
+            doc.addImage(imgData, 'JPEG', x, y, cardW, cardH);
+
+            if ((i + 1) % 9 === 0 && i !== dataToPrint.length - 1) {
+                doc.addPage();
             }
         }
 
-        // MOBILE LOGIN UI LOGIC
-        function showMobileLogin() {
-            document.getElementById('loginPage').classList.add('mobile-login-active');
+        const pdfFileName = `Cetak_Kartu_Siswa_${new Date().getTime()}.pdf`;
+        doc.save(pdfFileName);
+        
+        showAlert('success', 'PDF berhasil diunduh dengan proporsi nama sekolah yang lebih baik!');
+
+    } catch (error) {
+        console.error("Error Cetak PDF:", error);
+        showAlert('error', 'Gagal mencetak kartu: ' + error.message);
+    } finally {
+        hideLoading();
+    }
+}
+
+// ============================================================
+// [BARU] LOGIKA UPLOAD & CROP LOGO 1:1
+//============================================================
+
+let cropperInstance = null;
+        let targetCropInput = '';
+        let targetCropPreview = '';
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const dateInput = document.getElementById('tgl_export_harian');
+            if (dateInput) {
+                const d = new Date();
+                dateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            }
+            
+            // Reusable function untuk handle upload logo
+            function setupLogoUpload(inputId, hiddenInputId, previewId) {
+                const fileInput = document.getElementById(inputId);
+                if(fileInput) {
+                    fileInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            if(file.size > 2 * 1024 * 1024) { showAlert('error', 'Ukuran maksimal 2MB!'); this.value = ''; return; }
+                            targetCropInput = hiddenInputId;
+                            targetCropPreview = previewId;
+                            const reader = new FileReader();
+                            reader.onload = function(event) { openCropModal(event.target.result); };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
+            }
+
+            setupLogoUpload('inputLogoFile', 'finalLogoData', 'previewLogoSetting');
+            setupLogoUpload('inputLogoInstansiFile', 'finalLogoInstansiData', 'previewLogoInstansiSetting');
+            
+            initAppConfigs();
+            checkSession();
+        });
+
+        function openCropModal(imageSrc) {
+            const modal = document.getElementById('cropModal');
+            const image = document.getElementById('imageToCrop');
+            modal.classList.remove('hidden');
+            image.src = imageSrc;
+            if (cropperInstance) { cropperInstance.destroy(); }
+            cropperInstance = new Cropper(image, { aspectRatio: 1 / 1, viewMode: 1, background: false, autoCropArea: 0.8, dragMode: 'move' });
         }
 
-        function hideMobileLogin() {
-            document.getElementById('loginPage').classList.remove('mobile-login-active');
+        function closeCropModal() {
+            document.getElementById('cropModal').classList.add('hidden');
+            if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+            document.getElementById('inputLogoFile').value = ''; 
+            document.getElementById('inputLogoInstansiFile').value = ''; 
         }
+
+        function applyCrop() {
+            if (!cropperInstance) return;
+            const canvas = cropperInstance.getCroppedCanvas({ width: 400, height: 400 });
+            const croppedBase64 = canvas.toDataURL('image/png');
+            
+            document.getElementById(targetCropPreview).src = croppedBase64;
+            document.getElementById(targetCropInput).value = croppedBase64;
+            closeCropModal();
+        }
+
+
+let wfhStream = null;
+let currentGPS = { lat: null, lon: null };
+
+
+async function loadAbsenWFH() {
+    stopAndBack(false); 
+    setActiveMenu('Rekam-WFH'); 
+    
+    showView('view-absen-wfh');
+    startWFHCamera();
+    getLocation();
+
+    try {
+        const cek = await fetchAPI('cekWFHToday');
+
+        if (cek) {
+            if (cek.isLibur) {
+                // JIKA HARI LIBUR / HARI MINGGU
+                if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
+                Swal.fire({
+                    title: 'Perekaman Ditolak!',
+                    text: `Anda tidak bisa melakukan perekaman karena hari ini adalah Hari Libur (${cek.keterangan}).`,
+                    icon: 'error',
+                    confirmButtonColor: '#4f46e5'
+                }).then(() => {
+                    loadSiswaDashboard(); 
+                });
+            } else if (cek.isWFH) {
+                // JIKA JADWAL WFH BENAR
+                const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+                Toast.fire({ icon: 'info', title: cek.keterangan });
+            } else {
+                // JIKA HARI BIASA
+                if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
+                Swal.fire({
+                    title: 'Akses Ditolak!',
+                    text: 'Hari ini bukan jadwal WFH. Silakan lakukan presensi scan QR di sekolah.',
+                    icon: 'error',
+                    confirmButtonColor: '#4f46e5'
+                }).then(() => {
+                    loadSiswaDashboard(); 
+                });
+            }
+        }
+    } catch (e) {
+        if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
+        showAlert('error', 'Gagal mengecek jadwal ke server.');
+        loadSiswaDashboard();
+    }
+}
+
+function getLocation() {
+    const gpsText = document.getElementById('gpsLocationText');
+    if (navigator.geolocation) {
+        gpsText.innerHTML = `<i class="fas fa-spinner fa-spin text-indigo-500"></i> Memeriksa sensor lokasi...`;
+        
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const acc = position.coords.accuracy; // Tingkat akurasi
+                
+                // --- [BARU] PERANGKAP ANTI-FAKE GPS (DILONGGARKAN) ---
+                // Hanya mendeteksi pola angka bulat buatan aplikasi tuyul (10, 20, 65, 100)
+                // Siswa bebas absen di dalam ruangan walau akurasi ratusan meter
+                if (acc === 10 || acc === 20 || acc === 65 || acc === 100 || (acc % 10 === 0 && acc > 5)) {
+                    gpsText.innerHTML = `<span class="text-rose-600 font-bold"><i class="fas fa-ban"></i> Terdeteksi Fake GPS / Mock Location!</span>`;
+                    currentGPS.lat = null; currentGPS.lon = null;
+                    
+                    Swal.fire('Peringatan!', 'Harap matikan aplikasi Fake GPS / Lokasi Palsu Anda sebelum melakukan presensi.', 'error');
+                    checkWFHReady();
+                    return;
+                }
+                // ----------------------------------------------------
+
+                currentGPS.lat = lat;
+                currentGPS.lon = lon;
+                currentGPS.acc = Math.round(acc); 
+                
+                gpsText.innerHTML = `${lat.toFixed(5)}, ${lon.toFixed(5)} <br><span class="text-[9px] text-green-600">Akurasi: ${Math.round(acc)}m <i class="fas fa-check-circle"></i></span>`;
+                checkWFHReady();
+            },
+            (error) => {
+                let errMsg = "Izin Lokasi Ditolak!";
+                if (error.code === 2) errMsg = "Sinyal GPS mati / tidak ditemukan.";
+                else if (error.code === 3) errMsg = "Timeout pencarian lokasi.";
+                
+                gpsText.innerHTML = `<span class="text-red-500 font-bold"><i class="fas fa-exclamation-triangle"></i> ${errMsg}</span>`;
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 } 
+        );
+    } else {
+        gpsText.innerHTML = "GPS tidak didukung browser ini.";
+    }
+}
+
+async function startWFHCamera() {
+    const video = document.getElementById('wfhVideo');
+    const preview = document.getElementById('wfhPreview');
+    const loading = document.getElementById('wfhLoading');
+    
+    video.classList.remove('hidden');
+    preview.classList.add('hidden');
+    loading.classList.remove('hidden');
+    document.getElementById('wfhLoadingText').innerText = "Menyiapkan Kamera...";
+
+    if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
+
+    try {
+        wfhStream = await navigator.mediaDevices.getUserMedia({ 
+            video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } }, 
+            audio: false 
+        });
+        video.srcObject = wfhStream;
+        video.onloadedmetadata = () => { video.play(); loading.classList.add('hidden'); checkWFHReady(); };
+    } catch (err) {
+        loading.classList.remove('hidden');
+        document.getElementById('wfhLoadingText').innerHTML = `<span class="text-red-400">Kamera error/ditolak.</span>`;
+    }
+}
+
+function checkWFHReady() {
+    const btn = document.getElementById('btnCaptureWFH');
+    if (wfhStream && currentGPS.lat) { btn.disabled = false; } 
+    else { btn.disabled = true; }
+}
+
+async function captureAndSendWFH() {
+    const video = document.getElementById('wfhVideo');
+    const preview = document.getElementById('wfhPreview');
+    const btn = document.getElementById('btnCaptureWFH');
+    
+    // 1. Matikan tombol agar tidak di-klik 2x
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengompres...';
+
+    // 2. Buat Canvas untuk Kompresi Ekstrem (< 50KB)
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // KITA SET LEBAR MAX 240px (Sangat kecil tapi masih terlihat wajah)
+    const MAX_WIDTH = 240; 
+    const scaleSize = MAX_WIDTH / video.videoWidth;
+    canvas.width = MAX_WIDTH;
+    canvas.height = video.videoHeight * scaleSize;
+    
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    // EKSEKUSI KOMPRESI: Format JPEG, Kualitas 0.3 (Sangat Rendah = Sangat Ringan)
+    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.3);
+
+    // Tampilkan preview gambar statis & matikan stream kamera
+    preview.src = compressedBase64;
+    video.classList.add('hidden');
+    preview.classList.remove('hidden');
+    if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
+
+    // 3. Kirim ke Backend
+    btn.innerHTML = '<i class="fas fa-paper-plane animate-pulse"></i> Mengirim Data...';
+    showLoading(); // Tampilkan loading overlay utama
+
+    try {
+        const res = await fetchAPI('absenWFH', {
+            token: currentUser.token,
+            nisn: currentUser.nisn,
+            foto: compressedBase64,
+            lokasi: currentGPS
+        });
+
+        hideLoading();
+        if (res.success) {
+            showAlert('success', 'Rekam Kehadiran WFH Berhasil Pukul ' + res.waktu);
+            setTimeout(() => { loadSiswaDashboard(); }, 2000); // Balik ke Home
+        } else {
+            showAlert('error', res.message);
+            btn.innerHTML = '<i class="fas fa-camera"></i> Coba Lagi';
+            btn.disabled = false;
+        }
+    } catch (error) {
+        hideLoading();
+        showAlert('error', 'Gagal koneksi server!');
+        btn.innerHTML = '<i class="fas fa-camera"></i> Coba Lagi';
+        btn.disabled = false;
+    }
+}
+
+function renderWfhRows(data, startIdx) {
+    const tbody = document.getElementById('tbody-wfh');
+    if (data.length === 0) { 
+        tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-400 italic">Tidak ada jadwal WFH terdaftar.</td></tr>'; 
+        return; 
+    }
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    tbody.innerHTML = data.map((item, i) => `
+        <tr class="hover:bg-gray-50 border-b border-gray-50 transition group">
+            <td class="p-4 text-center text-gray-500">${startIdx + i + 1}</td>
+            <td class="p-4 font-mono font-medium text-indigo-700">${new Date(item.tanggal).toLocaleDateString('id-ID', options)}</td>
+            <td class="p-4 font-bold text-gray-700">${item.keterangan}</td>
+            <td class="p-4 text-center"><button onclick="deleteWfhConfirm('${item.tanggal}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition opacity-80 group-hover:opacity-100"><i class="fas fa-trash"></i></button></td>
+        </tr>`).join('');
+}
+
+async function handleAddWfh(e) {
+    e.preventDefault(); showLoading(); const fd = new FormData(e.target);
+    try {
+        const res = await fetchAPI('addJadwalWFH', { tanggal: fd.get('tanggal'), keterangan: fd.get('keterangan') });
+        hideLoading(); 
+        if (res.success) { e.target.reset(); loadKelolaAbsen(); showAlert('success', 'Jadwal WFH ditambahkan'); } 
+        else showAlert('error', res.message);
+    } catch(err) { hideLoading(); }
+}
+
+async function deleteWfhConfirm(tgl) {
+    if (confirm('Hapus jadwal WFH ini?')) { 
+        showLoading(); 
+        try {
+            await fetchAPI('deleteJadwalWFH', { tanggal: tgl });
+            hideLoading(); loadKelolaAbsen(); showAlert('success', 'Jadwal WFH dihapus');
+        } catch(e) {}
+    }
+}
+
+function togglePasswordSiswa() {
+    const pwd = document.getElementById('passwordSiswa');
+    const icon = document.getElementById('toggleSiswaPassIcon');
+    if (pwd.type === 'password') { pwd.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash'); } 
+    else { pwd.type = 'password'; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
+}
+
+// ============================================================
+// LOGIKA TAMPILAN LOGIN KHUSUS MOBILE 111
+// ============================================================
+function showMobileLogin() {
+    // Menambahkan class pada container utama untuk men-trigger CSS yang kita buat
+    document.getElementById('loginPage').classList.add('mobile-login-active');
+}
+
+function hideMobileLogin() {
+    // Menghapus class untuk mengembalikan ke tampilan branding
+    document.getElementById('loginPage').classList.remove('mobile-login-active');
+}
 
 </script>
 </body>
