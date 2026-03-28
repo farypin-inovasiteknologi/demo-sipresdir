@@ -4239,17 +4239,55 @@ async function loadAbsenWFH() {
 function getLocation() {
     const gpsText = document.getElementById('gpsLocationText');
     if (navigator.geolocation) {
+        // Tampilkan loading saat sedang mencari satelit
+        gpsText.innerHTML = `<i class="fas fa-spinner fa-spin text-indigo-500"></i> Memeriksa sensor lokasi...`;
+        
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                currentGPS.lat = position.coords.latitude;
-                currentGPS.lon = position.coords.longitude;
-                gpsText.innerHTML = `${currentGPS.lat.toFixed(5)}, ${currentGPS.lon.toFixed(5)} <i class="fas fa-check-circle text-green-500 ml-1"></i>`;
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const acc = position.coords.accuracy; // Tingkat akurasi dalam meter
+                
+                // --- [BARU] PERANGKAP ANTI-FAKE GPS ---
+                
+                // 1. Jika akurasi lebih dari 100 meter (Sinyal jelek/manipulasi)
+                if (acc > 100) {
+                    gpsText.innerHTML = `<span class="text-red-500 font-bold"><i class="fas fa-exclamation-triangle"></i> Sinyal Lemah (${Math.round(acc)}m). Pindah ke ruang terbuka!</span>`;
+                    currentGPS.lat = null; currentGPS.lon = null;
+                    checkWFHReady();
+                    return;
+                }
+                
+                // 2. Deteksi Angka Bulat Khas Fake GPS (10, 20, 65, 100)
+                // Fake GPS di PlayStore sering menggunakan angka akurasi hardcode ini
+                if (acc === 10 || acc === 20 || acc === 65 || acc === 100 || (acc % 10 === 0 && acc > 5)) {
+                    gpsText.innerHTML = `<span class="text-rose-600 font-bold"><i class="fas fa-ban"></i> Terdeteksi Fake GPS / Mock Location!</span>`;
+                    currentGPS.lat = null; currentGPS.lon = null;
+                    
+                    // Opsional: Munculkan popup peringatan keras
+                    Swal.fire('Peringatan!', 'Harap matikan aplikasi Fake GPS / Lokasi Palsu Anda sebelum melakukan presensi.', 'error');
+                    checkWFHReady();
+                    return;
+                }
+                // ----------------------------------------
+
+                currentGPS.lat = lat;
+                currentGPS.lon = lon;
+                currentGPS.acc = Math.round(acc); // Simpan data akurasi untuk dikirim ke server
+                
+                gpsText.innerHTML = `${lat.toFixed(5)}, ${lon.toFixed(5)} <br><span class="text-[9px] text-green-600">Akurasi: ${Math.round(acc)}m <i class="fas fa-check-circle"></i></span>`;
                 checkWFHReady();
             },
             (error) => {
-                gpsText.innerHTML = `<span class="text-red-500"><i class="fas fa-exclamation-triangle"></i> Izin Lokasi Ditolak!</span>`;
+                let errMsg = "Izin Lokasi Ditolak!";
+                if (error.code === 2) errMsg = "Sinyal GPS mati / tidak ditemukan.";
+                else if (error.code === 3) errMsg = "Timeout pencarian lokasi.";
+                
+                gpsText.innerHTML = `<span class="text-red-500 font-bold"><i class="fas fa-exclamation-triangle"></i> ${errMsg}</span>`;
             },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            // maximumAge: 0 = Mencegah browser menggunakan lokasi history/cache
+            // enableHighAccuracy: true = Memaksa HP menyalakan chip GPS aslinya
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 } 
         );
     } else {
         gpsText.innerHTML = "GPS tidak didukung browser ini.";
