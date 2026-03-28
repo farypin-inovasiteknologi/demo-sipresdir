@@ -2153,25 +2153,43 @@
 
         function renderSiswaRows(data, startIdx) {
             const tbody = document.getElementById('tbody-siswa');
-            if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Data tidak ditemukan.</td></tr>'; return; }
-            tbody.innerHTML = data.map((siswa, i) => `
-            <tr class="hover:bg-gray-50 transition border-b border-gray-50 group">
-                <td class="p-4 text-center text-gray-500 text-sm">${startIdx + i + 1}</td>
-                <td class="p-4"><div class="flex items-center"><div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold mr-3">${siswa.nama.charAt(0)}</div><div><div class="font-bold text-sm text-gray-900">${siswa.nama}</div><div class="text-xs text-gray-500 md:hidden">${siswa.nisn}</div></div></div></td>
-                <td class="p-4 hidden md:table-cell text-sm text-gray-600 font-mono">${siswa.nisn}</td>
-                <td class="p-4 hidden sm:table-cell"><span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-bold">${siswa.kelas}</span></td>
-                <td class="p-4 text-center">
-                    <div class="flex justify-center space-x-2 opacity-80 group-hover:opacity-100">
-                        <button onclick='viewSiswa(${JSON.stringify(siswa)})' class="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 transition"><i class="fas fa-eye"></i></button>
-                        <button onclick='editSiswa(${JSON.stringify(siswa)})' class="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition"><i class="fas fa-edit"></i></button>
-                        <button onclick="resetPasswordSiswaConfirm('${siswa.nisn}', '${siswa.nama}')" class="p-2 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition" title="Reset Password"><i class="fas fa-key"></i></button>
-                        <button onclick="deleteSiswaConfirm('${siswa.nisn}', '${siswa.nama}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition"><i class="fas fa-trash"></i></button>
-                        <button onclick="generateQRForSiswa('${siswa.nisn}', '${siswa.nama}', '${siswa.kelas}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition"><i class="fas fa-qrcode"></i></button>
-                    </div>
-                </td>
-            </tr>`).join('');
+            if (data.length === 0) { 
+                tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Data tidak ditemukan.</td></tr>'; 
+                return; 
+            }
+            tbody.innerHTML = data.map((siswa, i) => {
+                // [PERBAIKAN BUG] Encode tanda kutip agar tombol HTML tidak rusak!
+                const siswaStr = JSON.stringify(siswa).replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                const safeNama = String(siswa.nama).replace(/'/g, "\\'");
+                
+                return `
+                <tr class="hover:bg-gray-50 transition border-b border-gray-50 group">
+                    <td class="p-4 text-center text-gray-500 text-sm">${startIdx + i + 1}</td>
+                    <td class="p-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold mr-3">${siswa.nama.charAt(0)}</div>
+                            <div>
+                                <div class="font-bold text-sm text-gray-900">${siswa.nama}</div>
+                                <div class="text-xs text-gray-500 md:hidden">${siswa.nisn}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-4 hidden md:table-cell text-sm text-gray-600 font-mono">${siswa.nisn}</td>
+                    <td class="p-4 hidden sm:table-cell"><span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-bold">${siswa.kelas}</span></td>
+                    <td class="p-4 text-center">
+                        <div class="flex justify-center space-x-2 opacity-80 group-hover:opacity-100">
+                            <button onclick="viewSiswa(${siswaStr})" class="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 transition"><i class="fas fa-eye"></i></button>
+                            <button onclick="editSiswa(${siswaStr})" class="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition"><i class="fas fa-edit"></i></button>
+                            <button onclick="resetPasswordSiswaConfirm('${siswa.nisn}', '${safeNama}')" class="p-2 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition" title="Reset Password"><i class="fas fa-key"></i></button>
+                            <button onclick="deleteSiswaConfirm('${siswa.nisn}', '${safeNama}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition"><i class="fas fa-trash"></i></button>
+                            <button onclick="generateQRForSiswa('${siswa.nisn}', '${safeNama}', '${siswa.kelas}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition"><i class="fas fa-qrcode"></i></button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
         }
 
+        
         async function saveSiswa(e, isEdit) {
             e.preventDefault(); showLoading();
             const fd = new FormData(e.target); let tgl = fd.get('tanggalLahir');
