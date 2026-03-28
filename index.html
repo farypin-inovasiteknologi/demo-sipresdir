@@ -790,7 +790,7 @@
         <div class="lg:col-span-2">
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full">
                 <div class="p-5 border-b border-gray-100 bg-gray-50/30 flex justify-between items-end">
-                    <div><h3 class="font-bold text-gray-800">Daftar Hari Libur</h3><p class="text-xs text-gray-500 mt-1">Siswa tidak bisa absen pada tanggal ini.</p></div>
+                    <div><h3 class="font-bold text-gray-800">Daftar Hari Libur</h3><p class="text-xs text-gray-500 mt-1">Siswa tidak bisa rekam kehadiran pada tanggal ini.</p></div>
                 </div>
                 <div class="p-5 border-b border-gray-100">
                     <form onsubmit="handleAddLibur(event)" class="flex flex-col md:flex-row gap-3 items-end">
@@ -823,7 +823,7 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-24">
                 <div class="p-5 border-b border-gray-100 bg-purple-50/50">
                     <h3 class="font-bold text-gray-800 flex items-center"><i class="fas fa-home text-purple-600 mr-2"></i> Waktu WFH</h3>
-                    <p class="text-xs text-gray-500 mt-1">Konfigurasi jam absen dari rumah.</p>
+                    <p class="text-xs text-gray-500 mt-1">Konfigurasi jam perekaman kehadiran dari rumah.</p>
                 </div>
                 <div class="p-5">
                     <div class="space-y-4">
@@ -833,7 +833,7 @@
                                 <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Mulai Buka</label><input type="time" id="conf_wfh_masuk_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-purple-500 focus:border-purple-500"></div>
                                 <div><label class="block text-[10px] font-bold text-gray-700 mb-1">Batas Terlambat</label><input type="time" id="conf_wfh_masuk_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-purple-500 focus:border-purple-500"></div>
                             </div>
-                            <p class="text-[9px] text-purple-500 mt-1.5"><i class="fas fa-info-circle"></i> Absen ditolak jika melebihi jam Mulai Sore.</p>
+                            <p class="text-[9px] text-purple-500 mt-1.5"><i class="fas fa-info-circle"></i> Rekam kehadiran ditolak jika melebihi jam Mulai Sore.</p>
                         </div>
                         <div class="bg-purple-50/30 p-3 rounded-lg border border-purple-100">
                             <p class="text-[10px] uppercase font-bold text-purple-600 mb-2">Absen Sore (WFH)</p>
@@ -848,12 +848,12 @@
                 </div>
             </div>
         </div>
-        <div class="lg:col-span-2">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full">
+       <div class="lg:col-span-2">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
                 <div class="p-5 border-b border-gray-100 bg-indigo-50/30 flex justify-between items-end">
                     <div>
                         <h3 class="font-bold text-gray-800 text-lg"><i class="fas fa-laptop-house text-indigo-600 mr-2"></i>Daftar Jadwal WFH</h3>
-                        <p class="text-xs text-gray-500 mt-1">Siswa hanya bisa absen kamera pada tanggal ini.</p>
+                        <p class="text-xs text-gray-500 mt-1">Siswa hanya bisa rekam kehadiran WFH pada tanggal ini.</p>
                     </div>
                 </div>
                 <div class="p-5 border-b border-gray-100">
@@ -869,7 +869,7 @@
                         <button type="submit" class="bg-indigo-600 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 transition w-full md:w-auto"><i class="fas fa-plus mr-1"></i> Tambah</button>
                     </form>
                 </div>
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto flex-1">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-semibold">
                             <tr><th class="p-4 w-10 text-center">No</th><th class="p-4">Tanggal</th><th class="p-4">Keterangan WFH</th><th class="p-4 text-center w-20">Aksi</th></tr>
@@ -877,10 +877,16 @@
                         <tbody id="tbody-wfh" class="divide-y divide-gray-50 text-sm"></tbody>
                     </table>
                 </div>
+                <div id="footer-wfh" class="p-4 border-t border-gray-100 bg-gray-50/30 flex justify-between items-center text-xs text-gray-500 mt-auto">
+                    <span id="info-wfh">Menampilkan 0 data</span>
+                    <div class="flex gap-1">
+                        <button onclick="changePage('wfh', -1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50" id="btn-prev-wfh">Prev</button>
+                        <button onclick="changePage('wfh', 1)" class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50" id="btn-next-wfh">Next</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
                 <div id="view-monitoring" class="view-section animate-fade-in">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -1038,7 +1044,7 @@
                                <i class="fas fa-sync-alt"></i> Ulang
                                </button>
                                <button onclick="captureAndSendWFH()" id="btnCaptureWFH" disabled class="flex-[2] bg-indigo-600 text-white py-3 rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                               <i class="fas fa-camera mr-1"></i> Kirim Absen
+                               <i class="fas fa-camera mr-1"></i> Kirim Presensi
                                </button>
                             </div>
                         </div>
@@ -1347,9 +1353,10 @@
         const tableState = {
             siswa: { fullData: [], filtered: [], limit: 10, page: 1, search: '', classFilter: '' },
             guru: { fullData: [], filtered: [], limit: 10, page: 1, search: '', classFilter: '' },
-            libur: { fullData: [], filtered: [], limit: 10, page: 1, search: '' },
+            libur: { fullData: [], filtered: [], limit: 5, page: 1, search: '' }, // <-- Limit 5
             rekap: { fullData: [], filtered: [], limit: 10, page: 1, search: '' },
-            monitoring: { fullData: [], filtered: [], limit: 10, page: 1, search: '', statusFilter: '' }
+            monitoring: { fullData: [], filtered: [], limit: 10, page: 1, search: '', statusFilter: '' },
+            wfh: { fullData: [], filtered: [], limit: 5, page: 1, search: '' } // <-- BARU, Limit 5
         };
 
         function handleTableSearch(type, query) { 
@@ -1421,6 +1428,7 @@
             else if (type === 'libur') renderLiburRows(pagedData, startIdx);
             else if (type === 'rekap') renderRekapRows(pagedData);
             else if (type === 'monitoring') renderMonitoringRows(pagedData, startIdx);
+            else if (type === 'wfh') renderWfhRows(pagedData, startIdx); // <-- BARU DITAMBAHKAN
             
             updatePaginationUI(type, startIdx, pagedData.length, total, state.page, totalPages);
         }
@@ -1477,11 +1485,11 @@
                 case 'view-data-siswa': title = "Direktori Siswa"; break;
                 case 'view-data-guru': title = "Manajemen Guru"; break;
                 case 'view-kelola-absen': title = "Kelola Hari Libur & WFH"; break;
-                case 'view-scanner': title = "Scan Absensi"; break;
+                case 'view-scanner': title = "Scan Presensi"; break;
                 case 'view-monitoring': title = "Monitoring Realtime"; break;
                 case 'view-rekap-absensi': title = "Laporan Kehadiran"; break;
-                case 'view-rekap-siswa': title = "Rekap Absen Siswa"; break; 
-                case 'view-kartu-siswa': title = "Kartu Absensi Digital"; break;
+                case 'view-rekap-siswa': title = "Rekap Presensi Siswa"; break; 
+                case 'view-kartu-siswa': title = "Kartu Presensi Digital"; break;
                 case 'view-pengaturan': title = "Pengaturan Sistem"; break;
                 case 'view-absen-wfh': title = "Presensi WFH"; break; 
             }
@@ -1672,20 +1680,20 @@
                 menuHTML += createItem('Data Siswa', 'fa-user-graduate', 'loadDataSiswa()');
                 menuHTML += createItem('Data Guru', 'fa-chalkboard-teacher', 'loadDataGuru()');
                 menuHTML += createItem('Laporan', 'fa-clipboard-list', 'loadRekapAbsensi()');
-                menuHTML += createItem('Kelola Absen', 'fa-calendar-times', 'loadKelolaAbsen()');
-                menuHTML += createItem('Scan Absensi', 'fa-qrcode', 'loadScanAbsensi()');
+                menuHTML += createItem('Kelola Presensi', 'fa-calendar-times', 'loadKelolaAbsen()');
+                menuHTML += createItem('Scan Presensi', 'fa-qrcode', 'loadScanAbsensi()');
                 menuHTML += createItem('Pengaturan', 'fa-cog', 'loadPengaturan()');
                 loadAdminDashboard();
             } else if (currentUser.role === 'guru') {
                 menuHTML += createItem('Dashboard', 'fa-home', 'loadGuruDashboard()', true);
                 menuHTML += createItem('Monitoring', 'fa-eye', 'loadMonitoringAbsensi()');
-                menuHTML += createItem('Scan Absensi', 'fa-qrcode', 'loadScanAbsensi()');
+                menuHTML += createItem('Scan Presensi', 'fa-qrcode', 'loadScanAbsensi()');
                 loadGuruDashboard();
             } else if (currentUser.role === 'siswa') {
                 menuHTML += createItem('Dashboard', 'fa-home', 'loadSiswaDashboard()', true);
                 menuHTML += createItem('Kartu Saya', 'fa-id-card', 'loadQRCodeSiswa()'); 
-                menuHTML += createItem('Absen WFH', 'fa-camera-retro', 'loadAbsenWFH()'); 
-                menuHTML += createItem('Rekap Absen', 'fa-file-pdf', 'loadRekapSiswa()');
+                menuHTML += createItem('Rekam-WFH', 'fa-camera-retro', 'loadAbsenWFH()'); 
+                menuHTML += createItem('Rekap Kehadiran', 'fa-file-pdf', 'loadRekapSiswa()');
                 loadSiswaDashboard();
             }
             
@@ -2174,10 +2182,12 @@
                 } 
                 
                 // Load WFH
-                const resWfh = await fetchAPI('getJadwalWFH');
-                if (resWfh.success) { 
-                    renderWfhRows(resWfh.data); 
-                }
+        const resWfh = await fetchAPI('getJadwalWFH');
+        if (resWfh.success) { 
+            tableState.wfh.fullData = resWfh.data; 
+            processTableData('wfh'); // <- Panggil proses tabel agar pagination jalan
+        }
+
             } catch(e) {}
             loadGlobalConfig();
         }
@@ -3491,7 +3501,7 @@ async function saveGlobalConfig(btnElement) {
 
         function loadScanAbsensi() { 
             isScanning = false; 
-            setActiveMenu('Scan Absensi'); 
+            setActiveMenu('Scan Presensi'); 
             showView('view-scanner'); 
             setTimeout(() => { startCamera('environment'); }, 500); 
         }
@@ -3946,7 +3956,7 @@ async function submitUbahPasswordSiswa(e) {
 let rs_currentData = []; // Simpan data sementara untuk PDF
 
 function loadRekapSiswa() {
-    stopAndBack(false); setActiveMenu('Rekap Absen'); showView('view-rekap-siswa');
+    stopAndBack(false); setActiveMenu('Rekap Presensi'); showView('view-rekap-siswa');
     
     const curDate = new Date();
     const yearInput = document.getElementById('rs_tahun');
@@ -4316,7 +4326,7 @@ let currentGPS = { lat: null, lon: null };
 
 async function loadAbsenWFH() {
     stopAndBack(false); 
-    setActiveMenu('Absen WFH'); 
+    setActiveMenu('Rekam-WFH'); 
     
     showView('view-absen-wfh');
     startWFHCamera();
@@ -4481,7 +4491,7 @@ async function captureAndSendWFH() {
 
         hideLoading();
         if (res.success) {
-            showAlert('success', 'Absen WFH Berhasil Pukul ' + res.waktu);
+            showAlert('success', 'Rekam Kehadiran WFH Berhasil Pukul ' + res.waktu);
             setTimeout(() => { loadSiswaDashboard(); }, 2000); // Balik ke Home
         } else {
             showAlert('error', res.message);
@@ -4498,7 +4508,7 @@ async function captureAndSendWFH() {
 
 // --- JAVASCRIPT UNTUK JADWAL WFH ---
 async function loadKelolaAbsen() {
-    stopAndBack(false); setActiveMenu('Kelola Absen'); showView('view-kelola-absen');
+    stopAndBack(false); setActiveMenu('Kelola Presensi'); showView('view-kelola-absen');
     document.getElementById('tbody-libur').innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat...</td></tr>';
     document.getElementById('tbody-wfh').innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat...</td></tr>';
     
@@ -4514,13 +4524,16 @@ async function loadKelolaAbsen() {
     loadGlobalConfig();
 }
 
-function renderWfhRows(data) {
+function renderWfhRows(data, startIdx) {
     const tbody = document.getElementById('tbody-wfh');
-    if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-400 italic">Tidak ada jadwal WFH terdaftar.</td></tr>'; return; }
+    if (data.length === 0) { 
+        tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-400 italic">Tidak ada jadwal WFH terdaftar.</td></tr>'; 
+        return; 
+    }
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     tbody.innerHTML = data.map((item, i) => `
         <tr class="hover:bg-gray-50 border-b border-gray-50 transition group">
-            <td class="p-4 text-center text-gray-500">${i + 1}</td>
+            <td class="p-4 text-center text-gray-500">${startIdx + i + 1}</td>
             <td class="p-4 font-mono font-medium text-indigo-700">${new Date(item.tanggal).toLocaleDateString('id-ID', options)}</td>
             <td class="p-4 font-bold text-gray-700">${item.keterangan}</td>
             <td class="p-4 text-center"><button onclick="deleteWfhConfirm('${item.tanggal}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition opacity-80 group-hover:opacity-100"><i class="fas fa-trash"></i></button></td>
