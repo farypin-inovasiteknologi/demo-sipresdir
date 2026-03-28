@@ -3448,7 +3448,8 @@ async function onScanSuccess(decodedText) {
         const result = await fetchAPI('scanAbsensi', {
             nisn: decodedText,
             role: myRole,
-            kelasGuru: myKelas
+            kelasGuru: myKelas,
+            apiKey: "SIPRESDIR_RAHASIA_2026_TIDAK_BOLEH_BOCOR" // <-- Tambahkan baris ini
         });
 
         if (result.success) {
