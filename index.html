@@ -456,7 +456,7 @@
                                         <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 mb-4">
                                             <h4 class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mb-3">Data Instansi (Atas)</h4>
                                             <div class="space-y-3">
-                                                <div><label class="block text-xs font-bold text-gray-700 mb-1">Nama Instansi</label><input type="text" name="namaInstansi" placeholder="Misal: KEMENTERIAN AGAMA / DINAS PENDIDIKAN" class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
+                                                <div><label class="block text-xs font-bold text-gray-700 mb-1">Nama Instansi</label><input type="text" name="namaInstansi" placeholder="Misal: KANWIL KEMENAG PROV... / PEMERINTAH KAB...." class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
                                                 <div>
                                                     <label class="block text-xs font-bold text-gray-700 mb-1">Logo Instansi</label>
                                                     <div class="flex items-center gap-4 bg-white p-3 rounded-lg border border-gray-200">
@@ -597,17 +597,21 @@
                                         <div id="dashStatusBadge" class="px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-bold shadow-sm">Memuat...</div>
                                     </div>
                                     <div class="grid grid-cols-2 gap-4 mt-4">
-                                        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
-                                            <div class="flex items-center gap-2 mb-2 text-slate-300">
+                                        <div id="boxMasuk" class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 relative overflow-hidden">
+                                            <div class="flex items-center gap-2 mb-1 text-slate-300">
                                                 <i class="fas fa-sign-in-alt text-xs"></i>
                                                 <span id="labelMasuk" class="text-[10px] uppercase font-bold tracking-wider">Jam Datang</span>
                                             </div>
-                                            <div id="valMasuk" class="font-mono text-2xl font-bold tracking-tight">--:--</div>
-                                            <div class="flex items-center gap-2 mb-2 text-slate-300">
+                                            <div id="valMasuk" class="font-mono text-2xl font-bold tracking-tight mb-1">--:--</div>
+                                            <div id="statusMasuk" class="text-[9px] font-bold tracking-wider text-emerald-300"></div>
+                                        </div>
+                                        <div id="boxPulang" class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 relative overflow-hidden">
+                                            <div class="flex items-center gap-2 mb-1 text-slate-300">
                                                 <i class="fas fa-sign-out-alt text-xs"></i>
                                                 <span id="labelPulang" class="text-[10px] uppercase font-bold tracking-wider">Jam Pulang</span>
                                             </div>
-                                            <div id="valPulang" class="font-mono text-2xl font-bold tracking-tight">--:--</div>
+                                            <div id="valPulang" class="font-mono text-2xl font-bold tracking-tight mb-1">--:--</div>
+                                            <div id="statusPulang" class="text-[9px] font-bold tracking-wider text-amber-300"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -4550,7 +4554,7 @@ function togglePasswordSiswa() {
 }
 
 // ============================================================
-// LOGIKA TAMPILAN LOGIN KHUSUS MOBILE 111
+// LOGIKA TAMPILAN LOGIN KHUSUS MOBILE 
 // ============================================================
 function showMobileLogin() {
     // Menambahkan class pada container utama untuk men-trigger CSS yang kita buat
