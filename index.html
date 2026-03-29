@@ -1998,16 +1998,42 @@
             initMobileNav();
         }
 
-        // Fungsi bantuan agar menu popup tertutup jika klik di luarnya
+      // ============================================================
+    // LOGIKA MENU MOBILE (DENGAN EFEK HIDE FAB OTOMATIS)
+    // ============================================================
     window.closeAllSubNavs = function() {
         document.querySelectorAll('.mobile-subnav').forEach(el => el.classList.add('hidden'));
+        
+        // Munculkan kembali tombol melayang (FAB) jika ada
+        const fab = document.getElementById('fabInputKasus');
+        if(fab && currentUser && viewIdGlobal !== 'view-input-kasus') { 
+            fab.style.opacity = '1'; 
+            fab.style.pointerEvents = 'auto'; 
+        }
     };
 
     window.toggleSubNav = function(id) {
         const el = document.getElementById(id);
         const isHidden = el.classList.contains('hidden');
         closeAllSubNavs(); // Tutup yang lain dulu
-        if (isHidden) el.classList.remove('hidden');
+        
+        if (isHidden) {
+            el.classList.remove('hidden');
+            // Sembunyikan FAB sementara agar tidak menutupi sub-menu
+            const fab = document.getElementById('fabInputKasus');
+            if(fab) { 
+                fab.style.opacity = '0'; 
+                fab.style.pointerEvents = 'none'; 
+            }
+        }
+    };
+
+    // Variabel global untuk mendeteksi view saat ini agar FAB tidak error
+    let viewIdGlobal = '';
+    const originalShowView = showView;
+    showView = function(viewId) {
+        viewIdGlobal = viewId;
+        originalShowView(viewId);
     };
 
     function initMobileNav() {
@@ -2021,7 +2047,6 @@
         
         let navHTML = '';
 
-        // Template Tombol Menu Bawah Standar & Tengah
         const createBottomNav = (label, icon, onclick, isCenter = false) => {
             if (isCenter) {
                 return `
@@ -2040,13 +2065,12 @@
             }
         };
 
-        // Template Tombol Menu Bawah yang punya POP-UP SUBMENU
         const createBottomNavWithSub = (id, label, icon, subItems) => {
             let subHTML = `<div id="${id}" class="mobile-subnav hidden absolute bottom-[110%] left-1/2 transform -translate-x-1/2 bg-white rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.1)] border border-gray-100 p-2 flex flex-col gap-1 w-[150px] animate-fade-in z-50 origin-bottom">`;
             subItems.forEach(item => {
                 subHTML += `<button onclick="closeAllSubNavs(); ${item.onclick}" class="flex items-center gap-3 p-2.5 text-xs font-bold text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition text-left focus:outline-none"><i class="fas ${item.icon} w-4 text-center"></i> ${item.label}</button>`;
             });
-            subHTML += `<div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-b border-r border-gray-100 rotate-45"></div></div>`; // Segitiga panah bawah
+            subHTML += `<div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-b border-r border-gray-100 rotate-45"></div></div>`;
 
             return `
             <div class="relative flex flex-col items-center">
@@ -2059,12 +2083,10 @@
         };
 
         if (role === 'admin') {
-            // HEADER ATAS (Admin: Tampilkan Setting & Keluar)
             if(btnSettings) { btnSettings.classList.remove('hidden'); btnSettings.classList.add('flex'); }
             if(btnLogout) { btnLogout.classList.remove('hidden'); btnLogout.classList.add('flex'); }
             if(schoolInfo) { schoolInfo.classList.remove('flex'); schoolInfo.classList.add('hidden'); }
             
-            // 5 MENU BAWAH (Admin)
             navHTML += createBottomNav('Home', 'fa-home', 'loadAdminDashboard()');
             navHTML += createBottomNavWithSub('sub-akun', 'Akun', 'fa-users', [
                 { label: 'Data Siswa', icon: 'fa-user-graduate', onclick: 'loadDataSiswa()' },
@@ -2073,7 +2095,7 @@
             navHTML += createBottomNav('Scan', 'fa-qrcode', 'loadScanAbsensi()', true);
             navHTML += createBottomNavWithSub('sub-absen', 'Presensi', 'fa-calendar-check', [
                 { label: 'Kelola', icon: 'fa-edit', onclick: 'loadKelolaAbsen()' },
-                { label: 'Laporan', icon: 'fa-file-alt', onclick: 'loadLaporanDashboard()' }
+                { label: 'Laporan', icon: 'fa-file-alt', onclick: 'loadRekapAbsensi()' } // [PERBAIKAN BUG] Laporan bisa diklik!
             ]);
             navHTML += createBottomNavWithSub('sub-disiplin', 'Disiplin', 'fa-gavel', [
                 { label: 'Jenis Kasus', icon: 'fa-list-ul', onclick: 'loadMasterPelanggaran()' },
@@ -2081,12 +2103,10 @@
             ]);
 
         } else if (role === 'guru') {
-            // HEADER ATAS (Guru: Tampilkan Info Sekolah & Keluar)
             if(btnSettings) { btnSettings.classList.remove('flex'); btnSettings.classList.add('hidden'); }
             if(btnLogout) { btnLogout.classList.remove('hidden'); btnLogout.classList.add('flex'); } 
             if(schoolInfo) { schoolInfo.classList.remove('hidden'); schoolInfo.classList.add('flex'); }
             
-            // 5 MENU BAWAH (Guru)
             navHTML += createBottomNav('Home', 'fa-home', 'loadGuruDashboard()');
             navHTML += createBottomNav('Monitor', 'fa-desktop', 'loadMonitoringAbsensi()');
             navHTML += createBottomNav('Scan', 'fa-qrcode', 'loadScanAbsensi()', true);
@@ -2094,12 +2114,10 @@
             navHTML += createBottomNav('Rekap Kasus', 'fa-balance-scale', 'loadRekapKasus()');
 
         } else if (role === 'siswa') {
-            // HEADER ATAS (Siswa)
             if(btnSettings) { btnSettings.classList.remove('flex'); btnSettings.classList.add('hidden'); }
             if(btnLogout) { btnLogout.classList.remove('hidden'); btnLogout.classList.add('flex'); } 
             if(schoolInfo) { schoolInfo.classList.remove('hidden'); schoolInfo.classList.add('flex'); }
             
-            // 5 MENU BAWAH (Siswa)
             navHTML += createBottomNav('Home', 'fa-home', 'loadSiswaDashboard()');
             navHTML += createBottomNav('Kartu', 'fa-id-card', 'loadQRCodeSiswa()'); 
             navHTML += createBottomNav('WFH', 'fa-camera-retro', 'loadAbsenWFH()', true); 
