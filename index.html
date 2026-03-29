@@ -451,13 +451,33 @@
                         <div class="p-6 md:p-8">
                             <form onsubmit="submitKasusSiswa(event)" class="space-y-5">
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">NISN Siswa</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400"><i class="far fa-id-card"></i></div>
-                                        <input type="number" id="kasusNisn" required class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-rose-500 focus:border-rose-500 block pl-12 p-3.5" placeholder="Ketik NISN Siswa">
+                                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Cari Siswa / Scan QR</label>
+                                    <div class="flex gap-2">
+                                        <div class="relative flex-1">
+                                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400"><i class="fas fa-search"></i></div>
+                                            <input type="text" id="kasusSearchSiswa" autocomplete="off" onkeyup="filterSiswaKasus(this.value)" class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-rose-500 focus:border-rose-500 block pl-12 p-3.5 transition-all" placeholder="Ketik Nama atau NISN...">
+                                            
+                                            <div id="kasusSiswaDropdown" class="hidden absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-2xl max-h-48 overflow-y-auto divide-y divide-gray-50"></div>
+                                        </div>
+                                        <button type="button" onclick="bukaScannerKasus()" class="bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border border-rose-200 px-4 rounded-xl transition shadow-sm flex items-center justify-center" title="Scan QR Kartu">
+                                            <i class="fas fa-qrcode text-xl"></i>
+                                        </button>
                                     </div>
-                                    <p class="text-[10px] text-gray-400 mt-1.5"><i class="fas fa-info-circle"></i> Pastikan NISN sesuai dengan data siswa.</p>
+                                    
+                                    <input type="hidden" id="kasusNisn" required>
+                                    
+                                    <div id="kasusSiswaTerpilih" class="hidden mt-3 bg-emerald-50 border border-emerald-200 p-3 rounded-xl flex items-center justify-between animate-fade-in">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-check-circle text-emerald-500 text-lg"></i>
+                                            <div class="leading-tight">
+                                                <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Siswa Terpilih</p>
+                                                <p id="textSiswaTerpilih" class="text-sm font-bold text-gray-800"></p>
+                                            </div>
+                                        </div>
+                                        <button type="button" onclick="resetPilihanSiswaKasus()" class="text-gray-400 hover:text-rose-500 p-2"><i class="fas fa-times"></i></button>
+                                    </div>
                                 </div>
+
                                 <div>
                                     <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Jenis Pelanggaran</label>
                                     <select id="kasusIdPelanggaran" required class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-rose-500 focus:border-rose-500 block p-3.5 font-bold text-gray-700">
@@ -4955,33 +4975,129 @@ function deletePelanggaranConfirm(id) {
 }
 
 // ============================================================
-// LOGIKA JAVASCRIPT INPUT KASUS (GURU/ADMIN)
+// LOGIKA JAVASCRIPT INPUT KASUS (CERDAS & AUTOCOMPLETE)
 // ============================================================
+window.dataSiswaKasus = []; // Menyimpan data siswa di memori lokal
+
 async function loadInputKasus() {
     stopAndBack(false); 
     setActiveMenu('Input Kasus Siswa'); 
     showView('view-input-kasus');
     
+    // Reset Form & UI
     const d = new Date();
     document.getElementById('kasusTanggal').value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    document.getElementById('kasusNisn').value = '';
     document.getElementById('kasusCatatan').value = '';
+    resetPilihanSiswaKasus(); // Kosongkan pilihan siswa
     
     const dropdown = document.getElementById('kasusIdPelanggaran');
     dropdown.innerHTML = '<option value="">Memuat...</option>';
     
+    // 1. Tarik Data Pelanggaran (Tanpa Aturan Sistem)
     try {
         const res = await fetchAPI('getPelanggaranList', { token: currentUser.token });
         if (res.success) {
             let opts = '<option value="">-- Pilih Jenis Pelanggaran --</option>';
             res.data.forEach(p => {
-                opts += `<option value="${p.id}">${p.namaPelanggaran} (+${p.poin} Poin)</option>`;
+                // Sembunyikan Terlambat & Alpa dari dropdown
+                if (p.id !== 'SYS_LATE' && p.id !== 'SYS_ALPA') {
+                    opts += `<option value="${p.id}">${p.namaPelanggaran} (+${p.poin} Poin)</option>`;
+                }
             });
             dropdown.innerHTML = opts;
-        } else {
-            dropdown.innerHTML = '<option value="">Gagal memuat. Hubungi Admin.</option>';
-        }
+        } else { dropdown.innerHTML = '<option value="">Gagal memuat.</option>'; }
     } catch(e) { dropdown.innerHTML = '<option value="">Error koneksi.</option>'; }
+
+    // 2. Tarik Data Siswa untuk Autocomplete (Jika belum ada di memori)
+    if (tableState.siswa.fullData.length > 0) {
+        window.dataSiswaKasus = tableState.siswa.fullData;
+    } else {
+        try {
+            const resSiswa = await fetchAPI('getSiswaList', { token: currentUser.token });
+            if (resSiswa.success) window.dataSiswaKasus = resSiswa.data;
+        } catch(e) {}
+    }
+}
+
+// Fungsi Pencarian Mengetik (Autocomplete)
+function filterSiswaKasus(keyword) {
+    const dropdown = document.getElementById('kasusSiswaDropdown');
+    if (!keyword || keyword.length < 2) {
+        dropdown.classList.add('hidden');
+        return;
+    }
+    
+    const lowerKey = keyword.toLowerCase();
+    const filtered = window.dataSiswaKasus.filter(s => 
+        s.nama.toLowerCase().includes(lowerKey) || 
+        String(s.nisn).toLowerCase().includes(lowerKey)
+    ).slice(0, 10); // Tampilkan maksimal 10 biar nggak berat
+    
+    if (filtered.length > 0) {
+        dropdown.innerHTML = filtered.map(s => `
+            <div onclick="pilihSiswaKasus('${s.nisn}', '${s.nama.replace(/'/g, "\\'")}', '${s.kelas}')" class="p-3 hover:bg-rose-50 cursor-pointer transition flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-xs font-bold shrink-0">${s.nama.charAt(0)}</div>
+                <div>
+                    <div class="font-bold text-xs text-gray-800">${s.nama}</div>
+                    <div class="text-[10px] text-gray-500 font-mono mt-0.5"><span class="bg-gray-100 px-1.5 py-0.5 rounded mr-1 font-bold">${s.kelas}</span> ${s.nisn}</div>
+                </div>
+            </div>
+        `).join('');
+        dropdown.classList.remove('hidden');
+    } else {
+        dropdown.innerHTML = `<div class="p-4 text-xs text-gray-500 text-center italic">Data siswa tidak ditemukan.</div>`;
+        dropdown.classList.remove('hidden');
+    }
+}
+
+// Fungsi Mengunci Siswa Terpilih
+function pilihSiswaKasus(nisn, nama, kelas) {
+    document.getElementById('kasusNisn').value = nisn;
+    document.getElementById('kasusSearchSiswa').value = '';
+    document.getElementById('kasusSearchSiswa').disabled = true; // Kunci inputan ngetik
+    document.getElementById('kasusSiswaDropdown').classList.add('hidden');
+    
+    document.getElementById('textSiswaTerpilih').innerHTML = `${nama} <br><span class="font-normal text-[10px] text-emerald-600 font-mono">${kelas} - ${nisn}</span>`;
+    document.getElementById('kasusSiswaTerpilih').classList.remove('hidden');
+    document.getElementById('kasusSiswaTerpilih').classList.add('flex');
+}
+
+// Fungsi Batal / Reset Pilihan Siswa
+function resetPilihanSiswaKasus() {
+    document.getElementById('kasusNisn').value = '';
+    document.getElementById('kasusSearchSiswa').value = '';
+    document.getElementById('kasusSearchSiswa').disabled = false; // Buka kunci inputan
+    document.getElementById('kasusSiswaTerpilih').classList.add('hidden');
+    document.getElementById('kasusSiswaTerpilih').classList.remove('flex');
+}
+
+// Fungsi Simulasi Scan QR Kartu
+function bukaScannerKasus() {
+    Swal.fire({
+        title: 'Scan QR Siswa',
+        html: '<div class="text-sm text-gray-600 mb-3">Arahkan kamera/scanner ke Kartu QR Siswa.</div><i class="fas fa-qrcode text-6xl text-rose-500 mb-4 animate-pulse"></i>',
+        input: 'text',
+        inputPlaceholder: 'Atau tembak barcode scanner disini...',
+        showCancelButton: true,
+        confirmButtonText: 'Proses',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#e11d48',
+        didOpen: () => {
+            // Otomatis fokus ke input biar kalau pakai alat tembak QR langsung masuk angkanya
+            Swal.getInput().focus();
+        }
+    }).then((result) => {
+        if (result.isConfirmed && result.value) {
+            const nisnScan = result.value.trim();
+            const siswa = window.dataSiswaKasus.find(s => String(s.nisn) === nisnScan);
+            if(siswa) {
+                pilihSiswaKasus(siswa.nisn, siswa.nama, siswa.kelas);
+                Swal.fire('Berhasil!', `Data <b>${siswa.nama}</b> ditemukan.`, 'success');
+            } else {
+                Swal.fire('Gagal!', 'Kartu / NISN tidak terdaftar di database.', 'error');
+            }
+        }
+    });
 }
 
 async function submitKasusSiswa(e) {
