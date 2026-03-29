@@ -507,12 +507,32 @@
                             </table>
                         </div>
 
-                        <div id="contentHistoryKasus" class="hidden overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead id="thead-history-kasus" class="bg-gray-50 text-gray-600 text-[10px] uppercase font-bold border-b border-gray-200">
-                                    </thead>
-                                <tbody id="tbody-history-kasus" class="divide-y divide-gray-50 bg-white text-xs"></tbody>
-                            </table>
+                        <div id="contentHistoryKasus" class="hidden flex-col p-4">
+                            <div id="filterKasusBar" class="hidden flex-col md:flex-row gap-3 mb-4 p-4 bg-gray-50/50 rounded-xl border border-gray-100 shadow-sm">
+                                <div class="flex flex-col flex-1">
+                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Mulai Tgl</label>
+                                    <input type="date" id="kasusMulai" class="text-xs p-2 rounded-lg border border-gray-200 focus:ring-rose-500 focus:border-rose-500">
+                                </div>
+                                <div class="flex flex-col flex-1">
+                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Sampai Tgl</label>
+                                    <input type="date" id="kasusAkhir" class="text-xs p-2 rounded-lg border border-gray-200 focus:ring-rose-500 focus:border-rose-500">
+                                </div>
+                                <div class="flex flex-col flex-[2]">
+                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Cari Nama / NISN</label>
+                                    <input type="text" id="kasusCari" placeholder="Ketik nama atau nisn..." class="text-xs p-2 rounded-lg border border-gray-200 focus:ring-rose-500 focus:border-rose-500">
+                                </div>
+                                <div class="flex items-end gap-2 flex-1">
+                                    <button onclick="applyFilterKasus()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg text-xs font-bold transition shadow-sm"><i class="fas fa-search"></i> Cari</button>
+                                    <button onclick="cetakPDFKasus()" class="w-full bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-lg text-xs font-bold transition shadow-sm"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                                </div>
+                            </div>
+
+                            <div class="overflow-x-auto border border-gray-100 rounded-xl">
+                                <table class="w-full text-left">
+                                    <thead id="thead-history-kasus" class="bg-gray-50 text-gray-600 text-[10px] uppercase font-bold border-b border-gray-200"></thead>
+                                    <tbody id="tbody-history-kasus" class="divide-y divide-gray-50 bg-white text-xs"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -759,6 +779,9 @@
                                         <div class="bg-slate-50 p-2 rounded-lg border border-slate-100"><p class="text-[10px] text-slate-400 uppercase font-bold">Status</p><p class="text-sm font-bold text-emerald-600">Aktif</p></div>
                                     </div>
                                     
+                                    <button onclick="loadRekapKasus()" class="w-full mt-3 bg-rose-50 hover:bg-rose-100 text-rose-700 py-2.5 rounded-xl text-xs font-bold border border-rose-200 transition-colors flex items-center justify-center gap-2 shadow-sm"><i class="fas fa-balance-scale"></i> Cek Poin Kedisiplinan
+                                    </button>
+
                                     <button onclick="showUbahPasswordSiswaModal()" class="w-full mt-5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 py-2.5 rounded-xl text-xs font-bold border border-indigo-200 transition-colors flex items-center justify-center gap-2 shadow-sm">
                                         <i class="fas fa-key"></i> Ubah Password Akun
                                     </button>
@@ -1575,6 +1598,13 @@
             else if (type === 'rekap') renderRekapRows(pagedData);
             else if (type === 'monitoring') renderMonitoringRows(pagedData, startIdx);
             else if (type === 'wfh') renderWfhRows(pagedData, startIdx); // <-- BARU DITAMBAHKAN
+            else if (tableId === 'pelanggaran') {
+            renderPelanggaranRows(paginatedData, startIdx);
+            document.getElementById('info-pelanggaran').textContent = `Menampilkan ${startIdx + 1}-${Math.min(startIdx + limit, filteredData.length)} dari ${filteredData.length} data`;
+            const totalPages = Math.ceil(filteredData.length / limit);
+            document.getElementById('btn-prev-pelanggaran').disabled = page === 1;
+            document.getElementById('btn-next-pelanggaran').disabled = page === totalPages || totalPages === 0;
+        }
             
             updatePaginationUI(type, startIdx, pagedData.length, total, state.page, totalPages);
         }
@@ -4016,9 +4046,8 @@ async function showProfilSiswa() {
             </div>
         </div>
         
-        <button onclick="loadRekapKasus()" class="w-full mt-3 bg-rose-50 hover:bg-rose-100 text-rose-700 py-2.5 rounded-xl text-xs font-bold border border-rose-200 transition-colors flex items-center justify-center gap-2 shadow-sm">
-                                     <i class="fas fa-balance-scale"></i> Cek Poin Kedisiplinan
-                                 </button>
+        <button onclick="loadRekapKasus()" class="w-full mt-3 bg-rose-50 hover:bg-rose-100 text-rose-700 py-2.5 rounded-xl text-xs font-bold border border-rose-200 transition-colors flex items-center justify-center gap-2 shadow-sm"><i class="fas fa-balance-scale"></i> Cek Poin Kedisiplinan
+        </button>
 
         <button onclick="showUbahPasswordSiswaModal()" class="w-full bg-teal-50 hover:bg-teal-100 text-teal-700 py-3 rounded-xl text-xs font-bold border border-teal-200 transition-colors flex items-center justify-center gap-2 shadow-sm">
             <i class="fas fa-key"></i> Ubah Password Akun
@@ -4833,8 +4862,8 @@ function renderPelanggaranRows(data, startIdx) {
             <td class="p-4 text-center"><span class="font-mono font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded-lg border border-rose-100">+ ${item.poin}</span></td>
             <td class="p-4 text-center">
                 <div class="flex justify-center space-x-2 opacity-80 group-hover:opacity-100">
-                    <button onclick='editPelanggaran(${JSON.stringify(item)})' class="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition"><i class="fas fa-edit"></i></button>
-                    <button onclick="deletePelanggaranConfirm('${item.id}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition"><i class="fas fa-trash"></i></button>
+                    <button onclick='editPelanggaran(${JSON.stringify(item)})' class="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition" title="Edit Poin"><i class="fas fa-edit"></i></button>
+                    ${(item.id !== 'SYS_LATE' && item.id !== 'SYS_ALPA') ? `<button onclick="deletePelanggaranConfirm('${item.id}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition"><i class="fas fa-trash"></i></button>` : `<span class="p-2 text-gray-300" title="Aturan Sistem (Dikunci)"><i class="fas fa-lock"></i></span>`}
                 </div>
             </td>
         </tr>`;
@@ -4989,9 +5018,16 @@ async function loadRekapKasus() {
     try {
         const res = await fetchAPI('getRekapKasus', { token: currentUser.token });
         if (res.success) {
+            
+            // 1. DEKLARASI DULU DI SINI BARU BISA DIPAKAI
             const isAdminGuru = (res.role === 'admin' || res.role === 'guru');
             
-            // Generate Header Tabel Riwayat
+            // 2. SIMPAN KE WINDOW UNTUK FILTER
+            window.kasusHistoryData = res.history;
+            window.kasusIsAdmin = isAdminGuru;
+            if(isAdminGuru) document.getElementById('filterKasusBar').classList.replace('hidden', 'flex');
+            
+            // 3. LANJUTANNYA...
             const thSiswa = isAdminGuru ? `<th class="p-3">Siswa</th>` : '';
             document.getElementById('thead-history-kasus').innerHTML = `<tr><th class="p-3 text-center w-10">No</th><th class="p-3">Tanggal</th>${thSiswa}<th class="p-3">Pelanggaran</th><th class="p-3 text-center">Poin</th><th class="p-3">Pelapor / Catatan</th></tr>`;
             
@@ -5100,6 +5136,79 @@ function renderHistoryKasus(data, isAdmin) {
             </td>
         </tr>`;
     }).join('');
+}
+
+window.kasusHistoryData = []; // Simpan data global untuk difilter
+window.kasusIsAdmin = false;
+
+
+function applyFilterKasus() {
+    const tglMulai = document.getElementById('kasusMulai').value;
+    const tglAkhir = document.getElementById('kasusAkhir').value;
+    const cari = document.getElementById('kasusCari').value.toLowerCase();
+    
+    let filtered = window.kasusHistoryData;
+    
+    if(tglMulai) filtered = filtered.filter(d => d.tanggal >= tglMulai);
+    if(tglAkhir) filtered = filtered.filter(d => d.tanggal <= tglAkhir);
+    if(cari) {
+        filtered = filtered.filter(d => d.nama.toLowerCase().includes(cari) || d.nisn.toLowerCase().includes(cari));
+    }
+    
+    renderHistoryKasus(filtered, window.kasusIsAdmin);
+}
+
+function cetakPDFKasus() {
+    // Ambil data dari tabel yang sedang tampil
+    const tglMulai = document.getElementById('kasusMulai').value || '-';
+    const tglAkhir = document.getElementById('kasusAkhir').value || '-';
+    
+    let html = `
+    <html><head><title>Laporan Kedisiplinan Siswa</title>
+    <style>
+        body { font-family: sans-serif; color: #333; }
+        h2 { text-align: center; margin-bottom: 5px; }
+        p { text-align: center; font-size: 12px; margin-top: 0; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        th, td { border: 1px solid #666; padding: 6px; text-align: left; }
+        th { background: #f4f4f4; text-transform: uppercase; }
+        .center { text-align: center; }
+    </style></head><body>
+    <h2>LAPORAN KEDISIPLINAN (KASUS SISWA)</h2>
+    <p>Periode: ${tglMulai} s/d ${tglAkhir}</p>
+    <table>
+        <thead><tr><th class="center">No</th><th>Tanggal</th><th>NISN</th><th>Nama Siswa</th><th class="center">Kelas</th><th>Pelanggaran</th><th class="center">Poin</th><th>Pelapor / Catatan</th></tr></thead>
+        <tbody>`;
+        
+    // Ambil baris HTML dari tabel history saat ini
+    const trs = document.querySelectorAll('#tbody-history-kasus tr');
+    if(trs.length === 0 || trs[0].innerText.includes("Tidak ada riwayat")) {
+        html += `<tr><td colspan="8" class="center">Tidak ada data untuk dicetak.</td></tr>`;
+    } else {
+        trs.forEach((tr, i) => {
+            const tds = tr.querySelectorAll('td');
+            if(tds.length >= 5) {
+                let tgl = tds[1].innerText;
+                let namaRaw = tds[2].innerText.split('\n'); // Memisahkan nama dan NISN
+                let nama = namaRaw[0];
+                let nisn = namaRaw[1] ? namaRaw[1].replace('Kls: ', '') : '-'; 
+                let kelas = namaRaw[2] ? namaRaw[2] : '-'; // Fallback
+                let pelanggaran = tds[3].innerText;
+                let poin = tds[4].innerText;
+                let catatan = tds[5].innerText.replace('\n', ' - ');
+                
+                html += `<tr><td class="center">${i+1}</td><td>${tgl}</td><td>${nisn}</td><td>${nama}</td><td class="center">${kelas}</td><td>${pelanggaran}</td><td class="center">${poin}</td><td>${catatan}</td></tr>`;
+            }
+        });
+    }
+    
+    html += `</tbody></table></body></html>`;
+    
+    const win = window.open('', '_blank');
+    win.document.write(html);
+    win.document.close();
+    // Tunggu render selesai baru print
+    setTimeout(() => { win.print(); }, 500); 
 }
 
 // ============================================================
