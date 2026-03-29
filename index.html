@@ -5071,30 +5071,73 @@ function resetPilihanSiswaKasus() {
     document.getElementById('kasusSiswaTerpilih').classList.remove('flex');
 }
 
-// Fungsi Simulasi Scan QR Kartu
-function bukaScannerKasus() {
+// ============================================================
+// FUNGSI SCAN KAMERA UNTUK INPUT KASUS
+// ============================================================
+let scannerKasusObj = null; // Variabel penampung kamera
+
+async function bukaScannerKasus() {
+    // Cek dan load library scanner otomatis ke dalam sistem jika belum ada
+    if (typeof Html5QrcodeScanner === 'undefined') {
+        const btn = document.querySelector('button[title="Scan QR Kartu"]');
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin text-xl"></i>';
+        btn.disabled = true;
+
+        const script = document.createElement('script');
+        script.src = "https://unpkg.com/html5-qrcode";
+        script.onload = () => { 
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+            mulaiKameraKasus(); 
+        };
+        document.head.appendChild(script);
+    } else {
+        mulaiKameraKasus();
+    }
+}
+
+function mulaiKameraKasus() {
     Swal.fire({
-        title: 'Scan QR Siswa',
-        html: '<div class="text-sm text-gray-600 mb-3">Arahkan kamera/scanner ke Kartu QR Siswa.</div><i class="fas fa-qrcode text-6xl text-rose-500 mb-4 animate-pulse"></i>',
-        input: 'text',
-        inputPlaceholder: 'Atau tembak barcode scanner disini...',
+        title: 'Scan QR Pelanggar',
+        html: `
+            <p class="text-xs text-gray-500 mb-3">Arahkan kamera ke QR Code pada kartu siswa.</p>
+            <div id="kamera-kasus" class="w-full overflow-hidden rounded-xl border-2 border-rose-200 bg-black min-h-[250px]"></div>
+        `,
         showCancelButton: true,
-        confirmButtonText: 'Proses',
-        cancelButtonText: 'Batal',
-        confirmButtonColor: '#e11d48',
+        cancelButtonText: '<i class="fas fa-times mr-1"></i> Tutup Kamera',
+        showConfirmButton: false,
+        allowOutsideClick: false,
         didOpen: () => {
-            // Otomatis fokus ke input biar kalau pakai alat tembak QR langsung masuk angkanya
-            Swal.getInput().focus();
-        }
-    }).then((result) => {
-        if (result.isConfirmed && result.value) {
-            const nisnScan = result.value.trim();
-            const siswa = window.dataSiswaKasus.find(s => String(s.nisn) === nisnScan);
-            if(siswa) {
-                pilihSiswaKasus(siswa.nisn, siswa.nama, siswa.kelas);
-                Swal.fire('Berhasil!', `Data <b>${siswa.nama}</b> ditemukan.`, 'success');
-            } else {
-                Swal.fire('Gagal!', 'Kartu / NISN tidak terdaftar di database.', 'error');
+            // Nyalakan Kamera
+            scannerKasusObj = new Html5QrcodeScanner(
+                "kamera-kasus",
+                { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 },
+                false
+            );
+            
+            scannerKasusObj.render((decodedText) => {
+                // JIKA BERHASIL SCAN
+                scannerKasusObj.clear(); // Matikan kamera otomatis
+                Swal.close(); // Tutup popup
+                
+                const nisnScan = decodedText.replace(/'/g, "").trim();
+                const siswa = window.dataSiswaKasus.find(s => String(s.nisn) === nisnScan);
+                
+                if(siswa) {
+                    pilihSiswaKasus(siswa.nisn, siswa.nama, siswa.kelas);
+                    showAlert('success', `Data ${siswa.nama} langsung terkunci!`);
+                } else {
+                    showAlert('error', 'Gagal! Kartu / NISN tidak terdaftar.');
+                }
+            }, (error) => {
+                // Abaikan error saat kamera sedang mencari fokus
+            });
+        },
+        willClose: () => {
+            // Pastikan kamera mati jika user membatalkan (klik Tutup Kamera)
+            if (scannerKasusObj) {
+                scannerKasusObj.clear().catch(e => console.log(e));
             }
         }
     });
