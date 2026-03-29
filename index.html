@@ -1887,6 +1887,19 @@
             } 
         }
 
+        // [BARU] Fungsi Pembantu untuk Buka/Tutup Sub-Menu Admin
+        window.toggleAdminMenu = function(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById(id + '-icon');
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                if(icon) icon.style.transform = 'rotate(180deg)';
+            } else {
+                el.classList.add('hidden');
+                if(icon) icon.style.transform = 'rotate(0deg)';
+            }
+        };
+
         function initDashboard() {
             const name = currentUser.nama || currentUser.username;
             document.getElementById('navUserName').textContent = name;
@@ -1896,6 +1909,7 @@
             const menuContainer = document.getElementById('sidebarMenu');
             let menuHTML = '';
             
+            // Template Menu Tunggal
             const createItem = (label, icon, onclick, isDefaultActive = false) => {
                 const hideText = !isSidebarOpen ? 'hidden' : ''; 
                 const centerClass = !isSidebarOpen ? 'justify-center px-0' : 'space-x-3 px-4';
@@ -1906,33 +1920,62 @@
                     <span class="sidebar-label font-medium transition-opacity duration-300 ${hideText}">${label}</span>
                 </a>`;
             };
+
+            // Template Menu Accordion (Bisa Dilipat)
+            const createAccordion = (id, label, icon, subItems) => {
+                const hideText = !isSidebarOpen ? 'hidden' : ''; 
+                const centerClass = !isSidebarOpen ? 'justify-center px-0' : 'px-4';
+                
+                let subHTML = `<div id="${id}" class="hidden flex-col mt-1 space-y-1 bg-black/20 rounded-xl py-2 ${!isSidebarOpen ? 'px-2' : 'pl-10 pr-3'} animate-fade-in">`;
+                subItems.forEach(item => {
+                    subHTML += `
+                    <a data-name="${item.label}" onclick="${item.onclick}" class="flex items-center space-x-3 py-2.5 px-3 rounded-lg transition-all duration-200 group overflow-hidden whitespace-nowrap cursor-pointer text-gray-400 hover:text-white hover:bg-gray-800/50 text-xs">
+                        <i class="fas ${item.icon} w-5 text-center flex-shrink-0 group-hover:scale-110 transition-transform"></i>
+                        <span class="sidebar-label font-medium transition-opacity duration-300 ${hideText}">${item.label}</span>
+                    </a>`;
+                });
+                subHTML += `</div>`;
+
+                return `
+                <div class="mb-1">
+                    <button onclick="toggleAdminMenu('${id}')" class="w-full flex items-center justify-between ${centerClass} py-3 rounded-xl transition-all duration-200 group overflow-hidden whitespace-nowrap cursor-pointer text-gray-300 hover:bg-gray-800 hover:text-white focus:outline-none">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas ${icon} w-6 text-center flex-shrink-0 group-hover:scale-110 transition-transform"></i>
+                            <span class="sidebar-label font-bold transition-opacity duration-300 ${hideText}">${label}</span>
+                        </div>
+                        <i id="${id}-icon" class="fas fa-chevron-down text-[10px] transition-transform duration-300 ${hideText}"></i>
+                    </button>
+                    ${subHTML}
+                </div>`;
+            };
             
             if (currentUser.role === 'admin') {
-            
-            // 1. DASHBOARD
-            menuHTML += `<div class="px-5 mt-4 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Utama</div>`;
-            menuHTML += createItem('Dashboard', 'fa-home', 'loadAdminDashboard()');
-            
-            // 2. MANAJEMEN AKUN
-            menuHTML += `<div class="px-5 mt-4 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Manajemen Akun</div>`;
-            menuHTML += createItem('Data Siswa', 'fa-users', 'loadDataSiswa()');
-            menuHTML += createItem('Data Guru', 'fa-chalkboard-teacher', 'loadDataGuru()');
-            
-            // 3. MANAJEMEN PRESENSI
-            menuHTML += `<div class="px-5 mt-4 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Presensi</div>`;
-            menuHTML += createItem('Scan Presensi', 'fa-qrcode', 'loadScanAbsensi()');
-            menuHTML += createItem('Kelola Presensi', 'fa-calendar-times', 'loadKelolaAbsen()');
-            menuHTML += createItem('Laporan Presensi', 'fa-file-alt', 'loadLaporanDashboard()');
-            
-            // 4. MANAJEMEN DISIPLIN
-            menuHTML += `<div class="px-5 mt-4 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Kedisiplinan</div>`;
-            menuHTML += createItem('Input Kasus Siswa', 'fa-exclamation-triangle', 'loadInputKasus()');
-            menuHTML += createItem('Data Pelanggaran', 'fa-gavel', 'loadMasterPelanggaran()');
-            menuHTML += createItem('Rekap Kedisiplinan', 'fa-balance-scale', 'loadRekapKasus()');
+                
+                // 1. DASHBOARD (Menu Tunggal)
+                menuHTML += createItem('Dashboard', 'fa-home', 'loadAdminDashboard()');
+                
+                // 2. MANAJEMEN AKUN (Menu Lipat)
+                menuHTML += createAccordion('acc-akun', 'Manajemen Akun', 'fa-users-cog', [
+                    { label: 'Data Siswa', icon: 'fa-user-graduate', onclick: 'loadDataSiswa()' },
+                    { label: 'Data Guru', icon: 'fa-chalkboard-teacher', onclick: 'loadDataGuru()' }
+                ]);
+                
+                // 3. MANAJEMEN PRESENSI (Menu Lipat)
+                menuHTML += createAccordion('acc-presensi', 'Manaj. Presensi', 'fa-calendar-check', [
+                    { label: 'Scan Presensi', icon: 'fa-qrcode', onclick: 'loadScanAbsensi()' },
+                    { label: 'Kelola Presensi', icon: 'fa-calendar-times', onclick: 'loadKelolaAbsen()' },
+                    { label: 'Laporan Presensi', icon: 'fa-file-alt', onclick: 'loadRekapAbsensi()' }
+                ]);
 
-            // 5. PENGATURAN
-            menuHTML += `<div class="px-5 mt-4 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Sistem</div>`;
-            menuHTML += createItem('Pengaturan', 'fa-cog', 'loadPengaturan()');
+                // 4. MANAJEMEN DISIPLIN (Menu Lipat)
+                menuHTML += createAccordion('acc-disiplin', 'Manaj. Disiplin', 'fa-balance-scale', [
+                    { label: 'Input Kasus Siswa', icon: 'fa-exclamation-triangle', onclick: 'loadInputKasus()' },
+                    { label: 'Data Pelanggaran', icon: 'fa-gavel', onclick: 'loadMasterPelanggaran()' },
+                    { label: 'Rekap Pelanggaran', icon: 'fa-history', onclick: 'loadRekapKasus()' }
+                ]);
+
+                // 5. PENGATURAN (Menu Tunggal)
+                menuHTML += createItem('Pengaturan', 'fa-cog', 'loadPengaturan()');
 
             } else if (currentUser.role === 'guru') {
                 menuHTML += createItem('Dashboard', 'fa-home', 'loadGuruDashboard()', true);
