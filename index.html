@@ -1686,6 +1686,17 @@
         }
 
         function showView(viewId) {
+            // [BARU] LOGIKA MUNCUL/HILANGNYA TOMBOL MELAYANG KASUS
+            const fabKasus = document.getElementById('fabInputKasus');
+            if (fabKasus) {
+                // Hanya muncul jika yang login Admin/Guru, DAN halamannya bukan halaman input kasus itu sendiri
+                if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'guru') && viewId !== 'view-input-kasus') {
+                    fabKasus.classList.remove('hidden');
+                } else {
+                    fabKasus.classList.add('hidden');
+                }
+            }
+
             document.querySelectorAll('.view-section').forEach(el => { 
                 el.classList.remove('active'); 
                 el.style.display = 'none'; 
@@ -1897,7 +1908,6 @@
             };
             
             if (currentUser.role === 'admin') {
-            document.getElementById('adminPanel').classList.remove('hidden');
             
             // 1. DASHBOARD
             menuHTML += `<div class="px-5 mt-4 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Utama</div>`;
