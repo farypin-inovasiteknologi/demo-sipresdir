@@ -484,12 +484,7 @@
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden max-w-5xl mx-auto">
                         <div class="p-4 bg-gradient-to-r from-red-600 to-rose-700 text-white flex justify-between items-center">
                             <h3 class="font-bold text-sm md:text-lg"><i class="fas fa-balance-scale mr-2"></i> Rekap Kedisiplinan</h3>
-                            <button onclick="loadRekapKasus()" class="bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm border border-white/20"><i class="fas fa-sync-alt"></i> <span class="hidden sm:inline">Refresh</span></button>
-                        </div>
-                        
-                        <div id="tabKasusAdmin" class="hidden border-b border-gray-100 bg-gray-50 flex">
-                            <button onclick="switchKasusTab('leaderboard')" id="btnTabLeaderboard" class="flex-1 py-3.5 text-xs md:text-sm font-bold text-rose-600 border-b-[3px] border-rose-600 transition bg-rose-50/50"><i class="fas fa-trophy mr-1"></i> Leaderboard</button>
-                            <button onclick="switchKasusTab('history')" id="btnTabHistory" class="flex-1 py-3.5 text-xs md:text-sm font-bold text-gray-500 border-b-[3px] border-transparent hover:text-rose-500 transition"><i class="fas fa-history mr-1"></i> Semua Riwayat</button>
+                            <button onclick="loadRekapKasus()" class="bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm border border-white/20"><i class="fas fa-sync-alt"></i></button>
                         </div>
 
                         <div id="summaryKasusSiswa" class="hidden p-6 text-center border-b border-gray-100 bg-gradient-to-b from-white to-gray-50">
@@ -498,42 +493,55 @@
                             <p class="text-[10px] md:text-xs font-bold px-4 py-1.5 rounded-full inline-block border shadow-sm" id="valStatusPoinSiswa">Memuat...</p>
                         </div>
 
-                        <div id="contentLeaderboardKasus" class="hidden overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead class="bg-rose-50/80 text-rose-700 text-[10px] uppercase font-bold border-b border-rose-100">
-                                    <tr><th class="p-3 text-center w-10">Rank</th><th class="p-3">Nama Siswa</th><th class="p-3 text-center">Kelas</th><th class="p-3 text-center">Jml Kasus</th><th class="p-3 text-center">Total Poin</th></tr>
-                                </thead>
-                                <tbody id="tbody-leaderboard-kasus" class="divide-y divide-gray-50 bg-white text-xs"></tbody>
-                            </table>
-                        </div>
-
-                        <div id="contentHistoryKasus" class="hidden flex-col p-4">
-                            <div id="filterKasusBar" class="hidden flex-col md:flex-row gap-3 mb-4 p-4 bg-gray-50/50 rounded-xl border border-gray-100 shadow-sm">
+                        <div id="areaAdminUtama" class="hidden flex-col p-4">
+                            <div class="flex flex-col md:flex-row gap-3 mb-4 p-4 bg-gray-50/50 rounded-xl border border-gray-100 shadow-sm">
                                 <div class="flex flex-col flex-1">
-                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Mulai Tgl</label>
-                                    <input type="date" id="kasusMulai" class="text-xs p-2 rounded-lg border border-gray-200 focus:ring-rose-500 focus:border-rose-500">
-                                </div>
-                                <div class="flex flex-col flex-1">
-                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Sampai Tgl</label>
-                                    <input type="date" id="kasusAkhir" class="text-xs p-2 rounded-lg border border-gray-200 focus:ring-rose-500 focus:border-rose-500">
+                                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Filter Kelas</label>
+                                    <select id="filterKelasKasus" class="text-xs p-2 rounded-lg border border-gray-200 focus:ring-rose-500 focus:border-rose-500">
+                                        <option value="">Semua Kelas</option>
+                                    </select>
                                 </div>
                                 <div class="flex flex-col flex-[2]">
                                     <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Cari Nama / NISN</label>
-                                    <input type="text" id="kasusCari" placeholder="Ketik nama atau nisn..." class="text-xs p-2 rounded-lg border border-gray-200 focus:ring-rose-500 focus:border-rose-500">
+                                    <input type="text" id="cariNamaKasus" placeholder="Ketik nama atau nisn..." class="text-xs p-2 rounded-lg border border-gray-200 focus:ring-rose-500 focus:border-rose-500">
                                 </div>
                                 <div class="flex items-end gap-2 flex-1">
-                                    <button onclick="applyFilterKasus()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg text-xs font-bold transition shadow-sm"><i class="fas fa-search"></i> Cari</button>
-                                    <button onclick="cetakPDFKasus()" class="w-full bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-lg text-xs font-bold transition shadow-sm"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                                    <button onclick="applyFilterLeaderboard()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg text-xs font-bold transition shadow-sm"><i class="fas fa-search"></i> Cari</button>
+                                    <button onclick="exportExcelKasus()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-lg text-xs font-bold transition shadow-sm"><i class="fas fa-file-excel"></i> Excel</button>
                                 </div>
                             </div>
-
+                            
                             <div class="overflow-x-auto border border-gray-100 rounded-xl">
                                 <table class="w-full text-left">
-                                    <thead id="thead-history-kasus" class="bg-gray-50 text-gray-600 text-[10px] uppercase font-bold border-b border-gray-200"></thead>
+                                    <thead class="bg-rose-50 text-rose-700 text-[10px] uppercase font-bold border-b border-rose-100">
+                                        <tr><th class="p-3 text-center w-10">No</th><th class="p-3">Nama Siswa</th><th class="p-3 text-center">Kelas</th><th class="p-3 text-center">Total Poin</th><th class="p-3 text-center">Aksi</th></tr>
+                                    </thead>
+                                    <tbody id="tbody-leaderboard-kasus" class="divide-y divide-gray-50 bg-white text-xs"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div id="areaDetailSiswa" class="hidden flex-col p-4">
+                            <div id="headerDetailKasus" class="flex flex-col md:flex-row justify-between items-center mb-4 p-4 bg-rose-50 rounded-xl border border-rose-100 shadow-sm gap-3">
+                                <div>
+                                    <h4 id="detailNamaSiswa" class="font-bold text-lg text-gray-800">Nama Siswa</h4>
+                                    <p id="detailInfoSiswa" class="text-xs text-gray-600">NISN: - | Kelas: - | Total Poin: <span class="font-bold text-rose-600" id="detailPoinSiswa">0</span></p>
+                                </div>
+                                <div id="btnGroupDetail" class="flex gap-2 w-full md:w-auto">
+                                    <button onclick="kembaliKeLeaderboard()" class="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 p-2 rounded-lg text-xs font-bold transition shadow-sm"><i class="fas fa-arrow-left"></i> Kembali</button>
+                                    <button onclick="cetakPDFDetailKasus()" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-lg text-xs font-bold transition shadow-sm"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto border border-gray-100 rounded-xl">
+                                <table class="w-full text-left">
+                                    <thead id="thead-history-kasus" class="bg-gray-50 text-gray-600 text-[10px] uppercase font-bold border-b border-gray-200">
+                                        <tr><th class="p-3 text-center w-10">No</th><th class="p-3">Tanggal</th><th class="p-3">Pelanggaran</th><th class="p-3 text-center">Poin</th><th class="p-3">Pelapor / Catatan</th></tr>
+                                    </thead>
                                     <tbody id="tbody-history-kasus" class="divide-y divide-gray-50 bg-white text-xs"></tbody>
                                 </table>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -4824,29 +4832,23 @@ function hapusBuktiAbsen(nisn, tanggal) {
 // ============================================================
 async function loadMasterPelanggaran() {
     stopAndBack(false); setActiveMenu('Data Pelanggaran'); showView('view-master-pelanggaran');
+    document.getElementById('tbody-pelanggaran').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data...</td></tr>';
     
-    if (tableState.pelanggaran.fullData.length > 0) {
-        processTableData('pelanggaran');
-    } else {
-        document.getElementById('tbody-pelanggaran').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data...</td></tr>';
-        try {
-            const result = await fetchAPI('getPelanggaranList', { token: currentUser.token });
-            if (result.success) { 
-                tableState.pelanggaran.fullData = result.data; 
-                processTableData('pelanggaran'); 
-            } else { 
-                showAlert('error', result.message); 
-                document.getElementById('tbody-pelanggaran').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-red-500">Gagal memuat data</td></tr>';
-            }
-        } catch(e) {}
-    }
+    try {
+        const result = await fetchAPI('getPelanggaranList', { token: currentUser.token });
+        if (result.success) { 
+            document.getElementById('info-pelanggaran').textContent = `Total: ${result.data.length} aturan pelanggaran`;
+            renderPelanggaranRows(result.data, 0); 
+        } else { 
+            showAlert('error', result.message); 
+            document.getElementById('tbody-pelanggaran').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-red-500">Gagal memuat data</td></tr>';
+        }
+    } catch(e) { document.getElementById('tbody-pelanggaran').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-red-500">Error koneksi</td></tr>'; }
 }
 
 function renderPelanggaranRows(data, startIdx) {
     const tbody = document.getElementById('tbody-pelanggaran');
-    if (data.length === 0) { 
-        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Data tidak ditemukan.</td></tr>'; return; 
-    }
+    if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Data tidak ditemukan.</td></tr>'; return; }
     
     tbody.innerHTML = data.map((item, i) => {
         let colorCat = 'bg-gray-100 text-gray-700';
@@ -4854,16 +4856,18 @@ function renderPelanggaranRows(data, startIdx) {
         if(item.kategori.toLowerCase().includes('sedang')) colorCat = 'bg-yellow-100 text-yellow-700';
         if(item.kategori.toLowerCase().includes('berat')) colorCat = 'bg-red-100 text-red-700';
         
+        const isSystem = (item.id === 'SYS_LATE' || item.id === 'SYS_ALPA');
+
         return `
         <tr class="hover:bg-gray-50 transition border-b border-gray-50 group">
             <td class="p-4 text-center text-gray-500 text-sm">${startIdx + i + 1}</td>
-            <td class="p-4 font-bold text-sm text-gray-800">${item.namaPelanggaran}</td>
+            <td class="p-4 font-bold text-sm text-gray-800">${item.namaPelanggaran} ${isSystem ? '<i class="fas fa-shield-alt text-indigo-400 ml-1" title="Aturan Sistem"></i>' : ''}</td>
             <td class="p-4 text-center"><span class="px-2 py-1 rounded text-[10px] font-bold ${colorCat}">${item.kategori}</span></td>
             <td class="p-4 text-center"><span class="font-mono font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded-lg border border-rose-100">+ ${item.poin}</span></td>
             <td class="p-4 text-center">
                 <div class="flex justify-center space-x-2 opacity-80 group-hover:opacity-100">
-                    <button onclick='editPelanggaran(${JSON.stringify(item)})' class="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition" title="Edit Poin"><i class="fas fa-edit"></i></button>
-                    ${(item.id !== 'SYS_LATE' && item.id !== 'SYS_ALPA') ? `<button onclick="deletePelanggaranConfirm('${item.id}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition"><i class="fas fa-trash"></i></button>` : `<span class="p-2 text-gray-300" title="Aturan Sistem (Dikunci)"><i class="fas fa-lock"></i></span>`}
+                    <button onclick='editPelanggaran(${JSON.stringify(item)})' class="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition" title="Edit Data"><i class="fas fa-edit"></i></button>
+                    ${!isSystem ? `<button onclick="deletePelanggaranConfirm('${item.id}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition" title="Hapus Aturan"><i class="fas fa-trash"></i></button>` : `<span class="p-2 text-gray-300 cursor-not-allowed" title="Aturan Bawaan (Dikunci)"><i class="fas fa-lock"></i></span>`}
                 </div>
             </td>
         </tr>`;
@@ -4918,7 +4922,7 @@ async function savePelanggaran(e, isEdit) {
         else { res = await fetchAPI('addPelanggaran', { token: currentUser.token, data: data }); }
         
         hideLoading();
-        if (res.success) { closeModal(); tableState.pelanggaran.fullData = []; loadMasterPelanggaran(); showAlert('success', res.message); } 
+        if (res.success) { closeModal(); loadMasterPelanggaran(); showAlert('success', res.message); } 
         else { showAlert('error', res.message); }
     } catch(err) { hideLoading(); showAlert('error', 'Terjadi kesalahan: ' + err); }
 }
@@ -4928,7 +4932,7 @@ function deletePelanggaranConfirm(id) {
         showLoading(); 
         fetchAPI('deletePelanggaran', { token: currentUser.token, id: id }).then(res => {
             hideLoading();
-            if (res.success) { tableState.pelanggaran.fullData = []; loadMasterPelanggaran(); showAlert('success', 'Dihapus!'); } 
+            if (res.success) { loadMasterPelanggaran(); showAlert('success', 'Dihapus!'); } 
             else { showAlert('error', res.message); }
         }).catch(e => { hideLoading(); showAlert('error', 'Gagal hapus.'); });
     }
@@ -4942,7 +4946,6 @@ async function loadInputKasus() {
     setActiveMenu('Input Kasus Siswa'); 
     showView('view-input-kasus');
     
-    // Set tanggal default jadi hari ini
     const d = new Date();
     document.getElementById('kasusTanggal').value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     document.getElementById('kasusNisn').value = '';
@@ -4951,7 +4954,6 @@ async function loadInputKasus() {
     const dropdown = document.getElementById('kasusIdPelanggaran');
     dropdown.innerHTML = '<option value="">Memuat...</option>';
     
-    // Ambil daftar pelanggaran dari database untuk dimasukkan ke dropdown
     try {
         const res = await fetchAPI('getPelanggaranList', { token: currentUser.token });
         if (res.success) {
@@ -4963,9 +4965,7 @@ async function loadInputKasus() {
         } else {
             dropdown.innerHTML = '<option value="">Gagal memuat. Hubungi Admin.</option>';
         }
-    } catch(e) {
-        dropdown.innerHTML = '<option value="">Error koneksi.</option>';
-    }
+    } catch(e) { dropdown.innerHTML = '<option value="">Error koneksi.</option>'; }
 }
 
 async function submitKasusSiswa(e) {
@@ -4992,14 +4992,10 @@ async function submitKasusSiswa(e) {
             showAlert('success', res.message);
             document.getElementById('kasusNisn').value = '';
             document.getElementById('kasusCatatan').value = '';
-            // Reset dropdown ke default
             document.getElementById('kasusIdPelanggaran').selectedIndex = 0;
-        } else {
-            showAlert('error', res.message);
-        }
+        } else { showAlert('error', res.message); }
     } catch(err) {
-        hideLoading();
-        btn.disabled = false; btn.innerHTML = originalText;
+        hideLoading(); btn.disabled = false; btn.innerHTML = originalText;
         showAlert('error', 'Gagal terhubung ke server');
     }
 }
@@ -5007,44 +5003,52 @@ async function submitKasusSiswa(e) {
 // ============================================================
 // LOGIKA JAVASCRIPT REKAP KEDISIPLINAN (LEADERBOARD & HISTORY)
 // ============================================================
+window.kasusHistoryData = []; 
+window.kasusLeaderboardData = [];
+window.currentDetailNisn = "";
+window.currentDetailNama = "";
+window.currentDetailKelas = "";
+
 async function loadRekapKasus() {
     stopAndBack(false); 
     if(currentUser.role === 'siswa') setActiveMenu('Dashboard'); else setActiveMenu('Rekap Kedisiplinan');
     showView('view-rekap-kasus');
     
-    document.getElementById('tbody-leaderboard-kasus').innerHTML = '<tr><td colspan="5" class="p-12 text-center text-gray-400"><i class="fas fa-circle-notch fa-spin text-rose-500 text-xl mb-2 block"></i> Memuat data...</td></tr>';
-    document.getElementById('tbody-history-kasus').innerHTML = '<tr><td colspan="6" class="p-12 text-center text-gray-400"><i class="fas fa-circle-notch fa-spin text-rose-500 text-xl mb-2 block"></i> Memuat riwayat...</td></tr>';
+    // Reset View
+    const elAdmin = document.getElementById('areaAdminUtama');
+    const elDetail = document.getElementById('areaDetailSiswa');
+    const elSum = document.getElementById('summaryKasusSiswa');
+    
+    if(elAdmin) { elAdmin.classList.add('hidden'); elAdmin.classList.remove('flex'); }
+    if(elDetail) { elDetail.classList.add('hidden'); elDetail.classList.remove('flex'); }
+    if(elSum) { elSum.classList.add('hidden'); }
+    
+    const tbL = document.getElementById('tbody-leaderboard-kasus');
+    if(tbL) tbL.innerHTML = '<tr><td colspan="5" class="p-12 text-center text-gray-400"><i class="fas fa-circle-notch fa-spin text-rose-500 text-xl mb-2 block"></i> Memuat data...</td></tr>';
     
     try {
         const res = await fetchAPI('getRekapKasus', { token: currentUser.token });
         if (res.success) {
-            
-            // 1. DEKLARASI DULU DI SINI BARU BISA DIPAKAI
             const isAdminGuru = (res.role === 'admin' || res.role === 'guru');
-            
-            // 2. SIMPAN KE WINDOW UNTUK FILTER
-            window.kasusHistoryData = res.history;
-            window.kasusIsAdmin = isAdminGuru;
-            if(isAdminGuru) document.getElementById('filterKasusBar').classList.replace('hidden', 'flex');
-            
-            // 3. LANJUTANNYA...
-            const thSiswa = isAdminGuru ? `<th class="p-3">Siswa</th>` : '';
-            document.getElementById('thead-history-kasus').innerHTML = `<tr><th class="p-3 text-center w-10">No</th><th class="p-3">Tanggal</th>${thSiswa}<th class="p-3">Pelanggaran</th><th class="p-3 text-center">Poin</th><th class="p-3">Pelapor / Catatan</th></tr>`;
+            window.kasusHistoryData = res.history; 
             
             if (isAdminGuru) {
-                document.getElementById('tabKasusAdmin').classList.remove('hidden');
-                document.getElementById('tabKasusAdmin').classList.add('flex');
-                document.getElementById('summaryKasusSiswa').classList.add('hidden');
-                switchKasusTab('leaderboard'); 
+                window.kasusLeaderboardData = res.leaderboard; 
+                
+                const kelasSet = new Set(res.leaderboard.map(d => d.kelas));
+                let kelasHtml = '<option value="">Semua Kelas</option>';
+                Array.from(kelasSet).sort().forEach(k => { kelasHtml += `<option value="${k}">${k}</option>`; });
+                document.getElementById('filterKelasKasus').innerHTML = kelasHtml;
+                
+                document.getElementById('areaAdminUtama').classList.remove('hidden');
+                document.getElementById('areaAdminUtama').classList.add('flex');
                 
                 renderLeaderboardKasus(res.leaderboard);
-                renderHistoryKasus(res.history, true);
             } else {
-                document.getElementById('tabKasusAdmin').classList.add('hidden');
-                document.getElementById('tabKasusAdmin').classList.remove('flex');
                 document.getElementById('summaryKasusSiswa').classList.remove('hidden');
-                document.getElementById('contentLeaderboardKasus').classList.add('hidden');
-                document.getElementById('contentHistoryKasus').classList.remove('hidden');
+                document.getElementById('areaDetailSiswa').classList.remove('hidden');
+                document.getElementById('areaDetailSiswa').classList.add('flex');
+                document.getElementById('headerDetailKasus').classList.add('hidden');
                 
                 let myPoints = 0;
                 if(res.leaderboard.length > 0) myPoints = res.leaderboard[0].totalPoin;
@@ -5063,71 +5067,94 @@ async function loadRekapKasus() {
                     statEl.className = 'text-[10px] md:text-xs font-bold px-4 py-1.5 rounded-full inline-block border shadow-sm bg-red-50 border-red-200 text-red-700 animate-pulse'; 
                 }
 
-                renderHistoryKasus(res.history, false);
+                renderHistoryKasus(res.history);
             }
         } else {
             showAlert('error', res.message);
         }
-    } catch(e) {
-        showAlert('error', 'Gagal terhubung ke server');
-    }
-}
-
-function switchKasusTab(tab) {
-    const btnL = document.getElementById('btnTabLeaderboard');
-    const btnH = document.getElementById('btnTabHistory');
-    const contL = document.getElementById('contentLeaderboardKasus');
-    const contH = document.getElementById('contentHistoryKasus');
-
-    if(tab === 'leaderboard') {
-        btnL.className = "flex-1 py-3.5 text-xs md:text-sm font-bold text-rose-600 border-b-[3px] border-rose-600 transition bg-rose-50/50";
-        btnH.className = "flex-1 py-3.5 text-xs md:text-sm font-bold text-gray-500 border-b-[3px] border-transparent hover:text-rose-500 transition";
-        contL.classList.remove('hidden'); contH.classList.add('hidden');
-    } else {
-        btnH.className = "flex-1 py-3.5 text-xs md:text-sm font-bold text-rose-600 border-b-[3px] border-rose-600 transition bg-rose-50/50";
-        btnL.className = "flex-1 py-3.5 text-xs md:text-sm font-bold text-gray-500 border-b-[3px] border-transparent hover:text-rose-500 transition";
-        contH.classList.remove('hidden'); contL.classList.add('hidden');
-    }
+    } catch(e) { showAlert('error', 'Gagal terhubung ke server'); }
 }
 
 function renderLeaderboardKasus(data) {
     const tbody = document.getElementById('tbody-leaderboard-kasus');
-    if(data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-12 text-center text-gray-400 italic">Bersih! Belum ada kasus pelanggaran.</td></tr>'; return; }
+    if(!tbody) return;
+    if(data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-12 text-center text-gray-400 italic">Belum ada kasus pelanggaran.</td></tr>'; return; }
     
     tbody.innerHTML = data.map((d, i) => {
-        let rankIcon = `<span class="font-bold text-gray-400 text-sm">#${i+1}</span>`;
-        if(i===0) rankIcon = `<div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mx-auto border border-yellow-200 shadow-sm"><i class="fas fa-trophy text-yellow-500 text-sm"></i></div>`;
-        else if(i===1) rankIcon = `<div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mx-auto border border-gray-200 shadow-sm"><i class="fas fa-medal text-gray-400 text-sm"></i></div>`;
-        else if(i===2) rankIcon = `<div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center mx-auto border border-amber-200 shadow-sm"><i class="fas fa-medal text-amber-600 text-sm"></i></div>`;
-
         return `
         <tr class="hover:bg-rose-50/40 transition border-b border-gray-50">
-            <td class="p-3 text-center align-middle">${rankIcon}</td>
+            <td class="p-3 text-center align-middle text-gray-400 text-xs">${i+1}</td>
             <td class="p-3 whitespace-nowrap min-w-[140px]">
-                <div class="font-bold text-xs text-gray-800 break-words leading-tight line-clamp-2 max-w-[180px]">${d.nama}</div>
+                <div class="font-bold text-xs text-gray-800 break-words leading-tight line-clamp-2" title="${d.nama}">${d.nama}</div>
                 <div class="text-[9px] text-gray-500 font-mono mt-0.5">${d.nisn}</div>
             </td>
             <td class="p-3 text-center"><span class="px-2 py-1.5 rounded-lg bg-gray-100 border border-gray-200 text-gray-600 text-[10px] font-bold">${d.kelas}</span></td>
-            <td class="p-3 text-center font-bold text-gray-600">${d.kasus} <span class="text-[9px] font-normal text-gray-400">Kasus</span></td>
             <td class="p-3 text-center"><span class="font-black text-rose-600 text-sm bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100">${d.totalPoin}</span></td>
+            <td class="p-3 text-center">
+                <button onclick="lihatDetailKasus('${d.nisn}', '${d.nama}', '${d.kelas}', ${d.totalPoin})" class="bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white border border-indigo-200 px-3 py-1.5 rounded-lg text-[10px] font-bold transition shadow-sm whitespace-nowrap"><i class="fas fa-eye mr-1"></i> Lihat Rekap</button>
+            </td>
         </tr>`;
     }).join('');
 }
 
-function renderHistoryKasus(data, isAdmin) {
+function applyFilterLeaderboard() {
+    const kelas = document.getElementById('filterKelasKasus').value;
+    const cari = document.getElementById('cariNamaKasus').value.toLowerCase();
+    
+    let filtered = window.kasusLeaderboardData;
+    if(kelas) filtered = filtered.filter(d => d.kelas === kelas);
+    if(cari) filtered = filtered.filter(d => d.nama.toLowerCase().includes(cari) || d.nisn.toLowerCase().includes(cari));
+    
+    renderLeaderboardKasus(filtered);
+}
+
+function exportExcelKasus() {
+    if(!window.kasusLeaderboardData || window.kasusLeaderboardData.length === 0) {
+        showAlert('error', 'Tidak ada data untuk di-export'); return;
+    }
+    const dataToExport = window.kasusLeaderboardData.map((d, i) => ({
+        "No": i + 1, "NISN": d.nisn, "Nama Siswa": d.nama, "Kelas": d.kelas,
+        "Jumlah Kasus": d.kasus, "Total Poin": d.totalPoin
+    }));
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Rekap Pelanggaran");
+    XLSX.writeFile(wb, "Rekap_Pelanggaran_Siswa.xlsx");
+}
+
+function lihatDetailKasus(nisn, nama, kelas, poin) {
+    document.getElementById('areaAdminUtama').classList.add('hidden');
+    document.getElementById('areaAdminUtama').classList.remove('flex');
+    document.getElementById('areaDetailSiswa').classList.remove('hidden');
+    document.getElementById('areaDetailSiswa').classList.add('flex');
+    
+    document.getElementById('headerDetailKasus').classList.remove('hidden');
+    document.getElementById('detailNamaSiswa').textContent = nama;
+    document.getElementById('detailInfoSiswa').innerHTML = `NISN: ${nisn} | Kelas: ${kelas} | Total Poin: <span class="font-bold text-rose-600">${poin}</span>`;
+    
+    window.currentDetailNisn = nisn; window.currentDetailNama = nama; window.currentDetailKelas = kelas;
+    
+    const detailHistory = window.kasusHistoryData.filter(d => d.nisn === nisn);
+    renderHistoryKasus(detailHistory); 
+}
+
+function kembaliKeLeaderboard() {
+    document.getElementById('areaDetailSiswa').classList.add('hidden');
+    document.getElementById('areaDetailSiswa').classList.remove('flex');
+    document.getElementById('areaAdminUtama').classList.remove('hidden');
+    document.getElementById('areaAdminUtama').classList.add('flex');
+}
+
+function renderHistoryKasus(data) {
     const tbody = document.getElementById('tbody-history-kasus');
-    if(data.length === 0) { tbody.innerHTML = `<tr><td colspan="${isAdmin ? 6 : 5}" class="p-12 text-center text-gray-400 italic">Tidak ada riwayat.</td></tr>`; return; }
+    if(!tbody) return;
+    if(data.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="p-12 text-center text-gray-400 italic">Tidak ada riwayat.</td></tr>`; return; }
 
     tbody.innerHTML = data.map((d, i) => {
         return `
         <tr class="hover:bg-gray-50 transition border-b border-gray-50">
             <td class="p-3 text-center text-gray-400 text-[10px]">${i+1}</td>
             <td class="p-3 text-[10px] text-gray-600 whitespace-nowrap">${d.tanggal}</td>
-            ${isAdmin ? `
-            <td class="p-3 whitespace-nowrap min-w-[120px]">
-                <div class="font-bold text-xs text-gray-800 break-words leading-tight line-clamp-2 max-w-[150px]">${d.nama}</div>
-                <div class="text-[9px] text-gray-500 font-bold mt-0.5">Kls: ${d.kelas}</div>
-            </td>` : ''}
             <td class="p-3 text-[11px] font-bold text-gray-700 min-w-[140px]">${d.pelanggaran}</td>
             <td class="p-3 text-center"><span class="font-mono font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded border border-rose-100 text-[10px]">+ ${d.poin}</span></td>
             <td class="p-3 min-w-[150px]">
@@ -5138,33 +5165,14 @@ function renderHistoryKasus(data, isAdmin) {
     }).join('');
 }
 
-window.kasusHistoryData = []; // Simpan data global untuk difilter
-window.kasusIsAdmin = false;
-
-
-function applyFilterKasus() {
-    const tglMulai = document.getElementById('kasusMulai').value;
-    const tglAkhir = document.getElementById('kasusAkhir').value;
-    const cari = document.getElementById('kasusCari').value.toLowerCase();
-    
-    let filtered = window.kasusHistoryData;
-    
-    if(tglMulai) filtered = filtered.filter(d => d.tanggal >= tglMulai);
-    if(tglAkhir) filtered = filtered.filter(d => d.tanggal <= tglAkhir);
-    if(cari) {
-        filtered = filtered.filter(d => d.nama.toLowerCase().includes(cari) || d.nisn.toLowerCase().includes(cari));
-    }
-    
-    renderHistoryKasus(filtered, window.kasusIsAdmin);
-}
-
-function cetakPDFKasus() {
-    // Ambil data dari tabel yang sedang tampil
-    const tglMulai = document.getElementById('kasusMulai').value || '-';
-    const tglAkhir = document.getElementById('kasusAkhir').value || '-';
+function cetakPDFDetailKasus() {
+    const isSiswa = currentUser.role === 'siswa';
+    const nama = isSiswa ? currentUser.nama : window.currentDetailNama;
+    const nisn = isSiswa ? currentUser.nisn : window.currentDetailNisn;
+    const kelas = isSiswa ? currentUser.kelas : window.currentDetailKelas;
     
     let html = `
-    <html><head><title>Laporan Kedisiplinan Siswa</title>
+    <html><head><title>Buku Kasus - ${nama}</title>
     <style>
         body { font-family: sans-serif; color: #333; }
         h2 { text-align: center; margin-bottom: 5px; }
@@ -5174,40 +5182,28 @@ function cetakPDFKasus() {
         th { background: #f4f4f4; text-transform: uppercase; }
         .center { text-align: center; }
     </style></head><body>
-    <h2>LAPORAN KEDISIPLINAN (KASUS SISWA)</h2>
-    <p>Periode: ${tglMulai} s/d ${tglAkhir}</p>
+    <h2>REKAP PELANGGARAN SISWA</h2>
+    <p>Nama: <b>${nama}</b> | NISN: ${nisn} | Kelas: ${kelas}</p>
     <table>
-        <thead><tr><th class="center">No</th><th>Tanggal</th><th>NISN</th><th>Nama Siswa</th><th class="center">Kelas</th><th>Pelanggaran</th><th class="center">Poin</th><th>Pelapor / Catatan</th></tr></thead>
+        <thead><tr><th class="center">No</th><th>Tanggal</th><th>Pelanggaran</th><th class="center">Poin</th><th>Pelapor / Catatan</th></tr></thead>
         <tbody>`;
         
-    // Ambil baris HTML dari tabel history saat ini
     const trs = document.querySelectorAll('#tbody-history-kasus tr');
     if(trs.length === 0 || trs[0].innerText.includes("Tidak ada riwayat")) {
-        html += `<tr><td colspan="8" class="center">Tidak ada data untuk dicetak.</td></tr>`;
+        html += `<tr><td colspan="5" class="center">Tidak ada data untuk dicetak.</td></tr>`;
     } else {
         trs.forEach((tr, i) => {
             const tds = tr.querySelectorAll('td');
-            if(tds.length >= 5) {
-                let tgl = tds[1].innerText;
-                let namaRaw = tds[2].innerText.split('\n'); // Memisahkan nama dan NISN
-                let nama = namaRaw[0];
-                let nisn = namaRaw[1] ? namaRaw[1].replace('Kls: ', '') : '-'; 
-                let kelas = namaRaw[2] ? namaRaw[2] : '-'; // Fallback
-                let pelanggaran = tds[3].innerText;
-                let poin = tds[4].innerText;
-                let catatan = tds[5].innerText.replace('\n', ' - ');
-                
-                html += `<tr><td class="center">${i+1}</td><td>${tgl}</td><td>${nisn}</td><td>${nama}</td><td class="center">${kelas}</td><td>${pelanggaran}</td><td class="center">${poin}</td><td>${catatan}</td></tr>`;
+            if(tds.length >= 4) {
+                html += `<tr><td class="center">${i+1}</td><td>${tds[1].innerText}</td><td>${tds[2].innerText}</td><td class="center">${tds[3].innerText}</td><td>${tds[4].innerText.replace('\n', ' - ')}</td></tr>`;
             }
         });
     }
-    
     html += `</tbody></table></body></html>`;
     
     const win = window.open('', '_blank');
     win.document.write(html);
     win.document.close();
-    // Tunggu render selesai baru print
     setTimeout(() => { win.print(); }, 500); 
 }
 
