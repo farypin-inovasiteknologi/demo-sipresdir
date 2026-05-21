@@ -1,4 +1,3 @@
-
 // ==========================================
 // KONFIGURASI MULTI-TENANT (BANYAK SEKOLAH)
 // ==========================================
@@ -7,8 +6,8 @@
 // 1. Buat "Buku Alamat" untuk masing-masing sekolah
 const tenantConfig = {
     "demo": "https://script.google.com/macros/s/AKfycbwBG1pGv_nCHsa6gun7lrYf_mDtL6eL9jkpMOsaw4VZVid73kSMr0NmVnlRT2Ugq-PKJQ/exec",
-    "sekolah-b": "https://script.google.com/macros/s/ID_API_SEKOLAH_2/exec",
-    "sma-merdeka": "https://script.google.com/macros/s/ID_API_SEKOLAH_3/exec"
+    "sma1": "https://script.google.com/macros/s/ID_API_SEKOLAH_2/exec",
+    "smk2": "https://script.google.com/macros/s/ID_API_SEKOLAH_3/exec"
     // Tambahkan sekolah lain di sini sesuai kebutuhan
 };
 
@@ -1042,21 +1041,7 @@ function tampilkanKartuKeModal(nama, nisn, ttl, jk, fotoId, status) {
     $('#card-link-validasi').text(globalConf.link_validasi || "https://simisterbin.my.id");
     
     // 3. QR Code pakai API luar agar terbaca sebagai gambar (Aman untuk didownload)
-   // UBAH MENJADI:
-$('#qrcode').empty(); // Kosongkan div dulu
-new QRCode(document.getElementById("qrcode"), {
-    text: String(nisn),
-    width: 85,
-    height: 85,
-    colorDark : "#000000",
-    colorLight : "#ffffff",
-    correctLevel : QRCode.CorrectLevel.M // M untuk error correction menengah (bagus untuk scan kartu)
-});
-
-// Pastikan gambar QR merespon CSS Anda
-setTimeout(() => {
-    $('#qrcode img').css({ 'width': '85px', 'height': '85px', 'display': 'block' });
-}, 100);
+    $('#qrcode').html(`<img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&margin=0&data=${nisn}" crossorigin="anonymous" style="width:85px; height:85px; display:block;">`);
     
     // Kosongkan gambar lama
     $('#card-foto').attr('src', '');
