@@ -1625,3 +1625,197 @@ function formatAndValidateNIK_KK(input, namaKolom) {
         Swal.fire('Peringatan', namaKolom + ' wajib 16 digit angka! (Saat ini Anda menginput ' + val.length + ' digit)', 'warning');
     }
 }
+
+// ==========================================
+// FITUR BUKU KLAPER (PDF LANDSCAPE)
+// ==========================================
+
+function bukaModalKlaper(tipe) {
+    $('#klaperTipe').val(tipe);
+    let tahunSet = new Set();
+    
+    // 1. Ekstrak Tahun dari Data Siswa/Alumni
+    globalSiswa.forEach(r => {
+        if (!r[0]) return; // Lewati baris kosong
+        let status = r[31];
+        
+        if (tipe === 'Alumni' && status === 'Lulus') {
+            let tglKeluar = r[32];
+            if (tglKeluar) {
+                let thn = String(tglKeluar).substring(0,4);
+                if (thn && thn !== '-' && !isNaN(thn)) tahunSet.add(thn);
+            }
+        } else if (tipe === 'Siswa Aktif' && status === 'Aktif') {
+            let tglMasuk = r[30]; // Jika siswa aktif, kita ambil Tahun Masuk
+            if (tglMasuk) {
+                let thn = String(tglMasuk).substring(0,4);
+                if (thn && thn !== '-' && !isNaN(thn)) tahunSet.add(thn);
+            }
+        }
+    });
+
+    // 2. Urutkan tahun dari yang terbaru
+    let tahunArr = Array.from(tahunSet).sort((a,b) => b - a); 
+    let sel = $('#klaperTahun').empty();
+    
+    if (tahunArr.length === 0) {
+        sel.append('<option value="">Belum Ada Data</option>');
+    } else {
+        tahunArr.forEach(t => {
+            if (tipe === 'Alumni') {
+                $('#lblKlaperTahun').text('Pilih Tahun Kelulusan:');
+                let thnAjaran = (parseInt(t) - 1) + "/" + t; // Rumus: Lulus 2022 -> TA 2021/2022
+                sel.append(`<option value="${t}">Lulus ${t} (TA. ${thnAjaran})</option>`);
+            } else {
+                $('#lblKlaperTahun').text('Pilih Tahun Angkatan (Masuk):');
+                let thnAjaran = t + "/" + (parseInt(t) + 1); // Rumus: Masuk 2022 -> TA 2022/2023
+                sel.append(`<option value="${t}">Angkatan ${t} (TA. ${thnAjaran})</option>`);
+            }
+        });
+        sel.append('<option value="SEMUA">-- CETAK SEMUA TAHUN --</option>');
+    }
+    
+    $('#mdlKlaper').modal('show');
+}
+
+function cetakKlaperPDF() {
+    let tipe = $('#klaperTipe').val();
+    let tahun = $('#klaperTahun').val();
+    if (!tahun) { Swal.fire('Data Kosong', 'Tidak ada data tahun yang bisa dicetak.', 'warning'); return; }
+
+    $('#mdlKlaper').modal('hide');
+    $('#loader').removeClass('hidden'); 
+    $('#loaderText').text('Menyusun Buku Klaper PDF...');
+
+    // 1. Saring Data Berdasarkan Tahun & Status
+    let filteredData = globalSiswa.filter(r => {
+        if (!r[0]) return false;
+        let status = r[31];
+        if (tipe === 'Alumni' && status === 'Lulus') {
+            if (tahun === 'SEMUA') return true;
+            let thnLulus = r[32] ? String(r[32]).substring(0,4) : '';
+            return thnLulus === tahun;
+        } else if (tipe === 'Siswa Aktif' && status === 'Aktif') {
+            if (tahun === 'SEMUA') return true;
+            let thnMasuk = r[30] ? String(r[30]).substring(0,4) : '';
+            return thnMasuk === tahun;
+        }
+        return false;
+    });
+
+    // 2. Sortir Abjad (A-Z) berdasarkan Nama (Kolom index 2)
+    filteredData.sort((a, b) => String(a[2]).localeCompare(String(b[2])));
+
+    if (filteredData.length === 0) {
+        $('#loader').addClass('hidden');
+        Swal.fire('Kosong', 'Tidak ada siswa yang terdata di tahun tersebut.', 'info');
+        return;
+    }
+
+    // 3. Susun Kop Surat & Judul
+    const imgInstansi = $('#loginLogoInstansi').attr('src') || '';
+    const imgSekolah = $('#loginLogoSekolah').attr('src') || '';
+    const tglSekarang = new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+    
+    let judulSub = "";
+    if (tahun === 'SEMUA') {
+        judulSub = (tipe === 'Alumni') ? "SELURUH LULUSAN ALUMNI" : "SELURUH SISWA AKTIF";
+    } else {
+        if (tipe === 'Alumni') {
+            judulSub = "TAHUN AJARAN " + (parseInt(tahun) - 1) + "/" + tahun;
+        } else {
+            judulSub = "ANGKATAN TAHUN MASUK " + tahun;
+        }
+    }
+
+    // 4. Bangun Struktur HTML untuk Klaper
+    let html = `
+    <div style="font-family: 'Times New Roman', serif; color: #000; background: #fff; padding: 5px;">
+        <!-- Kop Surat Resmi -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 5px;">
+            <tr>
+                <td width="12%" align="center">${imgInstansi ? `<img src="${imgInstansi}" style="width: 2.2cm; object-fit: contain;">` : ''}</td>
+                <td width="76%" style="text-align: center; line-height: 1.2;">
+                    <div style="font-size:14pt; font-weight:bold; text-transform:uppercase; letter-spacing: 1px;">${globalConf.nama_instansi || ''}</div>
+                    ${globalConf.opd_dinas ? `<div style="font-size:13pt; font-weight:bold; text-transform:uppercase;">${globalConf.opd_dinas}</div>` : ''}
+                    <div style="font-size:18pt; font-weight:bold; text-transform:uppercase; margin: 3px 0;">${globalConf.nama_sekolah || ''}</div>
+                    <div style="font-size:10pt;">${globalConf.alamat_sekolah || ''}</div>
+                </td>
+                <td width="12%" align="center">${imgSekolah ? `<img src="${imgSekolah}" style="width: 2.2cm; object-fit: contain;">` : ''}</td>
+            </tr>
+        </table>
+        <div style="border-bottom: 4px double #000; margin-bottom: 15px;"></div>
+        
+        <!-- Judul Klaper -->
+        <div style="text-align:center; font-weight:bold; font-size:15pt; margin-bottom: 3px; text-decoration: underline;">BUKU KLAPER SISWA</div>
+        <div style="text-align:center; font-weight:bold; font-size:12pt; margin-bottom: 20px;">${judulSub}</div>
+        
+        <!-- Tabel Data -->
+        <table style="width: 100%; border-collapse: collapse; font-size: 9pt; font-family: 'Arial', sans-serif;" border="1">
+            <thead>
+                <tr style="background-color: #e2e8f0; text-align: center;">
+                    <th style="padding: 8px 4px; width: 3%;">No</th>
+                    <th style="padding: 8px 4px; width: 12%;">NIS / NISN</th>
+                    <th style="padding: 8px 4px; width: 22%;">Nama Lengkap</th>
+                    <th style="padding: 8px 4px; width: 4%;">L/P</th>
+                    <th style="padding: 8px 4px; width: 18%;">Tempat, Tanggal Lahir</th>
+                    <th style="padding: 8px 4px; width: 18%;">Nama Orang Tua/Wali</th>
+                    <th style="padding: 8px 4px; width: 15%;">Alamat</th>
+                    <th style="padding: 8px 4px; width: 8%;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    // 5. Isi Tabel Data (Looping)
+    filteredData.forEach((s, idx) => {
+        let nis_nisn = `<b>${s[0]}</b><br>${s[1] || '-'}`;
+        let nama = s[2];
+        let jk = s[7];
+        let ttl = `${s[5] || '-'}, ${formatTglIndoJS(s[6])}`;
+        let ortu = s[20] ? s[20] : (s[23] ? s[23] : '-'); // Prioritas: Nama Ayah, kalau kosong pakai Ibu
+        let alamat = s[12] || '-';
+        let status = (tipe === 'Alumni') ? "Lulus" : "Aktif";
+        
+        html += `
+            <tr>
+                <td style="padding: 6px 4px; text-align: center;">${idx + 1}</td>
+                <td style="padding: 6px 4px; text-align: center;">${nis_nisn}</td>
+                <td style="padding: 6px 4px; text-transform: uppercase; font-weight: 600;">${nama}</td>
+                <td style="padding: 6px 4px; text-align: center;">${jk}</td>
+                <td style="padding: 6px 4px;">${ttl}</td>
+                <td style="padding: 6px 4px;">${ortu}</td>
+                <td style="padding: 6px 4px;">${alamat}</td>
+                <td style="padding: 6px 4px; text-align: center;">${status}</td>
+            </tr>
+        `;
+    });
+
+    // Tanda Tangan Kepsek di halaman paling bawah
+    html += `
+            </tbody>
+        </table>
+        <br><br>
+        <div style="float:right; text-align:center; font-size:11pt; font-family: 'Arial', sans-serif; width:300px; margin-top: 10px;">
+            Mengetahui,<br>
+            Kepala Sekolah<br><br><br><br><br>
+            <b><u>${globalConf.nama_kepsek || '.....................................'}</u></b><br>
+            NIP. ${globalConf.nip_kepsek || '-'}
+        </div>
+    </div>
+    `;
+
+    // 6. Eksekusi Print PDF dengan format Landscape A4
+    var opt = { 
+        margin: [1, 1, 1.5, 1], // [Atas, Kanan, Bawah, Kiri] dalam CM
+        filename: `Buku_Klaper_${tipe}_${tahun}.pdf`, 
+        image: { type: 'jpeg', quality: 0.98 }, 
+        html2canvas: { scale: 2, useCORS: true }, 
+        jsPDF: { unit: 'cm', format: 'A4', orientation: 'landscape' } 
+    };
+    
+    html2pdf().set(opt).from(html).save().then(() => { 
+        $('#loader').addClass('hidden'); 
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'PDF Berhasil Diunduh', showConfirmButton: false, timer: 3000 });
+    });
+}
