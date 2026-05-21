@@ -1712,56 +1712,67 @@ function cetakKlaperPDF() {
         return;
     }
 
-    // 3. Susun Kop Surat & Judul
-    const imgInstansi = $('#loginLogoInstansi').attr('src') || '';
-    const imgSekolah = $('#loginLogoSekolah').attr('src') || '';
-    const tglSekarang = new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+    // 3. Susun Kop Surat & Judul (PERBAIKAN LOGO)
+    // Mengambil logo dari elemen header profil yang sudah dipastikan me-render Base64
+    const imgInstansi = $('#headerLogoInstansi').attr('src') || '';
+    const imgSekolah = $('#headerLogoSekolah').attr('src') || '';
     
     let judulSub = "";
     if (tahun === 'SEMUA') {
         judulSub = (tipe === 'Alumni') ? "SELURUH LULUSAN ALUMNI" : "SELURUH SISWA AKTIF";
     } else {
         if (tipe === 'Alumni') {
-            judulSub = "TAHUN AJARAN " + (parseInt(tahun) - 1) + "/" + tahun;
+            judulSub = "TAHUN PELAJARAN " + (parseInt(tahun) - 1) + "/" + tahun;
         } else {
             judulSub = "ANGKATAN TAHUN MASUK " + tahun;
         }
     }
 
-    // 4. Bangun Struktur HTML untuk Klaper
+    // 4. Bangun Struktur HTML dengan CSS Internal yang Memaksa Border Muncul
     let html = `
     <div style="font-family: 'Times New Roman', serif; color: #000; background: #fff; padding: 5px;">
-        <!-- Kop Surat Resmi -->
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 5px;">
+        
+        <style>
+            .tabel-klaper { width: 100%; border-collapse: collapse; font-size: 8pt; font-family: 'Arial', sans-serif; }
+            .tabel-klaper th, .tabel-klaper td { border: 1px solid #000 !important; padding: 5px; text-align: center; vertical-align: middle; }
+            .tabel-klaper th { background-color: #e2e8f0 !important; font-weight: bold; }
+            .text-left { text-align: left !important; }
+        </style>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 5px; border: none;">
             <tr>
-                <td width="12%" align="center">${imgInstansi ? `<img src="${imgInstansi}" style="width: 2.2cm; object-fit: contain;">` : ''}</td>
-                <td width="76%" style="text-align: center; line-height: 1.2;">
+                <td width="12%" align="center" style="border: none;">${imgInstansi ? `<img src="${imgInstansi}" style="width: 70px; height: 70px; object-fit: contain;">` : ''}</td>
+                <td width="76%" style="text-align: center; line-height: 1.2; border: none;">
                     <div style="font-size:14pt; font-weight:bold; text-transform:uppercase; letter-spacing: 1px;">${globalConf.nama_instansi || ''}</div>
                     ${globalConf.opd_dinas ? `<div style="font-size:13pt; font-weight:bold; text-transform:uppercase;">${globalConf.opd_dinas}</div>` : ''}
                     <div style="font-size:18pt; font-weight:bold; text-transform:uppercase; margin: 3px 0;">${globalConf.nama_sekolah || ''}</div>
                     <div style="font-size:10pt;">${globalConf.alamat_sekolah || ''}</div>
                 </td>
-                <td width="12%" align="center">${imgSekolah ? `<img src="${imgSekolah}" style="width: 2.2cm; object-fit: contain;">` : ''}</td>
+                <td width="12%" align="center" style="border: none;">${imgSekolah ? `<img src="${imgSekolah}" style="width: 70px; height: 70px; object-fit: contain;">` : ''}</td>
             </tr>
         </table>
         <div style="border-bottom: 4px double #000; margin-bottom: 15px;"></div>
         
-        <!-- Judul Klaper -->
         <div style="text-align:center; font-weight:bold; font-size:15pt; margin-bottom: 3px; text-decoration: underline;">BUKU KLAPER SISWA</div>
         <div style="text-align:center; font-weight:bold; font-size:12pt; margin-bottom: 20px;">${judulSub}</div>
         
-        <!-- Tabel Data -->
-        <table style="width: 100%; border-collapse: collapse; font-size: 9pt; font-family: 'Arial', sans-serif;" border="1">
+        <table class="tabel-klaper">
             <thead>
-                <tr style="background-color: #e2e8f0; text-align: center;">
-                    <th style="padding: 8px 4px; width: 3%;">No</th>
-                    <th style="padding: 8px 4px; width: 12%;">NIS / NISN</th>
-                    <th style="padding: 8px 4px; width: 22%;">Nama Lengkap</th>
-                    <th style="padding: 8px 4px; width: 4%;">L/P</th>
-                    <th style="padding: 8px 4px; width: 18%;">Tempat, Tanggal Lahir</th>
-                    <th style="padding: 8px 4px; width: 18%;">Nama Orang Tua/Wali</th>
-                    <th style="padding: 8px 4px; width: 15%;">Alamat</th>
-                    <th style="padding: 8px 4px; width: 8%;">Status</th>
+                <tr>
+                    <th rowspan="2" style="width: 3%;">Urut</th>
+                    <th rowspan="2" style="width: 10%;">Nomor Induk /<br>NISN</th>
+                    <th rowspan="2" style="width: 18%;">Nama Siswa</th>
+                    <th rowspan="2" style="width: 3%;">L/P</th>
+                    <th rowspan="2" style="width: 12%;">Tempat, Tgl Lahir</th>
+                    <th rowspan="2" style="width: 12%;">Nama Orangtua<br>Kandung</th>
+                    <th colspan="3">Tgl Naik / Masuk Kelas</th>
+                    <th rowspan="2" style="width: 8%;">Tanggal Tamat<br>Sekolah</th>
+                    <th rowspan="2" style="width: 10%;">Keterangan</th>
+                </tr>
+                <tr>
+                    <th style="width: 8%;">X</th>
+                    <th style="width: 8%;">XI</th>
+                    <th style="width: 8%;">XII</th>
                 </tr>
             </thead>
             <tbody>
@@ -1772,32 +1783,36 @@ function cetakKlaperPDF() {
         let nis_nisn = `<b>${s[0]}</b><br>${s[1] || '-'}`;
         let nama = s[2];
         let jk = s[7];
-        let ttl = `${s[5] || '-'}, ${formatTglIndoJS(s[6])}`;
-        let ortu = s[20] ? s[20] : (s[23] ? s[23] : '-'); // Prioritas: Nama Ayah, kalau kosong pakai Ibu
-        let alamat = s[12] || '-';
-        let status = (tipe === 'Alumni') ? "Lulus" : "Aktif";
+        let ttl = `${s[5] || '-'},<br>${formatTglIndoJS(s[6])}`;
+        let ortu = s[20] ? s[20] : (s[23] ? s[23] : '-'); // Prioritas: Ayah, jika kosong Ibu
+        
+        // Logika Tanggal
+        let tglMasukX = s[30] ? formatTglIndoJS(s[30]) : '-'; 
+        let tglLulus = s[32] ? formatTglIndoJS(s[32]) : '-';
         
         html += `
             <tr>
-                <td style="padding: 6px 4px; text-align: center;">${idx + 1}</td>
-                <td style="padding: 6px 4px; text-align: center;">${nis_nisn}</td>
-                <td style="padding: 6px 4px; text-transform: uppercase; font-weight: 600;">${nama}</td>
-                <td style="padding: 6px 4px; text-align: center;">${jk}</td>
-                <td style="padding: 6px 4px;">${ttl}</td>
-                <td style="padding: 6px 4px;">${ortu}</td>
-                <td style="padding: 6px 4px;">${alamat}</td>
-                <td style="padding: 6px 4px; text-align: center;">${status}</td>
+                <td>${idx + 1}</td>
+                <td>${nis_nisn}</td>
+                <td class="text-left" style="text-transform: uppercase; font-weight: 600;">${nama}</td>
+                <td>${jk}</td>
+                <td class="text-left">${ttl}</td>
+                <td class="text-left">${ortu}</td>
+                <td>${tglMasukX}</td>
+                <td></td> <td></td> <td>${tipe === 'Alumni' ? tglLulus : '-'}</td>
+                <td class="text-left">${s[31] || '-'}</td>
             </tr>
         `;
     });
 
-    // Tanda Tangan Kepsek di halaman paling bawah
+    // 6. Tanda Tangan Kepsek
+    const tglSekarang = new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
     html += `
             </tbody>
         </table>
         <br><br>
         <div style="float:right; text-align:center; font-size:11pt; font-family: 'Arial', sans-serif; width:300px; margin-top: 10px;">
-            Mengetahui,<br>
+            ..............................., ${tglSekarang}<br>
             Kepala Sekolah<br><br><br><br><br>
             <b><u>${globalConf.nama_kepsek || '.....................................'}</u></b><br>
             NIP. ${globalConf.nip_kepsek || '-'}
@@ -1805,17 +1820,17 @@ function cetakKlaperPDF() {
     </div>
     `;
 
-    // 6. Eksekusi Print PDF dengan format Landscape A4
+    // 7. Eksekusi Print PDF
     var opt = { 
         margin: [1, 1, 1.5, 1], // [Atas, Kanan, Bawah, Kiri] dalam CM
         filename: `Buku_Klaper_${tipe}_${tahun}.pdf`, 
         image: { type: 'jpeg', quality: 0.98 }, 
-        html2canvas: { scale: 2, useCORS: true }, 
+        html2canvas: { scale: 2, useCORS: true, scrollY: 0, windowY: 0 }, 
         jsPDF: { unit: 'cm', format: 'A4', orientation: 'landscape' } 
     };
     
     html2pdf().set(opt).from(html).save().then(() => { 
         $('#loader').addClass('hidden'); 
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'PDF Berhasil Diunduh', showConfirmButton: false, timer: 3000 });
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Buku Klaper Berhasil Diunduh', showConfirmButton: false, timer: 3000 });
     });
 }
