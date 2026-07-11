@@ -170,7 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const d = new Date();
         dateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
-
     function setupLogoUpload(inputId, hiddenInputId, previewId) {
         const fileInput = document.getElementById(inputId);
         if (fileInput) {
@@ -2019,3 +2018,82 @@ async function submitUbahPasswordSiswa(e) {
         showAlert('error', 'Koneksi error: ' + err);
     }
 }
+
+// ====================================
+// FITUR BACKUP & RESTORE JSON FULL SYSTEM
+// ====================================
+async function downloadFullBackupJSON() {
+    if (!currentUser || currentUser.role !== 'admin') return;
+
+    Swal.fire({
+        title: 'Mempersiapkan Backup',
+        html: 'Mengemas 100% data (Master & Sharding).<br>Proses ini memakan waktu beberapa detik...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+
+    try {
+        const res = await fetchAPI('exportFullDBJSON', { token: currentUser.token });
+        if (res.success) {
+            const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(res.data);
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute('href', dataStr);
+            const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            downloadAnchorNode.setAttribute('download', 'FullBackup_SiPresdir_' + dateStr + '.json');
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+
+            Swal.fire('Sukses!', 'File Backup berhasil didownload.', 'success');
+        } else {
+            Swal.fire('Gagal!', res.message, 'error');
+        }
+    } catch (e) {
+        Swal.fire('Error!', e.toString(), 'error');
+    }
+}
+
+function processFullRestoreJSON(input) {
+    if (!input.files || input.files.length === 0) return;
+    const file = input.files[0];
+
+    Swal.fire({
+        title: 'Peringatan Keras!',
+        html: '<p class="text-sm text-red-600 font-bold mb-2">Anda akan melakukan pemulihan 100% sistem.</p><p class="text-xs text-gray-600 text-left">Seluruh data saat ini (termasuk file Sharding Absensi dan Kasus) akan <b>ditimpa</b> dengan data dari file backup yang Anda pilih.</p><p class="text-xs text-gray-600 mt-2">Pastikan ini adalah file backup yang valid.</p>',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e11d48',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Timpa Data Sekarang!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const reader = new FileReader();
+            reader.onload = async function (e) {
+                const jsonContent = e.target.result;
+
+                Swal.fire({
+                    title: 'Memulihkan Sistem...',
+                    html: 'Mohon JANGAN TUTUP BROWSER.<br>Skrip sedang menulis ulang ribuan baris data...',
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading()
+                });
+
+                try {
+                    const res = await fetchAPI('restoreFullDBJSON', { token: currentUser.token, jsonData: jsonContent });
+                    if (res.success) {
+                        Swal.fire('Restore Berhasil!', 'Sistem telah berhasil dipulihkan secara utuh. Halaman akan dimuat ulang.', 'success').then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Restore Gagal', res.message, 'error');
+                    }
+                } catch (err) {
+                    Swal.fire('Error System', err.toString(), 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+        input.value = '';
+    });
+}
+
