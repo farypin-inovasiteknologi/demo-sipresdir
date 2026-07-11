@@ -101,6 +101,10 @@ async function initAppConfigs() {
             document.querySelectorAll('.dyn-runningtext').forEach(el => el.innerHTML = result.runningtext);
             document.querySelectorAll('.dyn-tahun').forEach(el => el.innerHTML = result.tahun);
         }
+
+        // Ambil status libur hari ini
+        const statusHari = await fetchAPI('cekWFHToday');
+        if (statusHari) window.appStatusHari = statusHari;
     } catch (e) { console.log("Gagal memuat pengaturan awal", e); }
 }
 
@@ -370,7 +374,7 @@ function toggleInputPass(inputId, iconId) {
     else { inp.type = "password"; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
 }
 
-window.toggleTablePass = function(passId, iconId, password) {
+window.toggleTablePass = function (passId, iconId, password) {
     const span = document.getElementById(passId);
     const icon = document.getElementById(iconId);
     if (span && icon) {
@@ -759,6 +763,13 @@ function initDashboard() {
     menuContainer.innerHTML = menuHTML;
     loadKelasSuggestions();
     initMobileNav();
+
+    // Sembunyikan tab khusus admin jika bukan admin
+    if (currentUser.role !== 'admin') {
+        document.querySelectorAll('.admin-only-tab').forEach(el => el.classList.add('hidden'));
+    } else {
+        document.querySelectorAll('.admin-only-tab').forEach(el => el.classList.remove('hidden'));
+    }
 }
 
 function initMobileNav() {
