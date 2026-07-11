@@ -1,7 +1,7 @@
 // ============================================================
 // KONFIGURASI API & CORE STATE
 // ============================================================
-const API_URL = "https://script.google.com/macros/s/AKfycbyCtG3nonCPrZO6sGtIGihxGmGNnSAlHj9sOTAuvrG2Sdr5B1VHL3uNvRLPwO877J1mOA/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyhIVlTwqASJybG0CjtU1Dg2P7qjcSA7L8smwYMCQoKtK2CWz9oJgqgb5eaN0lwYVOqyw/exec";
 
 let currentUser = null,
     isSidebarOpen = true,
@@ -923,7 +923,7 @@ async function loadAdminDashboard() {
             console.error("API Error in loadAdminDashboard:", result.message);
             showAlert('error', "Gagal memuat data monitoring: " + result.message);
         }
-    } catch (e) { 
+    } catch (e) {
         console.error("Fetch Exception in loadAdminDashboard:", e);
         showAlert('error', "Terjadi kesalahan koneksi saat memuat dashboard.");
     }
@@ -1107,7 +1107,7 @@ async function loadDataSiswa() {
             } else {
                 showAlert('error', result.message);
             }
-        } catch (e) { 
+        } catch (e) {
             console.error("Fetch Exception in loadDataSiswa:", e);
             showAlert('error', "Gagal memuat data siswa.");
         }
