@@ -125,7 +125,16 @@ function returnToDashboard() {
 // LOGIKA MONITORING REALTIME
 // ============================================================
 async function loadMonitoringAbsensi() {
-    stopAndBack(false); setActiveMenu('Monitoring'); showView('view-monitoring');
+    stopAndBack(false); 
+    if (currentUser && currentUser.role === 'admin') setActiveMenu('Manaj. Presensi');
+    else setActiveMenu('Monitoring');
+    showView('view-monitoring');
+    const tabMon = document.getElementById('tab-presensi-monitoring');
+    if (tabMon) {
+        if (currentUser && currentUser.role === 'admin') tabMon.classList.remove('hidden');
+        else tabMon.classList.add('hidden');
+    }
+
     document.getElementById('monitoringDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     const myClass = currentUser.role === 'guru' ? currentUser.kelas : null;
@@ -273,7 +282,7 @@ async function changeStatus(nisn, nama, kelas, selectElement) {
 // LOGIKA REKAP ABSENSI & CETAK EXCEL/PDF (GURU/ADMIN)
 // ============================================================
 function loadRekapAbsensi() {
-    stopAndBack(false); setActiveMenu('Laporan Presensi'); showView('view-rekap-absensi');
+    stopAndBack(false); setActiveMenu('Manaj. Presensi'); showView('view-rekap-absensi');
     document.getElementById('rekapEmptyState').classList.remove('hidden');
     document.getElementById('rekapContainer').classList.add('hidden');
     document.getElementById('rekapLoading').classList.add('hidden');
@@ -970,7 +979,7 @@ async function cetakSemuaKartuSiswa() {
 // LOGIKA KELOLA HARI LIBUR & WFH
 // ============================================================
 async function loadKelolaAbsen() {
-    stopAndBack(false); setActiveMenu('Kelola Absen'); showView('view-kelola-absen');
+    stopAndBack(false); setActiveMenu('Manaj. Presensi'); showView('view-kelola-absen');
     document.getElementById('tbody-libur').innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat...</td></tr>';
     document.getElementById('tbody-wfh').innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat...</td></tr>';
 
