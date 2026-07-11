@@ -721,7 +721,7 @@ function initDashboard() {
     };
 
     if (currentUser.role === 'admin') {
-        menuHTML += createItem('Dashboard', 'fa-home', 'loadAdminDashboard()');
+        menuHTML += createItem('Dashboard', 'fa-home', 'loadAdminDashboard()', true);
         menuHTML += createAccordion('acc-akun', 'Manajemen Akun', 'fa-users-cog', [
             { label: 'Data Siswa', icon: 'fa-user-graduate', onclick: 'loadDataSiswa()' },
             { label: 'Data Guru', icon: 'fa-chalkboard-teacher', onclick: 'loadDataGuru()' }
@@ -737,6 +737,7 @@ function initDashboard() {
             { label: 'Rekap Pelanggaran', icon: 'fa-history', onclick: 'loadRekapKasus()' }
         ]);
         menuHTML += createItem('Pengaturan', 'fa-cog', 'loadPengaturan()');
+        loadAdminDashboard();
 
     } else if (currentUser.role === 'guru') {
         menuHTML += createItem('Dashboard', 'fa-home', 'loadGuruDashboard()', true);
@@ -918,8 +919,14 @@ async function loadAdminDashboard() {
             animateValue("admStatAlpa", 0, alpa, 800);
 
             renderAdminChart(hadir, sakit, izin, alpa, belum);
+        } else {
+            console.error("API Error in loadAdminDashboard:", result.message);
+            showAlert('error', "Gagal memuat data monitoring: " + result.message);
         }
-    } catch (e) { }
+    } catch (e) { 
+        console.error("Fetch Exception in loadAdminDashboard:", e);
+        showAlert('error', "Terjadi kesalahan koneksi saat memuat dashboard.");
+    }
 }
 
 function renderAdminChart(hadir, sakit, izin, alpa, belum) {
@@ -1100,7 +1107,10 @@ async function loadDataSiswa() {
             } else {
                 showAlert('error', result.message);
             }
-        } catch (e) { }
+        } catch (e) { 
+            console.error("Fetch Exception in loadDataSiswa:", e);
+            showAlert('error', "Gagal memuat data siswa.");
+        }
     }
 }
 
