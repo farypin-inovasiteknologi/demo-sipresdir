@@ -259,6 +259,18 @@ function renderMonitoringRows(data, startIdx) {
 }
 
 async function changeStatus(nisn, nama, kelas, selectElement) {
+    if (window.appStatusHari && window.appStatusHari.isLibur) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Hari Libur',
+            text: 'Saat ini adalah hari libur (' + window.appStatusHari.keterangan + '). Anda tidak dapat mengubah kehadiran secara manual.',
+            confirmButtonColor: '#4f46e5'
+        });
+        // Reset select back to original value (which is likely "Belum Absen")
+        loadMonitoringAbsensi();
+        return;
+    }
+
     const newStatus = selectElement.value;
     selectElement.disabled = true;
     selectElement.style.opacity = '0.5';
