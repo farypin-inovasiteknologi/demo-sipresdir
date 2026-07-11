@@ -120,8 +120,18 @@ function deletePelanggaranConfirm(id) {
 window.dataSiswaKasus = [];
 
 async function loadInputKasus() {
+    if (window.appStatusHari && window.appStatusHari.isLibur) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Hari Libur',
+            text: 'Saat ini adalah hari libur (' + window.appStatusHari.keterangan + '). Anda tidak dapat mencatat pelanggaran.',
+            confirmButtonColor: '#4f46e5'
+        });
+        return;
+    }
+
     stopAndBack(false);
-    setActiveMenu('Input Kasus Siswa');
+    setActiveMenu(currentUser.role === 'admin' ? 'Manaj. Disiplin' : 'Input Kasus Siswa');
     showView('view-input-kasus');
 
     const d = new Date();
