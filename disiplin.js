@@ -4,29 +4,29 @@
 async function loadMasterPelanggaran() {
     stopAndBack(false); setActiveMenu('Data Pelanggaran'); showView('view-master-pelanggaran');
     document.getElementById('tbody-pelanggaran').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data...</td></tr>';
-    
+
     try {
         const result = await fetchAPI('getPelanggaranList', { token: currentUser.token });
-        if (result.success) { 
+        if (result.success) {
             tableState.pelanggaran.fullData = result.data;
-            processTableData('pelanggaran'); 
-        } else { 
-            showAlert('error', result.message); 
+            processTableData('pelanggaran');
+        } else {
+            showAlert('error', result.message);
             document.getElementById('tbody-pelanggaran').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-red-500">Gagal memuat data</td></tr>';
         }
-    } catch(e) { document.getElementById('tbody-pelanggaran').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-red-500">Error koneksi</td></tr>'; }
+    } catch (e) { document.getElementById('tbody-pelanggaran').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-red-500">Error koneksi</td></tr>'; }
 }
 
 function renderPelanggaranRows(data, startIdx) {
     const tbody = document.getElementById('tbody-pelanggaran');
     if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Data tidak ditemukan.</td></tr>'; return; }
-    
+
     tbody.innerHTML = data.map((item, i) => {
         let colorCat = 'bg-gray-100 text-gray-700';
-        if(item.kategori.toLowerCase().includes('ringan')) colorCat = 'bg-blue-100 text-blue-700';
-        if(item.kategori.toLowerCase().includes('sedang')) colorCat = 'bg-yellow-100 text-yellow-700';
-        if(item.kategori.toLowerCase().includes('berat')) colorCat = 'bg-red-100 text-red-700';
-        
+        if (item.kategori.toLowerCase().includes('ringan')) colorCat = 'bg-blue-100 text-blue-700';
+        if (item.kategori.toLowerCase().includes('sedang')) colorCat = 'bg-yellow-100 text-yellow-700';
+        if (item.kategori.toLowerCase().includes('berat')) colorCat = 'bg-red-100 text-red-700';
+
         const isSystem = (item.id === 'SYS_LATE' || item.id === 'SYS_ALPA');
 
         return `
@@ -52,8 +52,8 @@ function createPelanggaranModal(p = null) {
     const isEdit = p !== null;
     const isSystem = isEdit && (p.id === 'SYS_LATE' || p.id === 'SYS_ALPA');
     const inputClass = "w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-3 transition-all mb-4";
-    const disabledClass = "bg-gray-200 text-gray-500 cursor-not-allowed border-gray-300"; 
-    
+    const disabledClass = "bg-gray-200 text-gray-500 cursor-not-allowed border-gray-300";
+
     return `
     <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full relative overflow-hidden animate-fade-in">
         <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
@@ -91,24 +91,24 @@ async function savePelanggaran(e, isEdit) {
     e.preventDefault(); showLoading();
     const fd = new FormData(e.target);
     const data = { namaPelanggaran: fd.get('namaPelanggaran'), kategori: fd.get('kategori'), poin: fd.get('poin') };
-    
+
     try {
         let res;
-        if (isEdit) { res = await fetchAPI('updatePelanggaran', { token: currentUser.token, id: fd.get('id'), data: data }); } 
+        if (isEdit) { res = await fetchAPI('updatePelanggaran', { token: currentUser.token, id: fd.get('id'), data: data }); }
         else { res = await fetchAPI('addPelanggaran', { token: currentUser.token, data: data }); }
-        
+
         hideLoading();
-        if (res.success) { closeModal(); loadMasterPelanggaran(); showAlert('success', res.message); } 
+        if (res.success) { closeModal(); loadMasterPelanggaran(); showAlert('success', res.message); }
         else { showAlert('error', res.message); }
-    } catch(err) { hideLoading(); showAlert('error', 'Terjadi kesalahan: ' + err); }
+    } catch (err) { hideLoading(); showAlert('error', 'Terjadi kesalahan: ' + err); }
 }
 
 function deletePelanggaranConfirm(id) {
-    if (confirm('Hapus data pelanggaran ini?')) { 
-        showLoading(); 
+    if (confirm('Hapus data pelanggaran ini?')) {
+        showLoading();
         fetchAPI('deletePelanggaran', { token: currentUser.token, id: id }).then(res => {
             hideLoading();
-            if (res.success) { loadMasterPelanggaran(); showAlert('success', 'Dihapus!'); } 
+            if (res.success) { loadMasterPelanggaran(); showAlert('success', 'Dihapus!'); }
             else { showAlert('error', res.message); }
         }).catch(e => { hideLoading(); showAlert('error', 'Gagal hapus.'); });
     }
@@ -117,21 +117,21 @@ function deletePelanggaranConfirm(id) {
 // ============================================================
 // LOGIKA JAVASCRIPT INPUT KASUS (CERDAS & AUTOCOMPLETE)
 // ============================================================
-window.dataSiswaKasus = []; 
+window.dataSiswaKasus = [];
 
 async function loadInputKasus() {
-    stopAndBack(false); 
-    setActiveMenu('Input Kasus Siswa'); 
+    stopAndBack(false);
+    setActiveMenu('Input Kasus Siswa');
     showView('view-input-kasus');
-    
+
     const d = new Date();
     document.getElementById('kasusTanggal').value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     document.getElementById('kasusCatatan').value = '';
-    resetPilihanSiswaKasus(); 
-    
+    resetPilihanSiswaKasus();
+
     const dropdown = document.getElementById('kasusIdPelanggaran');
     dropdown.innerHTML = '<option value="">Memuat...</option>';
-    
+
     try {
         const res = await fetchAPI('getPelanggaranList', { token: currentUser.token });
         if (res.success) {
@@ -143,7 +143,7 @@ async function loadInputKasus() {
             });
             dropdown.innerHTML = opts;
         } else { dropdown.innerHTML = '<option value="">Gagal memuat.</option>'; }
-    } catch(e) { dropdown.innerHTML = '<option value="">Error koneksi.</option>'; }
+    } catch (e) { dropdown.innerHTML = '<option value="">Error koneksi.</option>'; }
 
     if (tableState.siswa.fullData.length > 0) {
         window.dataSiswaKasus = tableState.siswa.fullData;
@@ -151,7 +151,7 @@ async function loadInputKasus() {
         try {
             const resSiswa = await fetchAPI('getSiswaList', { token: currentUser.token });
             if (resSiswa.success) window.dataSiswaKasus = resSiswa.data;
-        } catch(e) {}
+        } catch (e) { }
     }
 }
 
@@ -161,13 +161,13 @@ function filterSiswaKasus(keyword) {
         dropdown.classList.add('hidden');
         return;
     }
-    
+
     const lowerKey = keyword.toLowerCase();
-    const filtered = window.dataSiswaKasus.filter(s => 
-        s.nama.toLowerCase().includes(lowerKey) || 
+    const filtered = window.dataSiswaKasus.filter(s =>
+        s.nama.toLowerCase().includes(lowerKey) ||
         String(s.nisn).toLowerCase().includes(lowerKey)
-    ).slice(0, 10); 
-    
+    ).slice(0, 10);
+
     if (filtered.length > 0) {
         dropdown.innerHTML = filtered.map(s => `
             <div onclick="pilihSiswaKasus('${s.nisn}', '${s.nama.replace(/'/g, "\\'")}', '${s.kelas}')" class="p-3 hover:bg-rose-50 cursor-pointer transition flex items-center gap-3">
@@ -188,9 +188,9 @@ function filterSiswaKasus(keyword) {
 function pilihSiswaKasus(nisn, nama, kelas) {
     document.getElementById('kasusNisn').value = nisn;
     document.getElementById('kasusSearchSiswa').value = '';
-    document.getElementById('kasusSearchSiswa').disabled = true; 
+    document.getElementById('kasusSearchSiswa').disabled = true;
     document.getElementById('kasusSiswaDropdown').classList.add('hidden');
-    
+
     document.getElementById('textSiswaTerpilih').innerHTML = `${nama} <br><span class="font-normal text-[10px] text-emerald-600 font-mono">${kelas} - ${nisn}</span>`;
     document.getElementById('kasusSiswaTerpilih').classList.remove('hidden');
     document.getElementById('kasusSiswaTerpilih').classList.add('flex');
@@ -199,12 +199,12 @@ function pilihSiswaKasus(nisn, nama, kelas) {
 function resetPilihanSiswaKasus() {
     document.getElementById('kasusNisn').value = '';
     document.getElementById('kasusSearchSiswa').value = '';
-    document.getElementById('kasusSearchSiswa').disabled = false; 
+    document.getElementById('kasusSearchSiswa').disabled = false;
     document.getElementById('kasusSiswaTerpilih').classList.add('hidden');
     document.getElementById('kasusSiswaTerpilih').classList.remove('flex');
 }
 
-let scannerKasusObj = null; 
+let scannerKasusObj = null;
 
 async function bukaScannerKasus() {
     if (typeof Html5QrcodeScanner === 'undefined') {
@@ -215,10 +215,10 @@ async function bukaScannerKasus() {
 
         const script = document.createElement('script');
         script.src = "https://unpkg.com/html5-qrcode";
-        script.onload = () => { 
+        script.onload = () => {
             btn.innerHTML = originalHtml;
             btn.disabled = false;
-            mulaiKameraKasus(); 
+            mulaiKameraKasus();
         };
         document.head.appendChild(script);
     } else {
@@ -252,15 +252,15 @@ function mulaiKameraKasus() {
                 { fps: 10, qrbox: { width: 220, height: 220 }, aspectRatio: 1.0 },
                 false
             );
-            
+
             scannerKasusObj.render((decodedText) => {
-                scannerKasusObj.clear(); 
-                Swal.close(); 
-                
+                scannerKasusObj.clear();
+                Swal.close();
+
                 const nisnScan = decodedText.replace(/'/g, "").trim();
                 const siswa = window.dataSiswaKasus.find(s => String(s.nisn) === nisnScan);
-                
-                if(siswa) {
+
+                if (siswa) {
                     pilihSiswaKasus(siswa.nisn, siswa.nama, siswa.kelas);
                     showAlert('success', `Data ${siswa.nama} langsung terkunci!`);
                 } else {
@@ -278,22 +278,22 @@ async function submitKasusSiswa(e) {
     e.preventDefault();
     const btn = document.getElementById('btnSubmitKasus');
     const originalText = btn.innerHTML;
-    btn.disabled = true; 
+    btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Menyimpan...';
     showLoading();
-    
+
     const data = {
         nisn: document.getElementById('kasusNisn').value,
         idPelanggaran: document.getElementById('kasusIdPelanggaran').value,
         tanggal: document.getElementById('kasusTanggal').value,
         catatan: document.getElementById('kasusCatatan').value
     };
-    
+
     try {
         const res = await fetchAPI('addKasusSiswa', { token: currentUser.token, data: data });
         hideLoading();
         btn.disabled = false; btn.innerHTML = originalText;
-        
+
         if (res.success) {
             showAlert('success', res.message);
             document.getElementById('kasusNisn').value = '';
@@ -301,7 +301,7 @@ async function submitKasusSiswa(e) {
             document.getElementById('kasusIdPelanggaran').selectedIndex = 0;
             resetPilihanSiswaKasus();
         } else { showAlert('error', res.message); }
-    } catch(err) {
+    } catch (err) {
         hideLoading(); btn.disabled = false; btn.innerHTML = originalText;
         showAlert('error', 'Gagal terhubung ke server');
     }
@@ -310,67 +310,67 @@ async function submitKasusSiswa(e) {
 // ============================================================
 // LOGIKA JAVASCRIPT REKAP KEDISIPLINAN (LEADERBOARD & HISTORY)
 // ============================================================
-window.kasusHistoryData = []; 
+window.kasusHistoryData = [];
 window.kasusLeaderboardData = [];
 window.currentDetailNisn = "";
 window.currentDetailNama = "";
 window.currentDetailKelas = "";
 
 async function loadRekapKasus() {
-    stopAndBack(false); 
-    if(currentUser.role === 'siswa') setActiveMenu('Dashboard'); else setActiveMenu('Rekap Pelanggaran');
+    stopAndBack(false);
+    if (currentUser.role === 'siswa') setActiveMenu('Dashboard'); else setActiveMenu('Rekap Pelanggaran');
     showView('view-rekap-kasus');
-    
+
     const elAdmin = document.getElementById('areaAdminUtama');
     const elDetail = document.getElementById('areaDetailSiswa');
     const elSum = document.getElementById('summaryKasusSiswa');
-    
-    if(elAdmin) { elAdmin.classList.add('hidden'); elAdmin.classList.remove('flex'); }
-    if(elDetail) { elDetail.classList.add('hidden'); elDetail.classList.remove('flex'); }
-    if(elSum) { elSum.classList.add('hidden'); }
-    
+
+    if (elAdmin) { elAdmin.classList.add('hidden'); elAdmin.classList.remove('flex'); }
+    if (elDetail) { elDetail.classList.add('hidden'); elDetail.classList.remove('flex'); }
+    if (elSum) { elSum.classList.add('hidden'); }
+
     const tbL = document.getElementById('tbody-leaderboard-kasus');
-    if(tbL) tbL.innerHTML = '<tr><td colspan="5" class="p-12 text-center text-gray-400"><i class="fas fa-circle-notch fa-spin text-rose-500 text-xl mb-2 block"></i> Memuat data...</td></tr>';
-    
+    if (tbL) tbL.innerHTML = '<tr><td colspan="5" class="p-12 text-center text-gray-400"><i class="fas fa-circle-notch fa-spin text-rose-500 text-xl mb-2 block"></i> Memuat data...</td></tr>';
+
     try {
         const res = await fetchAPI('getRekapKasus', { token: currentUser.token });
         if (res.success) {
             const isAdminGuru = (res.role === 'admin' || res.role === 'guru');
-            window.kasusHistoryData = res.history; 
-            
+            window.kasusHistoryData = res.history;
+
             if (isAdminGuru) {
-                window.kasusLeaderboardData = res.leaderboard; 
-                
+                window.kasusLeaderboardData = res.leaderboard;
+
                 const kelasSet = new Set(res.leaderboard.map(d => d.kelas));
                 let kelasHtml = '<option value="">Semua Kelas</option>';
                 Array.from(kelasSet).sort().forEach(k => { kelasHtml += `<option value="${k}">${k}</option>`; });
                 document.getElementById('filterKelasKasus').innerHTML = kelasHtml;
-                
+
                 document.getElementById('areaAdminUtama').classList.remove('hidden');
                 document.getElementById('areaAdminUtama').classList.add('flex');
-                
+
                 renderLeaderboardKasus(res.leaderboard);
             } else {
                 document.getElementById('summaryKasusSiswa').classList.remove('hidden');
                 document.getElementById('areaDetailSiswa').classList.remove('hidden');
                 document.getElementById('areaDetailSiswa').classList.add('flex');
                 document.getElementById('headerDetailKasus').classList.add('hidden');
-                
+
                 let myPoints = 0;
-                if(res.leaderboard.length > 0) myPoints = res.leaderboard[0].totalPoin;
-                
+                if (res.leaderboard.length > 0) myPoints = res.leaderboard[0].totalPoin;
+
                 document.getElementById('valTotalPoinSiswa').textContent = myPoints;
                 const statEl = document.getElementById('valStatusPoinSiswa');
-                
-                if (myPoints === 0) { 
-                    statEl.innerHTML = '<i class="fas fa-star mr-1"></i> Sangat Baik / Bersih'; 
-                    statEl.className = 'text-[10px] md:text-xs font-bold px-4 py-1.5 rounded-full inline-block border shadow-sm bg-emerald-50 border-emerald-200 text-emerald-700'; 
-                } else if (myPoints < 20) { 
-                    statEl.innerHTML = '<i class="fas fa-exclamation-triangle mr-1"></i> Peringatan Ringan'; 
-                    statEl.className = 'text-[10px] md:text-xs font-bold px-4 py-1.5 rounded-full inline-block border shadow-sm bg-yellow-50 border-yellow-200 text-yellow-700'; 
-                } else { 
-                    statEl.innerHTML = '<i class="fas fa-radiation mr-1"></i> Peringatan Keras!'; 
-                    statEl.className = 'text-[10px] md:text-xs font-bold px-4 py-1.5 rounded-full inline-block border shadow-sm bg-red-50 border-red-200 text-red-700 animate-pulse'; 
+
+                if (myPoints === 0) {
+                    statEl.innerHTML = '<i class="fas fa-star mr-1"></i> Sangat Baik / Bersih';
+                    statEl.className = 'text-[10px] md:text-xs font-bold px-4 py-1.5 rounded-full inline-block border shadow-sm bg-emerald-50 border-emerald-200 text-emerald-700';
+                } else if (myPoints < 20) {
+                    statEl.innerHTML = '<i class="fas fa-exclamation-triangle mr-1"></i> Peringatan Ringan';
+                    statEl.className = 'text-[10px] md:text-xs font-bold px-4 py-1.5 rounded-full inline-block border shadow-sm bg-yellow-50 border-yellow-200 text-yellow-700';
+                } else {
+                    statEl.innerHTML = '<i class="fas fa-radiation mr-1"></i> Peringatan Keras!';
+                    statEl.className = 'text-[10px] md:text-xs font-bold px-4 py-1.5 rounded-full inline-block border shadow-sm bg-red-50 border-red-200 text-red-700 animate-pulse';
                 }
 
                 renderHistoryKasus(res.history);
@@ -378,18 +378,18 @@ async function loadRekapKasus() {
         } else {
             showAlert('error', res.message);
         }
-    } catch(e) { showAlert('error', 'Gagal terhubung ke server'); }
+    } catch (e) { showAlert('error', 'Gagal terhubung ke server'); }
 }
 
 function renderLeaderboardKasus(data) {
     const tbody = document.getElementById('tbody-leaderboard-kasus');
-    if(!tbody) return;
-    if(data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-12 text-center text-gray-400 italic">Belum ada kasus pelanggaran.</td></tr>'; return; }
-    
+    if (!tbody) return;
+    if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-12 text-center text-gray-400 italic">Belum ada kasus pelanggaran.</td></tr>'; return; }
+
     tbody.innerHTML = data.map((d, i) => {
         return `
         <tr class="hover:bg-rose-50/40 transition border-b border-gray-50">
-            <td class="p-3 text-center align-middle text-gray-400 text-xs">${i+1}</td>
+            <td class="p-3 text-center align-middle text-gray-400 text-xs">${i + 1}</td>
             <td class="p-3 whitespace-nowrap min-w-[140px]">
                 <div class="font-bold text-xs text-gray-800 break-words leading-tight line-clamp-2" title="${d.nama}">${d.nama}</div>
                 <div class="text-[9px] text-gray-500 font-mono mt-0.5">${d.nisn}</div>
@@ -406,16 +406,16 @@ function renderLeaderboardKasus(data) {
 function applyFilterLeaderboard() {
     const kelas = document.getElementById('filterKelasKasus').value;
     const cari = document.getElementById('cariNamaKasus').value.toLowerCase();
-    
+
     let filtered = window.kasusLeaderboardData;
-    if(kelas) filtered = filtered.filter(d => d.kelas === kelas);
-    if(cari) filtered = filtered.filter(d => d.nama.toLowerCase().includes(cari) || d.nisn.toLowerCase().includes(cari));
-    
+    if (kelas) filtered = filtered.filter(d => d.kelas === kelas);
+    if (cari) filtered = filtered.filter(d => d.nama.toLowerCase().includes(cari) || d.nisn.toLowerCase().includes(cari));
+
     renderLeaderboardKasus(filtered);
 }
 
 function exportExcelKasus() {
-    if(!window.kasusLeaderboardData || window.kasusLeaderboardData.length === 0) {
+    if (!window.kasusLeaderboardData || window.kasusLeaderboardData.length === 0) {
         showAlert('error', 'Tidak ada data untuk di-export'); return;
     }
     const dataToExport = window.kasusLeaderboardData.map((d, i) => ({
@@ -433,15 +433,15 @@ function lihatDetailKasus(nisn, nama, kelas, poin) {
     document.getElementById('areaAdminUtama').classList.remove('flex');
     document.getElementById('areaDetailSiswa').classList.remove('hidden');
     document.getElementById('areaDetailSiswa').classList.add('flex');
-    
+
     document.getElementById('headerDetailKasus').classList.remove('hidden');
     document.getElementById('detailNamaSiswa').textContent = nama;
     document.getElementById('detailInfoSiswa').innerHTML = `NISN: ${nisn} | Kelas: ${kelas} | Total Poin: <span class="font-bold text-rose-600">${poin}</span>`;
-    
+
     window.currentDetailNisn = nisn; window.currentDetailNama = nama; window.currentDetailKelas = kelas;
-    
+
     const detailHistory = window.kasusHistoryData.filter(d => d.nisn === nisn);
-    renderHistoryKasus(detailHistory); 
+    renderHistoryKasus(detailHistory);
 }
 
 function kembaliKeLeaderboard() {
@@ -454,32 +454,32 @@ function kembaliKeLeaderboard() {
 function applyFilterDetailKasus() {
     const tglMulai = document.getElementById('filterMulaiDetail').value;
     const tglAkhir = document.getElementById('filterAkhirDetail').value;
-    
+
     let nisnToFilter = currentUser.role === 'siswa' ? currentUser.nisn : window.currentDetailNisn;
     let filtered = window.kasusHistoryData.filter(d => d.nisn === nisnToFilter);
-    
-    if(tglMulai) filtered = filtered.filter(d => d.tanggal >= tglMulai);
-    if(tglAkhir) filtered = filtered.filter(d => d.tanggal <= tglAkhir);
-    
+
+    if (tglMulai) filtered = filtered.filter(d => d.tanggal >= tglMulai);
+    if (tglAkhir) filtered = filtered.filter(d => d.tanggal <= tglAkhir);
+
     renderHistoryKasus(filtered);
 }
 
 function renderHistoryKasus(data) {
     const tbody = document.getElementById('tbody-history-kasus');
-    if(!tbody) return;
-    
+    if (!tbody) return;
+
     let totalPoinFiltered = 0;
 
-    if(data.length === 0) { 
-        tbody.innerHTML = `<tr><td colspan="5" class="p-12 text-center text-gray-400 italic">Tidak ada riwayat.</td></tr>`; 
-        return; 
+    if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-12 text-center text-gray-400 italic">Tidak ada riwayat.</td></tr>`;
+        return;
     }
 
     let html = data.map((d, i) => {
-        totalPoinFiltered += parseInt(d.poin) || 0; 
+        totalPoinFiltered += parseInt(d.poin) || 0;
         return `
         <tr class="hover:bg-gray-50 transition border-b border-gray-50">
-            <td class="p-3 text-center text-gray-400 text-[10px]">${i+1}</td>
+            <td class="p-3 text-center text-gray-400 text-[10px]">${i + 1}</td>
             <td class="p-3 text-[10px] text-gray-600 whitespace-nowrap">${d.tanggal}</td>
             <td class="p-3 text-[11px] font-bold text-gray-700 min-w-[140px]">${d.pelanggaran}</td>
             <td class="p-3 text-center"><span class="font-mono font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded border border-rose-100 text-[10px]">+ ${d.poin}</span></td>
@@ -518,7 +518,7 @@ function executePDFDownload() {
     const nama = isSiswa ? currentUser.nama : window.currentDetailNama;
     const nisn = isSiswa ? currentUser.nisn : window.currentDetailNisn;
     const kelas = isSiswa ? currentUser.kelas : window.currentDetailKelas;
-    
+
     const tglMulai = document.getElementById('filterMulaiDetail') ? document.getElementById('filterMulaiDetail').value : '';
     const tglAkhir = document.getElementById('filterAkhirDetail') ? document.getElementById('filterAkhirDetail').value : '';
     const periodeStr = (tglMulai || tglAkhir) ? `<p style="text-align: center; font-size: 12px; margin-bottom: 15px; color: #666;">Periode: ${tglMulai || 'Awal'} s/d ${tglAkhir || 'Akhir'}</p>` : '';
@@ -554,11 +554,11 @@ function executePDFDownload() {
     `;
 
     const opt = {
-        margin:       0.4,
-        filename:     `Buku_Kasus_${nama.replace(/\s+/g, '_')}.pdf`,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        margin: 0.4,
+        filename: `Buku_Kasus_${nama.replace(/\s+/g, '_')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
 
     html2pdf().set(opt).from(element).save().then(() => {
