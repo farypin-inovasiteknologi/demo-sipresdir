@@ -1210,7 +1210,7 @@ function renderSiswaRows(data, startIdx) {
                 <button onclick='editSiswa(${JSON.stringify(siswa).replace(/'/g, "&#39;")})' class="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition"><i class="fas fa-edit"></i></button>
                 <button onclick="resetPasswordSiswaConfirm('${siswa.nisn}', '${siswa.nama.replace(/'/g, "\\'")}')" class="p-2 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition" title="Reset Password"><i class="fas fa-key"></i></button>
                 <button onclick="deleteSiswaConfirm('${siswa.nisn}', '${siswa.nama.replace(/'/g, "\\'")}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition"><i class="fas fa-trash"></i></button>
-                <button onclick="generateQRForSiswa('${siswa.nisn}', '${siswa.nama.replace(/'/g, "\\'")}', '${siswa.kelas}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition"><i class="fas fa-qrcode"></i></button>
+                <button onclick="loadQRCodeSiswa('${siswa.nisn}', '${siswa.nama.replace(/'/g, "\\'")}', '${siswa.kelas}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition"><i class="fas fa-qrcode"></i></button>
             </div>
         </td>
     </tr>`).join('');
