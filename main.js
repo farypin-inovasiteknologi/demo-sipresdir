@@ -494,10 +494,7 @@ function showView(viewId) {
         target.classList.add('animate-fade-in');
     }
 
-    setTimeout(() => {
-        if (viewId === 'view-admin-dashboard' && currentUser.role === 'admin') loadAdminDashboard();
-        if (viewId === 'view-guru-dashboard' && currentUser.role === 'guru') loadGuruDashboard();
-    }, 50);
+
 
     let title = "Dashboard";
     switch (viewId) {
