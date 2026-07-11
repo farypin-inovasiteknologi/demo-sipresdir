@@ -1016,8 +1016,30 @@ async function loadGlobalConfig() {
             document.getElementById('conf_wfh_masuk_akhir').value = conf.wfh_masuk_akhir || '08:00';
             document.getElementById('conf_wfh_pulang_mulai').value = conf.wfh_pulang_mulai || '15:00';
             document.getElementById('conf_wfh_pulang_akhir').value = conf.wfh_pulang_akhir || '18:00';
+            
+            document.getElementById('toggleLiburMinggu').checked = String(conf.libur_minggu) === 'true';
+            document.getElementById('toggleLiburSabtu').checked = String(conf.libur_sabtu) === 'true';
         }
     } catch (e) { }
+}
+
+window.handleWeekendToggle = function() {
+    const isMinggu = document.getElementById('toggleLiburMinggu').checked;
+    const isSabtu = document.getElementById('toggleLiburSabtu').checked;
+
+    // Jika event berasal dari interaksi user
+    if (event && event.target) {
+        if(event.target.id === 'toggleLiburSabtu' && isSabtu) {
+            document.getElementById('toggleLiburMinggu').checked = true;
+        }
+        if(event.target.id === 'toggleLiburMinggu' && !isMinggu) {
+            document.getElementById('toggleLiburSabtu').checked = false;
+        }
+    }
+
+    // Auto save konfigurasi (cari tombol simpan config waktu, tapi bisa jalan walau tanpa tombol)
+    const btn = document.querySelector('button[onclick="saveGlobalConfig(this)"]');
+    if (btn) saveGlobalConfig(btn);
 }
 
 async function saveGlobalConfig(btnElement) {
@@ -1033,7 +1055,9 @@ async function saveGlobalConfig(btnElement) {
         wfh_masuk_mulai: document.getElementById('conf_wfh_masuk_mulai').value,
         wfh_masuk_akhir: document.getElementById('conf_wfh_masuk_akhir').value,
         wfh_pulang_mulai: document.getElementById('conf_wfh_pulang_mulai').value,
-        wfh_pulang_akhir: document.getElementById('conf_wfh_pulang_akhir').value
+        wfh_pulang_akhir: document.getElementById('conf_wfh_pulang_akhir').value,
+        libur_minggu: document.getElementById('toggleLiburMinggu').checked ? 'true' : 'false',
+        libur_sabtu: document.getElementById('toggleLiburSabtu').checked ? 'true' : 'false'
     };
 
     try {
