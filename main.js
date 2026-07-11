@@ -1,7 +1,7 @@
 // ============================================================
 // KONFIGURASI API & CORE STATE
 // ============================================================
-const API_URL = "https://script.google.com/macros/s/AKfycbwBt00CjgaFw5aNRGoAYjX5nAP7_s_2WvvH7uw_t6LotvtahkWaFnPe_mSZJHywDZ4GlQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyhIVlTwqASJybG0CjtU1Dg2P7qjcSA7L8smwYMCQoKtK2CWz9oJgqgb5eaN0lwYVOqyw/exec";
 
 let currentUser = null,
     isSidebarOpen = true,
@@ -733,20 +733,10 @@ function initDashboard() {
 
     if (currentUser.role === 'admin') {
         menuHTML += createItem('Dashboard', 'fa-home', 'loadAdminDashboard()', true);
-        menuHTML += createAccordion('acc-akun', 'Manajemen Akun', 'fa-users-cog', [
-            { label: 'Data Siswa', icon: 'fa-user-graduate', onclick: 'loadDataSiswa()' },
-            { label: 'Data Guru', icon: 'fa-chalkboard-teacher', onclick: 'loadDataGuru()' }
-        ]);
-        menuHTML += createAccordion('acc-presensi', 'Manaj. Presensi', 'fa-calendar-check', [
-            { label: 'Scan Presensi', icon: 'fa-qrcode', onclick: 'loadScanAbsensi()' },
-            { label: 'Kelola Presensi', icon: 'fa-calendar-times', onclick: 'loadKelolaAbsen()' },
-            { label: 'Laporan Presensi', icon: 'fa-file-alt', onclick: 'loadRekapAbsensi()' }
-        ]);
-        menuHTML += createAccordion('acc-disiplin', 'Manaj. Disiplin', 'fa-balance-scale', [
-            { label: 'Input Kasus Siswa', icon: 'fa-exclamation-triangle', onclick: 'loadInputKasus()' },
-            { label: 'Data Pelanggaran', icon: 'fa-gavel', onclick: 'loadMasterPelanggaran()' },
-            { label: 'Rekap Pelanggaran', icon: 'fa-history', onclick: 'loadRekapKasus()' }
-        ]);
+        menuHTML += createItem('Manaj. Akun', 'fa-users-cog', 'loadDataSiswa()');
+        menuHTML += createItem('Manaj. Presensi', 'fa-calendar-check', 'loadKelolaAbsen()');
+        menuHTML += createItem('Manaj. Disiplin', 'fa-balance-scale', 'loadMasterPelanggaran()');
+        menuHTML += createItem('Scan Presensi', 'fa-qrcode', 'loadScanAbsensi()');
         menuHTML += createItem('Pengaturan', 'fa-cog', 'loadPengaturan()');
         loadAdminDashboard();
 
@@ -1092,7 +1082,7 @@ function showProfilGuruMobile() {
 // ============================================================
 async function loadDataSiswa() {
     stopAndBack(false);
-    setActiveMenu('Data Siswa');
+    setActiveMenu('Manaj. Akun');
     showView('view-data-siswa');
 
     const dropdown = document.getElementById('filterKelasSiswa');
@@ -1126,7 +1116,7 @@ async function loadDataSiswa() {
 }
 
 async function loadDataGuru() {
-    stopAndBack(false); setActiveMenu('Data Guru'); showView('view-data-guru');
+    stopAndBack(false); setActiveMenu('Manaj. Akun'); showView('view-data-guru');
     const dropdown = document.getElementById('filterKelasGuru');
 
     if (dropdown && existingClasses && existingClasses.length > 0) {
