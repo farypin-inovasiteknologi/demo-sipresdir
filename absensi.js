@@ -5,6 +5,16 @@ let html5QrCode = null;
 let isScanning = false;
 
 function loadScanAbsensi() {
+    if (window.appStatusHari && window.appStatusHari.isLibur) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Hari Libur',
+            text: 'Saat ini adalah hari libur (' + window.appStatusHari.keterangan + '). Anda tidak dapat merekam presensi.',
+            confirmButtonColor: '#4f46e5'
+        });
+        return;
+    }
+
     isScanning = false;
     setActiveMenu('Scan Presensi');
     showView('view-scanner');
