@@ -1,13 +1,13 @@
 // ============================================================
 // KONFIGURASI API & CORE STATE
 // ============================================================
-const API_URL = "https://script.google.com/macros/s/AKfycbyCtG3nonCPrZO6sGtIGihxGmGNnSAlHj9sOTAuvrG2Sdr5B1VHL3uNvRLPwO877J1mOA/exec"; 
+const API_URL = "https://script.google.com/macros/s/AKfycbyCtG3nonCPrZO6sGtIGihxGmGNnSAlHj9sOTAuvrG2Sdr5B1VHL3uNvRLPwO877J1mOA/exec";
 
-let currentUser = null, 
-    isSidebarOpen = true, 
-    appCache = { siswa: null, guru: null }, 
-    existingClasses = [], 
-    guruChartInstance = null, 
+let currentUser = null,
+    isSidebarOpen = true,
+    appCache = { siswa: null, guru: null },
+    existingClasses = [],
+    guruChartInstance = null,
     adminChartInstance = null,
     loadingInterval;
 
@@ -40,12 +40,12 @@ async function fetchAPI(action, params = {}) {
     }
 }
 
-function showLoading() { 
+function showLoading() {
     const overlay = document.getElementById('loadingOverlay');
     const countdownEl = document.getElementById('loadingCountdown');
     const textEl = document.getElementById('loadingText');
-    
-    overlay.classList.remove('hidden'); 
+
+    overlay.classList.remove('hidden');
     let timeLeft = 8;
     countdownEl.textContent = timeLeft;
     countdownEl.parentElement.style.display = 'flex';
@@ -60,17 +60,17 @@ function showLoading() {
             countdownEl.parentElement.style.display = 'none';
             textEl.innerHTML = 'Sedang memproses data... <br><span class="text-[10px] text-orange-600 font-bold">Tunggu sebentar..</span>';
         }
-    }, 1000); 
+    }, 1000);
 }
 
-function hideLoading() { 
-    document.getElementById('loadingOverlay').classList.add('hidden'); 
+function hideLoading() {
+    document.getElementById('loadingOverlay').classList.add('hidden');
     clearInterval(loadingInterval);
 }
 
-function showModal(content) { 
-    const container = document.getElementById('modalContainer'); 
-    container.innerHTML = `<div class="fixed inset-0 z-50 flex items-center justify-center p-4"><div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div><div class="relative w-full max-w-2xl transform transition-all animate-fade-in">${content}</div></div>`; 
+function showModal(content) {
+    const container = document.getElementById('modalContainer');
+    container.innerHTML = `<div class="fixed inset-0 z-50 flex items-center justify-center p-4"><div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div><div class="relative w-full max-w-2xl transform transition-all animate-fade-in">${content}</div></div>`;
 }
 
 function closeModal() { document.getElementById('modalContainer').innerHTML = ''; }
@@ -80,7 +80,7 @@ function showAlert(type, message) {
     const div = document.createElement('div');
     div.className = `fixed top-6 right-6 ${bg} text-white px-6 py-4 rounded-xl shadow-2xl z-[80] flex items-center font-medium animate-fade-in transform translate-y-2`;
     div.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} mr-3 text-xl"></i> ${message}`;
-    document.body.appendChild(div); 
+    document.body.appendChild(div);
     setTimeout(() => { div.style.opacity = '0'; setTimeout(() => div.remove(), 300); }, 3000);
 }
 
@@ -91,8 +91,8 @@ async function initAppConfigs() {
     try {
         const result = await fetchAPI('getSettings');
         if (result) {
-            document.querySelectorAll('.dyn-logo').forEach(el => { if(el.tagName === 'IMG') el.src = result.logo; });
-            document.querySelectorAll('.dyn-logoInstansi').forEach(el => { if(el.tagName === 'IMG') el.src = result.logoInstansi || result.logo; });
+            document.querySelectorAll('.dyn-logo').forEach(el => { if (el.tagName === 'IMG') el.src = result.logo; });
+            document.querySelectorAll('.dyn-logoInstansi').forEach(el => { if (el.tagName === 'IMG') el.src = result.logoInstansi || result.logo; });
             document.querySelectorAll('.dyn-namaInstansi').forEach(el => el.innerHTML = result.namaInstansi);
             document.querySelectorAll('.dyn-namasekolah').forEach(el => el.innerHTML = result.namasekolah);
             document.querySelectorAll('.dyn-alamat').forEach(el => el.innerHTML = result.alamat);
@@ -110,42 +110,42 @@ async function loadPengaturan() {
     const token = currentUser ? currentUser.token : null;
     try {
         const res = await fetchAPI('getLinkSettings', { token: token });
-        if(res.success) {
+        if (res.success) {
             form.elements['namaInstansi'].value = res.data.namaInstansi;
             form.elements['namasekolah'].value = res.data.namasekolah;
             form.elements['alamat'].value = res.data.alamat;
             form.elements['tahun'].value = res.data.tahun;
             form.elements['website'].value = res.data.website;
             form.elements['runningtext'].value = res.data.runningtext;
-            
+
             const defLogo = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfzGqA11LudTtI5aqUk93_GUJWPoHCR2uNbhgSgZhv71Bmx48aW6zBg7l7U6KoVNNmQpC7zai4T3KeV6DfH1VXfpwQDaxYPEiaCZ8opxte2Koje_yoSzejOD3eKTGt8tHeMuVVrldPZjsXCeRjUe1dbFibHnjpxZYcYlsGBz3YKr_ZU9E9n4z1y0dUrYXC/s425/logo%20sipresdir.png';
             document.getElementById('finalLogoData').value = res.data.logo;
             document.getElementById('previewLogoSetting').src = res.data.logo || defLogo;
             document.getElementById('finalLogoInstansiData').value = res.data.logoInstansi;
             document.getElementById('previewLogoInstansiSetting').src = res.data.logoInstansi || defLogo;
         }
-    } catch(e) {}
+    } catch (e) { }
 }
 
 async function saveLinkData(e) {
     e.preventDefault(); const fd = new FormData(e.target); const token = currentUser ? currentUser.token : null;
-    const data = { 
-        namaInstansi: fd.get('namaInstansi'), 
+    const data = {
+        namaInstansi: fd.get('namaInstansi'),
         logoInstansi: document.getElementById('finalLogoInstansiData').value,
-        namasekolah: fd.get('namasekolah'), 
-        logo: document.getElementById('finalLogoData').value, 
-        alamat: fd.get('alamat'), 
-        tahun: fd.get('tahun'), 
-        website: fd.get('website'), 
-        runningtext: fd.get('runningtext') 
+        namasekolah: fd.get('namasekolah'),
+        logo: document.getElementById('finalLogoData').value,
+        alamat: fd.get('alamat'),
+        tahun: fd.get('tahun'),
+        website: fd.get('website'),
+        runningtext: fd.get('runningtext')
     };
     showLoading();
     try {
         const res = await fetchAPI('updateLinkSettings', { token: token, data: data });
-        hideLoading(); 
-        if(res.success) { showAlert('success', res.message); initAppConfigs(); } 
+        hideLoading();
+        if (res.success) { showAlert('success', res.message); initAppConfigs(); }
         else { showAlert('error', res.message); }
-    } catch(err) { hideLoading(); }
+    } catch (err) { hideLoading(); }
 }
 
 // LOGIKA UPLOAD & CROP LOGO
@@ -153,11 +153,11 @@ let cropperInstance = null;
 let targetCropInput = '';
 let targetCropPreview = '';
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const dateElement = document.getElementById('currentDateDisplay');
     if (dateElement) {
-        dateElement.textContent = new Date().toLocaleDateString('id-ID', { 
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+        dateElement.textContent = new Date().toLocaleDateString('id-ID', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         });
     }
 
@@ -166,18 +166,18 @@ document.addEventListener("DOMContentLoaded", function() {
         const d = new Date();
         dateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
-    
+
     function setupLogoUpload(inputId, hiddenInputId, previewId) {
         const fileInput = document.getElementById(inputId);
-        if(fileInput) {
-            fileInput.addEventListener('change', function(e) {
+        if (fileInput) {
+            fileInput.addEventListener('change', function (e) {
                 const file = e.target.files[0];
                 if (file) {
-                    if(file.size > 2 * 1024 * 1024) { showAlert('error', 'Ukuran maksimal 2MB!'); this.value = ''; return; }
+                    if (file.size > 2 * 1024 * 1024) { showAlert('error', 'Ukuran maksimal 2MB!'); this.value = ''; return; }
                     targetCropInput = hiddenInputId;
                     targetCropPreview = previewId;
                     const reader = new FileReader();
-                    reader.onload = function(event) { openCropModal(event.target.result); };
+                    reader.onload = function (event) { openCropModal(event.target.result); };
                     reader.readAsDataURL(file);
                 }
             });
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setupLogoUpload('inputLogoFile', 'finalLogoData', 'previewLogoSetting');
     setupLogoUpload('inputLogoInstansiFile', 'finalLogoInstansiData', 'previewLogoInstansiSetting');
-    
+
     initAppConfigs();
     checkSession();
 });
@@ -203,15 +203,15 @@ function openCropModal(imageSrc) {
 function closeCropModal() {
     document.getElementById('cropModal').classList.add('hidden');
     if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
-    document.getElementById('inputLogoFile').value = ''; 
-    document.getElementById('inputLogoInstansiFile').value = ''; 
+    document.getElementById('inputLogoFile').value = '';
+    document.getElementById('inputLogoInstansiFile').value = '';
 }
 
 function applyCrop() {
     if (!cropperInstance) return;
     const canvas = cropperInstance.getCroppedCanvas({ width: 400, height: 400 });
     const croppedBase64 = canvas.toDataURL('image/png');
-    
+
     document.getElementById(targetCropPreview).src = croppedBase64;
     document.getElementById(targetCropInput).value = croppedBase64;
     closeCropModal();
@@ -220,102 +220,102 @@ function applyCrop() {
 // ============================================================
 // MANAJEMEN TABEL (PAGINATION, FILTER, SEARCH)
 // ============================================================
-function handleTableSearch(type, query) { 
-    tableState[type].search = query.toLowerCase(); 
-    tableState[type].page = 1; 
-    processTableData(type); 
+function handleTableSearch(type, query) {
+    tableState[type].search = query.toLowerCase();
+    tableState[type].page = 1;
+    processTableData(type);
 }
 
-function handleTableClassFilter(type, value) { 
-    if (tableState[type]) { 
-        tableState[type].classFilter = value; 
-        tableState[type].page = 1; 
-        processTableData(type); 
-    } 
+function handleTableClassFilter(type, value) {
+    if (tableState[type]) {
+        tableState[type].classFilter = value;
+        tableState[type].page = 1;
+        processTableData(type);
+    }
 }
 
-function handleTableStatusFilter(type, status) { 
-    if (tableState[type]) { 
-        tableState[type].statusFilter = status; 
-        tableState[type].page = 1; 
-        processTableData(type); 
-    } 
+function handleTableStatusFilter(type, status) {
+    if (tableState[type]) {
+        tableState[type].statusFilter = status;
+        tableState[type].page = 1;
+        processTableData(type);
+    }
 }
 
-function handleTableLimit(type, limit) { 
-    tableState[type].limit = limit === 'all' ? Infinity : parseInt(limit); 
-    tableState[type].page = 1; 
-    processTableData(type); 
+function handleTableLimit(type, limit) {
+    tableState[type].limit = limit === 'all' ? Infinity : parseInt(limit);
+    tableState[type].page = 1;
+    processTableData(type);
 }
 
-function changePage(type, direction) { 
-    const state = tableState[type]; 
-    const maxPage = Math.ceil(state.filtered.length / state.limit); 
-    const newPage = state.page + direction; 
-    if (newPage >= 1 && newPage <= maxPage) { 
-        state.page = newPage; 
-        processTableData(type); 
-    } 
+function changePage(type, direction) {
+    const state = tableState[type];
+    const maxPage = Math.ceil(state.filtered.length / state.limit);
+    const newPage = state.page + direction;
+    if (newPage >= 1 && newPage <= maxPage) {
+        state.page = newPage;
+        processTableData(type);
+    }
 }
 
 function processTableData(type) {
     const state = tableState[type];
     let result = [...state.fullData];
-    
+
     if ((type === 'siswa' || type === 'guru') && state.classFilter) {
         result = result.filter(item => item.kelas === state.classFilter);
     }
     if (type === 'monitoring' && state.statusFilter) {
         result = result.filter(item => item.status === state.statusFilter);
     }
-    if (state.search) { 
-        const query = state.search.toLowerCase(); 
-        result = result.filter(item => Object.values(item).some(val => String(val).toLowerCase().includes(query))); 
+    if (state.search) {
+        const query = state.search.toLowerCase();
+        result = result.filter(item => Object.values(item).some(val => String(val).toLowerCase().includes(query)));
     }
-    
+
     state.filtered = result;
     const total = state.filtered.length;
     const totalPages = Math.ceil(total / state.limit);
-    
+
     if (state.page > totalPages && totalPages > 0) state.page = totalPages;
     if (total === 0) state.page = 1;
-    
+
     const startIdx = (state.page - 1) * state.limit;
     const endIdx = startIdx + state.limit;
     const pagedData = state.filtered.slice(startIdx, endIdx);
-    
+
     if (type === 'siswa') renderSiswaRows(pagedData, startIdx);
     else if (type === 'guru') renderGuruRows(pagedData, startIdx);
     else if (type === 'libur') renderLiburRows(pagedData, startIdx);
     else if (type === 'rekap') renderRekapRows(pagedData);
     else if (type === 'monitoring') renderMonitoringRows(pagedData, startIdx);
-    else if (type === 'wfh') renderWfhRows(pagedData, startIdx); 
+    else if (type === 'wfh') renderWfhRows(pagedData, startIdx);
     else if (type === 'pelanggaran') {
         renderPelanggaranRows(pagedData, startIdx);
         document.getElementById('info-pelanggaran').textContent = `Menampilkan ${startIdx + 1}-${Math.min(endIdx, total)} dari ${total} data`;
         document.getElementById('btn-prev-pelanggaran').disabled = state.page === 1;
         document.getElementById('btn-next-pelanggaran').disabled = state.page === totalPages || totalPages === 0;
     }
-    
-    if(type !== 'pelanggaran') {
+
+    if (type !== 'pelanggaran') {
         updatePaginationUI(type, startIdx, pagedData.length, total, state.page, totalPages);
     }
 }
 
 function updatePaginationUI(type, startIdx, currentCount, total, currentPage, totalPages) {
-    const infoEl = document.getElementById(`info-${type}`); 
-    const btnPrev = document.getElementById(`btn-prev-${type}`); 
+    const infoEl = document.getElementById(`info-${type}`);
+    const btnPrev = document.getElementById(`btn-prev-${type}`);
     const btnNext = document.getElementById(`btn-next-${type}`);
-    
-    if (total === 0) { 
-        if(infoEl) infoEl.textContent = 'Tidak ada data ditemukan.'; 
-        if(btnPrev) btnPrev.disabled = true; 
-        if(btnNext) btnNext.disabled = true; 
-    } else { 
-        const end = startIdx + currentCount; 
-        if(infoEl) infoEl.textContent = `Menampilkan ${startIdx + 1} - ${end} dari ${total} data`; 
-        if(btnPrev) btnPrev.disabled = currentPage === 1; 
-        if(btnNext) btnNext.disabled = currentPage >= totalPages; 
+
+    if (total === 0) {
+        if (infoEl) infoEl.textContent = 'Tidak ada data ditemukan.';
+        if (btnPrev) btnPrev.disabled = true;
+        if (btnNext) btnNext.disabled = true;
+    } else {
+        const end = startIdx + currentCount;
+        if (infoEl) infoEl.textContent = `Menampilkan ${startIdx + 1} - ${end} dari ${total} data`;
+        if (btnPrev) btnPrev.disabled = currentPage === 1;
+        if (btnNext) btnNext.disabled = currentPage >= totalPages;
     }
 }
 
@@ -328,54 +328,54 @@ function switchLoginTab(tab) {
     const btnAdmin = document.getElementById('btnAdminTab');
     const active = "bg-white text-indigo-600 shadow-sm";
     const inactive = "text-gray-500 hover:text-gray-700 hover:bg-gray-200";
-    
+
     btnSiswa.className = `flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 ${tab === 'siswa' ? active : inactive}`;
     btnAdmin.className = `flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 ${tab === 'admin' ? active : inactive}`;
-    
-    if (tab === 'admin') { 
-        document.getElementById('formAdminLogin').classList.remove('hidden'); 
-        document.getElementById('formSiswaLogin').classList.add('hidden'); 
-    } else { 
-        document.getElementById('formAdminLogin').classList.add('hidden'); 
-        document.getElementById('formSiswaLogin').classList.remove('hidden'); 
+
+    if (tab === 'admin') {
+        document.getElementById('formAdminLogin').classList.remove('hidden');
+        document.getElementById('formSiswaLogin').classList.add('hidden');
+    } else {
+        document.getElementById('formAdminLogin').classList.add('hidden');
+        document.getElementById('formSiswaLogin').classList.remove('hidden');
     }
 }
 
-function togglePassword() { 
-    const passwordInput = document.getElementById('password'); 
-    const icon = document.getElementById('togglePasswordIcon'); 
-    
-    if (passwordInput.type === 'password') { 
-        passwordInput.type = 'text'; 
-        icon.classList.remove('fa-eye'); 
-        icon.classList.add('fa-eye-slash'); 
-    } else { 
-        passwordInput.type = 'password'; 
-        icon.classList.remove('fa-eye-slash'); 
-        icon.classList.add('fa-eye'); 
-    } 
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const icon = document.getElementById('togglePasswordIcon');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
 }
 
 function togglePasswordSiswa() {
     const pwd = document.getElementById('passwordSiswa');
     const icon = document.getElementById('toggleSiswaPassIcon');
-    if (pwd.type === 'password') { pwd.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash'); } 
+    if (pwd.type === 'password') { pwd.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash'); }
     else { pwd.type = 'password'; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
 }
 
 function toggleInputPass(inputId, iconId) {
     const inp = document.getElementById(inputId);
     const icon = document.getElementById(iconId);
-    if (inp.type === "password") { inp.type = "text"; icon.classList.replace('fa-eye', 'fa-eye-slash'); } 
+    if (inp.type === "password") { inp.type = "text"; icon.classList.replace('fa-eye', 'fa-eye-slash'); }
     else { inp.type = "password"; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
 }
 
-async function handleLogin(event) { 
-    event.preventDefault(); 
-    showLoading(); 
+async function handleLogin(event) {
+    event.preventDefault();
+    showLoading();
 
     const isSiswa = !document.getElementById('formSiswaLogin').classList.contains('hidden');
-    
+
     const nisnVal = isSiswa ? document.getElementById('nisn').value : "";
     const userVal = isSiswa ? "" : document.getElementById('username').value;
     const passVal = isSiswa ? document.getElementById('passwordSiswa').value : document.getElementById('password').value;
@@ -386,20 +386,20 @@ async function handleLogin(event) {
             password: passVal,
             nisn: nisnVal
         });
-        
+
         hideLoading();
-        
-        if (result.success) { 
-            currentUser = result; 
-            localStorage.setItem('absensiAppSession', JSON.stringify(result)); 
-            document.getElementById('loginPage').classList.add('hidden'); 
-            document.getElementById('dashboardContainer').classList.remove('hidden'); 
-            initDashboard(); 
-        } else { 
-            const errorDiv = document.getElementById('loginError'); 
-            document.getElementById('errorText').textContent = result.message; 
-            errorDiv.classList.remove('hidden'); 
-            setTimeout(() => errorDiv.classList.add('hidden'), 5000); 
+
+        if (result.success) {
+            currentUser = result;
+            localStorage.setItem('absensiAppSession', JSON.stringify(result));
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('dashboardContainer').classList.remove('hidden');
+            initDashboard();
+        } else {
+            const errorDiv = document.getElementById('loginError');
+            document.getElementById('errorText').textContent = result.message;
+            errorDiv.classList.remove('hidden');
+            setTimeout(() => errorDiv.classList.add('hidden'), 5000);
         }
     } catch (error) {
         hideLoading();
@@ -419,13 +419,13 @@ function checkSession() {
                 if (window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
                 initDashboard();
             }
-        } catch (e) { 
-            localStorage.removeItem('absensiAppSession'); 
+        } catch (e) {
+            localStorage.removeItem('absensiAppSession');
         }
     }
 }
 
-function logout() { 
+function logout() {
     Swal.fire({
         title: 'Konfirmasi Keluar',
         text: "Apakah Anda yakin ingin keluar dari aplikasi?",
@@ -444,17 +444,17 @@ function logout() {
 }
 
 function executeLogout() {
-    stopAndBack(false); 
-    localStorage.removeItem('absensiAppSession'); 
-    currentUser = null; 
-    appCache = { siswa: null, guru: null }; 
-    document.getElementById('dashboardContainer').classList.add('hidden'); 
-    document.getElementById('loginPage').classList.remove('hidden'); 
-    
-    if(document.getElementById('username')) document.getElementById('username').value = ''; 
-    if(document.getElementById('password')) document.getElementById('password').value = ''; 
-    if(document.getElementById('nisn')) document.getElementById('nisn').value = ''; 
-    
+    stopAndBack(false);
+    localStorage.removeItem('absensiAppSession');
+    currentUser = null;
+    appCache = { siswa: null, guru: null };
+    document.getElementById('dashboardContainer').classList.add('hidden');
+    document.getElementById('loginPage').classList.remove('hidden');
+
+    if (document.getElementById('username')) document.getElementById('username').value = '';
+    if (document.getElementById('password')) document.getElementById('password').value = '';
+    if (document.getElementById('nisn')) document.getElementById('nisn').value = '';
+
     document.getElementById('sidebar').classList.add('-translate-x-full');
 }
 
@@ -482,23 +482,23 @@ function showView(viewId) {
         }
     }
 
-    document.querySelectorAll('.view-section').forEach(el => { 
-        el.classList.remove('active'); 
-        el.style.display = 'none'; 
+    document.querySelectorAll('.view-section').forEach(el => {
+        el.classList.remove('active');
+        el.style.display = 'none';
     });
-    
+
     const target = document.getElementById(viewId);
-    if (target) { 
-        target.classList.add('active'); 
-        target.style.display = 'block'; 
-        target.classList.add('animate-fade-in'); 
+    if (target) {
+        target.classList.add('active');
+        target.style.display = 'block';
+        target.classList.add('animate-fade-in');
     }
-    
+
     setTimeout(() => {
         if (viewId === 'view-admin-dashboard' && currentUser.role === 'admin') loadAdminDashboard();
         if (viewId === 'view-guru-dashboard' && currentUser.role === 'guru') loadGuruDashboard();
     }, 50);
-    
+
     let title = "Dashboard";
     switch (viewId) {
         case 'view-data-siswa': title = "Direktori Siswa"; break;
@@ -507,16 +507,16 @@ function showView(viewId) {
         case 'view-scanner': title = "Scan Presensi"; break;
         case 'view-monitoring': title = "Monitoring Realtime"; break;
         case 'view-rekap-absensi': title = "Laporan Kehadiran"; break;
-        case 'view-rekap-siswa': title = "Rekap Presensi Siswa"; break; 
+        case 'view-rekap-siswa': title = "Rekap Presensi Siswa"; break;
         case 'view-kartu-siswa': title = "Kartu Presensi Digital"; break;
         case 'view-pengaturan': title = "Pengaturan Sistem"; break;
-        case 'view-absen-wfh': title = "Presensi WFH"; break; 
+        case 'view-absen-wfh': title = "Presensi WFH"; break;
         case 'view-izin-siswa': title = "Pengajuan Izin / Sakit"; break;
         case 'view-master-pelanggaran': title = "Data Pelanggaran"; break;
         case 'view-input-kasus': title = "Catat Pelanggaran"; break;
         case 'view-rekap-kasus': title = "Rekap Pelanggaran"; break;
     }
-    
+
     document.getElementById('pageTitle').textContent = title;
     closeSidebarMobile();
     scrollToTop();
@@ -528,45 +528,45 @@ function setActiveMenu(targetName) {
     const baseStyle = `flex items-center ${centerClass} py-3 rounded-xl transition-all duration-200 group overflow-hidden whitespace-nowrap cursor-pointer `;
     const activeStyle = "bg-indigo-600 text-white shadow-lg shadow-indigo-900/50";
     const inactiveStyle = "text-gray-400 hover:bg-gray-800 hover:text-white";
-    
-    allLinks.forEach(link => { 
-        const menuName = link.getAttribute('data-name'); 
-        link.className = (menuName === targetName) ? (baseStyle + activeStyle) : (baseStyle + inactiveStyle); 
+
+    allLinks.forEach(link => {
+        const menuName = link.getAttribute('data-name');
+        link.className = (menuName === targetName) ? (baseStyle + activeStyle) : (baseStyle + inactiveStyle);
     });
 }
 
-window.toggleAdminMenu = function(id) {
+window.toggleAdminMenu = function (id) {
     const el = document.getElementById(id);
     const icon = document.getElementById(id + '-icon');
     if (el.classList.contains('hidden')) {
         el.classList.remove('hidden');
-        if(icon) icon.style.transform = 'rotate(180deg)';
+        if (icon) icon.style.transform = 'rotate(180deg)';
     } else {
         el.classList.add('hidden');
-        if(icon) icon.style.transform = 'rotate(0deg)';
+        if (icon) icon.style.transform = 'rotate(0deg)';
     }
 };
 
-window.closeAllSubNavs = function() {
+window.closeAllSubNavs = function () {
     document.querySelectorAll('.mobile-subnav').forEach(el => el.classList.add('hidden'));
     const fab = document.getElementById('fabInputKasus');
-    if(fab && currentUser && viewIdGlobal !== 'view-input-kasus') { 
-        fab.style.opacity = '1'; 
-        fab.style.pointerEvents = 'auto'; 
+    if (fab && currentUser && viewIdGlobal !== 'view-input-kasus') {
+        fab.style.opacity = '1';
+        fab.style.pointerEvents = 'auto';
     }
 };
 
-window.toggleSubNav = function(id) {
+window.toggleSubNav = function (id) {
     const el = document.getElementById(id);
     const isHidden = el.classList.contains('hidden');
-    closeAllSubNavs(); 
-    
+    closeAllSubNavs();
+
     if (isHidden) {
         el.classList.remove('hidden');
         const fab = document.getElementById('fabInputKasus');
-        if(fab) { 
-            fab.style.opacity = '0'; 
-            fab.style.pointerEvents = 'none'; 
+        if (fab) {
+            fab.style.opacity = '0';
+            fab.style.pointerEvents = 'none';
         }
     }
 };
@@ -582,47 +582,47 @@ function toggleSidebar() {
     const isMobile = window.innerWidth < 768;
 
     if (isMobile) {
-        if (sidebar.classList.contains('-translate-x-full')) { 
-            sidebar.classList.remove('-translate-x-full'); 
-            overlay.classList.remove('hidden', 'pointer-events-none'); 
-            setTimeout(() => overlay.classList.remove('opacity-0'), 10); 
-        } else { 
-            sidebar.classList.add('-translate-x-full'); 
-            overlay.classList.add('opacity-0', 'pointer-events-none'); 
-            setTimeout(() => overlay.classList.add('hidden'), 300); 
+        if (sidebar.classList.contains('-translate-x-full')) {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden', 'pointer-events-none');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+        } else {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
         }
     } else {
         if (isSidebarOpen) {
-            sidebar.classList.remove('w-64'); 
+            sidebar.classList.remove('w-64');
             sidebar.classList.add('w-20');
-            document.getElementById('mainContent').classList.remove('md:ml-64'); 
+            document.getElementById('mainContent').classList.remove('md:ml-64');
             document.getElementById('mainContent').classList.add('md:ml-20');
-            header.classList.remove('px-6', 'justify-start'); 
+            header.classList.remove('px-6', 'justify-start');
             header.classList.add('px-0', 'justify-center');
-            userCard.classList.remove('space-x-3', 'p-3', 'bg-black/20', 'border'); 
+            userCard.classList.remove('space-x-3', 'p-3', 'bg-black/20', 'border');
             userCard.classList.add('justify-center', 'p-0', 'bg-transparent', 'border-transparent');
-            logoutBtn.classList.remove('space-x-3', 'justify-start', 'px-4'); 
+            logoutBtn.classList.remove('space-x-3', 'justify-start', 'px-4');
             logoutBtn.classList.add('justify-center', 'px-0');
-            menuLinks.forEach(link => { 
-                link.classList.remove('space-x-3', 'px-4'); 
-                link.classList.add('justify-center', 'px-0'); 
+            menuLinks.forEach(link => {
+                link.classList.remove('space-x-3', 'px-4');
+                link.classList.add('justify-center', 'px-0');
             });
             labels.forEach(el => { el.classList.add('hidden'); });
             isSidebarOpen = false;
         } else {
-            sidebar.classList.remove('w-20'); 
+            sidebar.classList.remove('w-20');
             sidebar.classList.add('w-64');
-            document.getElementById('mainContent').classList.remove('md:ml-20'); 
+            document.getElementById('mainContent').classList.remove('md:ml-20');
             document.getElementById('mainContent').classList.add('md:ml-64');
-            header.classList.add('px-6', 'justify-start'); 
+            header.classList.add('px-6', 'justify-start');
             header.classList.remove('px-0', 'justify-center');
-            userCard.classList.add('space-x-3', 'p-3', 'bg-black/20', 'border'); 
+            userCard.classList.add('space-x-3', 'p-3', 'bg-black/20', 'border');
             userCard.classList.remove('justify-center', 'p-0', 'bg-transparent', 'border-transparent');
-            logoutBtn.classList.add('space-x-3', 'justify-start', 'px-4'); 
+            logoutBtn.classList.add('space-x-3', 'justify-start', 'px-4');
             logoutBtn.classList.remove('justify-center', 'px-0');
-            menuLinks.forEach(link => { 
-                link.classList.add('space-x-3', 'px-4'); 
-                link.classList.remove('justify-center', 'px-0'); 
+            menuLinks.forEach(link => {
+                link.classList.add('space-x-3', 'px-4');
+                link.classList.remove('justify-center', 'px-0');
             });
             labels.forEach(el => { el.classList.remove('hidden'); });
             isSidebarOpen = true;
@@ -634,7 +634,7 @@ function closeSidebarMobile() {
     if (window.innerWidth < 768) {
         document.getElementById('sidebar').classList.add('-translate-x-full');
         const overlay = document.getElementById('mobileOverlay');
-        overlay.classList.add('opacity-0', 'pointer-events-none'); 
+        overlay.classList.add('opacity-0', 'pointer-events-none');
         setTimeout(() => overlay.classList.add('hidden'), 300);
     }
 }
@@ -642,32 +642,32 @@ function closeSidebarMobile() {
 const contentArea = document.getElementById('mainContentArea');
 const scrollBtn = document.getElementById('btnScrollTop');
 
-if(contentArea && scrollBtn) {
-    contentArea.onscroll = function() {
-        if (contentArea.scrollTop > 300) { 
-            scrollBtn.classList.remove('opacity-0', 'translate-y-10', 'invisible'); 
-        } 
-        else { 
-            scrollBtn.classList.add('opacity-0', 'translate-y-10', 'invisible'); 
+if (contentArea && scrollBtn) {
+    contentArea.onscroll = function () {
+        if (contentArea.scrollTop > 300) {
+            scrollBtn.classList.remove('opacity-0', 'translate-y-10', 'invisible');
+        }
+        else {
+            scrollBtn.classList.add('opacity-0', 'translate-y-10', 'invisible');
         }
     };
 }
 
 function scrollToTop() {
-    if(contentArea) { 
-        contentArea.scrollTo({ top: 0, behavior: "smooth" }); 
+    if (contentArea) {
+        contentArea.scrollTo({ top: 0, behavior: "smooth" });
     }
 }
 
 function showPrivacyModal(e) {
-    if(e) e.preventDefault();
+    if (e) e.preventDefault();
     const modal = document.getElementById('privacyModal');
-    if(modal) { modal.classList.remove('hidden'); }
+    if (modal) { modal.classList.remove('hidden'); }
 }
 
 function closePrivacyModal() {
     const modal = document.getElementById('privacyModal');
-    if(modal) { modal.classList.add('hidden'); }
+    if (modal) { modal.classList.add('hidden'); }
 }
 
 // ============================================================
@@ -678,12 +678,12 @@ function initDashboard() {
     document.getElementById('navUserName').textContent = name;
     document.getElementById('navUserRole').textContent = currentUser.role.toUpperCase();
     document.getElementById('navUserInitial').textContent = name.charAt(0).toUpperCase();
-    
+
     const menuContainer = document.getElementById('sidebarMenu');
     let menuHTML = '';
-    
+
     const createItem = (label, icon, onclick, isDefaultActive = false) => {
-        const hideText = !isSidebarOpen ? 'hidden' : ''; 
+        const hideText = !isSidebarOpen ? 'hidden' : '';
         const centerClass = !isSidebarOpen ? 'justify-center px-0' : 'space-x-3 px-4';
         const style = isDefaultActive ? "bg-indigo-600 text-white shadow-lg shadow-indigo-900/50" : "text-gray-400 hover:bg-gray-800 hover:text-white";
         return `
@@ -694,9 +694,9 @@ function initDashboard() {
     };
 
     const createAccordion = (id, label, icon, subItems) => {
-        const hideText = !isSidebarOpen ? 'hidden' : ''; 
+        const hideText = !isSidebarOpen ? 'hidden' : '';
         const centerClass = !isSidebarOpen ? 'justify-center px-0' : 'px-4';
-        
+
         let subHTML = `<div id="${id}" class="hidden flex-col mt-1 space-y-1 bg-black/20 rounded-xl py-2 ${!isSidebarOpen ? 'px-2' : 'pl-10 pr-3'} animate-fade-in">`;
         subItems.forEach(item => {
             subHTML += `
@@ -719,7 +719,7 @@ function initDashboard() {
             ${subHTML}
         </div>`;
     };
-    
+
     if (currentUser.role === 'admin') {
         menuHTML += createItem('Dashboard', 'fa-home', 'loadAdminDashboard()');
         menuHTML += createAccordion('acc-akun', 'Manajemen Akun', 'fa-users-cog', [
@@ -747,13 +747,13 @@ function initDashboard() {
         loadGuruDashboard();
     } else if (currentUser.role === 'siswa') {
         menuHTML += createItem('Dashboard', 'fa-home', 'loadSiswaDashboard()', true);
-        menuHTML += createItem('Kartu Saya', 'fa-id-card', 'loadQRCodeSiswa()'); 
-        menuHTML += createItem('Rekam-WFH', 'fa-camera-retro', 'loadAbsenWFH()'); 
+        menuHTML += createItem('Kartu Saya', 'fa-id-card', 'loadQRCodeSiswa()');
+        menuHTML += createItem('Rekam-WFH', 'fa-camera-retro', 'loadAbsenWFH()');
         menuHTML += createItem('Izin / Sakit', 'fa-envelope-open-text', 'loadIzinSiswa()');
         menuHTML += createItem('Rekap Kehadiran', 'fa-file-pdf', 'loadRekapSiswa()');
         loadSiswaDashboard();
     }
-    
+
     menuContainer.innerHTML = menuHTML;
     loadKelasSuggestions();
     initMobileNav();
@@ -762,12 +762,12 @@ function initDashboard() {
 function initMobileNav() {
     const role = currentUser.role;
     const roleEl = document.getElementById('mobileHeaderRole');
-    if(roleEl) roleEl.textContent = role;
-    
+    if (roleEl) roleEl.textContent = role;
+
     const btnSettings = document.getElementById('btnMobileSettings');
     const btnLogout = document.getElementById('btnMobileLogout');
     const schoolInfo = document.getElementById('mobileHeaderSchoolInfo');
-    
+
     let navHTML = '';
 
     const createBottomNav = (label, icon, onclick, isCenter = false) => {
@@ -806,10 +806,10 @@ function initMobileNav() {
     };
 
     if (role === 'admin') {
-        if(btnSettings) { btnSettings.classList.remove('hidden'); btnSettings.classList.add('flex'); }
-        if(btnLogout) { btnLogout.classList.remove('hidden'); btnLogout.classList.add('flex'); }
-        if(schoolInfo) { schoolInfo.classList.remove('flex'); schoolInfo.classList.add('hidden'); }
-        
+        if (btnSettings) { btnSettings.classList.remove('hidden'); btnSettings.classList.add('flex'); }
+        if (btnLogout) { btnLogout.classList.remove('hidden'); btnLogout.classList.add('flex'); }
+        if (schoolInfo) { schoolInfo.classList.remove('flex'); schoolInfo.classList.add('hidden'); }
+
         navHTML += createBottomNav('Home', 'fa-home', 'loadAdminDashboard()');
         navHTML += createBottomNavWithSub('sub-akun', 'Akun', 'fa-users', [
             { label: 'Data Siswa', icon: 'fa-user-graduate', onclick: 'loadDataSiswa()' },
@@ -826,10 +826,10 @@ function initMobileNav() {
         ]);
 
     } else if (role === 'guru') {
-        if(btnSettings) { btnSettings.classList.remove('flex'); btnSettings.classList.add('hidden'); }
-        if(btnLogout) { btnLogout.classList.remove('hidden'); btnLogout.classList.add('flex'); } 
-        if(schoolInfo) { schoolInfo.classList.remove('hidden'); schoolInfo.classList.add('flex'); }
-        
+        if (btnSettings) { btnSettings.classList.remove('flex'); btnSettings.classList.add('hidden'); }
+        if (btnLogout) { btnLogout.classList.remove('hidden'); btnLogout.classList.add('flex'); }
+        if (schoolInfo) { schoolInfo.classList.remove('hidden'); schoolInfo.classList.add('flex'); }
+
         navHTML += createBottomNav('Home', 'fa-home', 'loadGuruDashboard()');
         navHTML += createBottomNav('Monitor', 'fa-desktop', 'loadMonitoringAbsensi()');
         navHTML += createBottomNav('Scan', 'fa-qrcode', 'loadScanAbsensi()', true);
@@ -837,13 +837,13 @@ function initMobileNav() {
         navHTML += createBottomNav('Rekap Kasus', 'fa-balance-scale', 'loadRekapKasus()');
 
     } else if (role === 'siswa') {
-        if(btnSettings) { btnSettings.classList.remove('flex'); btnSettings.classList.add('hidden'); }
-        if(btnLogout) { btnLogout.classList.remove('hidden'); btnLogout.classList.add('flex'); } 
-        if(schoolInfo) { schoolInfo.classList.remove('hidden'); schoolInfo.classList.add('flex'); }
-        
+        if (btnSettings) { btnSettings.classList.remove('flex'); btnSettings.classList.add('hidden'); }
+        if (btnLogout) { btnLogout.classList.remove('hidden'); btnLogout.classList.add('flex'); }
+        if (schoolInfo) { schoolInfo.classList.remove('hidden'); schoolInfo.classList.add('flex'); }
+
         navHTML += createBottomNav('Home', 'fa-home', 'loadSiswaDashboard()');
-        navHTML += createBottomNav('Kartu', 'fa-id-card', 'loadQRCodeSiswa()'); 
-        navHTML += createBottomNav('WFH', 'fa-camera-retro', 'loadAbsenWFH()', true); 
+        navHTML += createBottomNav('Kartu', 'fa-id-card', 'loadQRCodeSiswa()');
+        navHTML += createBottomNav('WFH', 'fa-camera-retro', 'loadAbsenWFH()', true);
         navHTML += createBottomNav('Izin', 'fa-envelope-open-text', 'loadIzinSiswa()');
         navHTML += createBottomNav('Rekap', 'fa-file-pdf', 'loadRekapSiswa()');
     }
@@ -853,31 +853,31 @@ function initMobileNav() {
 
 function refreshData(type) {
     const btnIcon = event ? event.currentTarget.querySelector('i') : null;
-    if(btnIcon) btnIcon.classList.add('fa-spin');
-    
-    if (type === 'siswa') { 
-        tableState.siswa.fullData = []; 
-        loadDataSiswa(); 
-        showAlert('success', 'Data siswa diperbarui.'); 
-    } 
-    else if (type === 'guru') { 
-        tableState.guru.fullData = []; 
-        loadDataGuru(); 
-        showAlert('success', 'Data guru diperbarui.'); 
+    if (btnIcon) btnIcon.classList.add('fa-spin');
+
+    if (type === 'siswa') {
+        tableState.siswa.fullData = [];
+        loadDataSiswa();
+        showAlert('success', 'Data siswa diperbarui.');
+    }
+    else if (type === 'guru') {
+        tableState.guru.fullData = [];
+        loadDataGuru();
+        showAlert('success', 'Data guru diperbarui.');
     }
     else if (type === 'dashboard') {
         if (currentUser.role === 'admin') loadAdminDashboard();
         else if (currentUser.role === 'guru') loadGuruDashboard();
         else loadSiswaDashboard();
         showAlert('success', 'Statistik Dashboard diperbarui.');
-    } 
-    else if (type === 'monitoring') { 
-        tableState.monitoring.fullData = []; 
-        loadMonitoringAbsensi(); 
-        showAlert('success', 'Data monitoring diperbarui.'); 
     }
-    
-    if(btnIcon) setTimeout(() => btnIcon.classList.remove('fa-spin'), 1000);
+    else if (type === 'monitoring') {
+        tableState.monitoring.fullData = [];
+        loadMonitoringAbsensi();
+        showAlert('success', 'Data monitoring diperbarui.');
+    }
+
+    if (btnIcon) setTimeout(() => btnIcon.classList.remove('fa-spin'), 1000);
 }
 
 // ============================================================
@@ -885,13 +885,13 @@ function refreshData(type) {
 // ============================================================
 function animateValue(id, start, end, duration) {
     const obj = document.getElementById(id);
-    if(!obj) return;
+    if (!obj) return;
     let startTimestamp = null;
-    const step = (timestamp) => { 
-        if (!startTimestamp) startTimestamp = timestamp; 
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1); 
-        obj.innerHTML = Math.floor(progress * (end - start) + start); 
-        if (progress < 1) window.requestAnimationFrame(step); 
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        obj.innerHTML = Math.floor(progress * (end - start) + start);
+        if (progress < 1) window.requestAnimationFrame(step);
     };
     window.requestAnimationFrame(step);
 }
@@ -899,7 +899,7 @@ function animateValue(id, start, end, duration) {
 async function loadAdminDashboard() {
     stopAndBack(false); setActiveMenu('Dashboard'); showView('view-admin-dashboard');
     document.getElementById('adminDateDisplay').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    
+
     try {
         const result = await fetchAPI('getMonitoringRealtime', { filterKelas: null });
         if (result.success) {
@@ -910,16 +910,16 @@ async function loadAdminDashboard() {
             const izin = data.filter(d => d.status === 'Izin').length;
             const alpa = data.filter(d => d.status === 'Alpa').length;
             const belum = data.filter(d => d.status === 'Belum Absen').length;
-            
-            animateValue("admStatTotal", 0, total, 800); 
-            animateValue("admStatHadir", 0, hadir, 800); 
+
+            animateValue("admStatTotal", 0, total, 800);
+            animateValue("admStatHadir", 0, hadir, 800);
             animateValue("admStatSakit", 0, sakit, 800);
-            animateValue("admStatIzin", 0, izin, 800); 
+            animateValue("admStatIzin", 0, izin, 800);
             animateValue("admStatAlpa", 0, alpa, 800);
-            
+
             renderAdminChart(hadir, sakit, izin, alpa, belum);
         }
-    } catch(e) {}
+    } catch (e) { }
 }
 
 function renderAdminChart(hadir, sakit, izin, alpa, belum) {
@@ -927,37 +927,37 @@ function renderAdminChart(hadir, sakit, izin, alpa, belum) {
     if (!ctx) return;
     if (adminChartInstance) adminChartInstance.destroy();
     if (typeof ChartDataLabels !== 'undefined') { Chart.register(ChartDataLabels); }
-    
-    adminChartInstance = new Chart(ctx, { 
-        type: 'bar', 
-        data: { 
-            labels: ['Hadir', 'Sakit', 'Izin', 'Alpa', 'Belum Absen'], 
-            datasets: [{ 
-                label: 'Jumlah Siswa', 
-                data: [hadir, sakit, izin, alpa, belum], 
-                backgroundColor: ['#10B981', '#EAB308', '#3B82F6', '#EF4444', '#9CA3AF'], 
-                borderRadius: 8, 
-                barPercentage: 0.5 
-            }] 
-        }, 
-        options: { 
-            responsive: true, 
-            maintainAspectRatio: false, 
-            plugins: { 
-                legend: { display: false }, 
-                datalabels: { 
-                    anchor: 'end', 
-                    align: 'top', 
-                    formatter: (val) => val > 0 ? val : '', 
-                    font: { weight: 'bold' }, 
-                    color: '#666' 
-                } 
-            }, 
-            scales: { 
-                y: { beginAtZero: true, grid: { borderDash: [2, 2] } }, 
-                x: { grid: { display: false } } 
-            } 
-        } 
+
+    adminChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Hadir', 'Sakit', 'Izin', 'Alpa', 'Belum Absen'],
+            datasets: [{
+                label: 'Jumlah Siswa',
+                data: [hadir, sakit, izin, alpa, belum],
+                backgroundColor: ['#10B981', '#EAB308', '#3B82F6', '#EF4444', '#9CA3AF'],
+                borderRadius: 8,
+                barPercentage: 0.5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    formatter: (val) => val > 0 ? val : '',
+                    font: { weight: 'bold' },
+                    color: '#666'
+                }
+            },
+            scales: {
+                y: { beginAtZero: true, grid: { borderDash: [2, 2] } },
+                x: { grid: { display: false } }
+            }
+        }
     });
 }
 
@@ -965,27 +965,27 @@ async function loadGuruDashboard() {
     stopAndBack(false); setActiveMenu('Dashboard'); showView('view-guru-dashboard');
     document.getElementById('guruDashboardDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     const myClass = currentUser.role === 'guru' ? currentUser.kelas : null;
-    if(myClass) document.querySelector('#view-guru-dashboard h2').textContent = `Dashboard Guru (${myClass})`;
-    
+    if (myClass) document.querySelector('#view-guru-dashboard h2').textContent = `Dashboard Guru (${myClass})`;
+
     try {
         const result = await fetchAPI('getMonitoringRealtime', { filterKelas: myClass });
         if (result.success) {
-            const data = result.data; 
-            const totalSiswa = data.length; 
-            const sakit = data.filter(d => d.status === 'Sakit').length; 
-            const izin = data.filter(d => d.status === 'Izin').length; 
-            const alpa = data.filter(d => d.status === 'Alpa').length; 
-            const hadir = data.filter(d => d.status === 'Hadir').length; 
+            const data = result.data;
+            const totalSiswa = data.length;
+            const sakit = data.filter(d => d.status === 'Sakit').length;
+            const izin = data.filter(d => d.status === 'Izin').length;
+            const alpa = data.filter(d => d.status === 'Alpa').length;
+            const hadir = data.filter(d => d.status === 'Hadir').length;
             const belumAbsen = data.filter(d => d.status === 'Belum Absen').length;
-            
-            animateValue("statGuruTotal", 0, totalSiswa, 1000); 
-            animateValue("statGuruSakit", 0, sakit, 1000); 
-            animateValue("statGuruIzin", 0, izin, 1000); 
+
+            animateValue("statGuruTotal", 0, totalSiswa, 1000);
+            animateValue("statGuruSakit", 0, sakit, 1000);
+            animateValue("statGuruIzin", 0, izin, 1000);
             animateValue("statGuruAlpa", 0, alpa, 1000);
-            
+
             renderGuruChart(hadir, sakit, izin, alpa, belumAbsen);
         }
-    } catch(e) {}
+    } catch (e) { }
 }
 
 function renderGuruChart(hadir, sakit, izin, alpa, belumAbsen) {
@@ -993,37 +993,37 @@ function renderGuruChart(hadir, sakit, izin, alpa, belumAbsen) {
     if (!ctx) return;
     if (guruChartInstance) guruChartInstance.destroy();
     if (typeof ChartDataLabels !== 'undefined') { Chart.register(ChartDataLabels); }
-    
-    guruChartInstance = new Chart(ctx, { 
-        type: 'bar', 
-        data: { 
-            labels: ['Hadir', 'Sakit', 'Izin', 'Alpa', 'Belum Absen'], 
-            datasets: [{ 
-                label: 'Jumlah Siswa', 
-                data: [hadir, sakit, izin, alpa, belumAbsen], 
-                backgroundColor: ['#10B981', '#F59E0B', '#3B82F6', '#EF4444', '#9CA3AF'], 
-                borderRadius: 6, 
-                barPercentage: 0.6 
-            }] 
-        }, 
-        options: { 
-            responsive: true, 
-            maintainAspectRatio: false, 
-            plugins: { 
-                legend: { display: false }, 
-                datalabels: { 
-                    anchor: 'end', 
-                    align: 'top', 
-                    formatter: (value) => value > 0 ? value : '', 
-                    font: { weight: 'bold', size: 11 }, 
-                    color: '#4B5563' 
-                } 
-            }, 
-            scales: { 
-                y: { beginAtZero: true, grid: { borderDash: [2, 4], color: '#F3F4F6' }, ticks: { stepSize: 1 } }, 
-                x: { grid: { display: false } } 
-            } 
-        } 
+
+    guruChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Hadir', 'Sakit', 'Izin', 'Alpa', 'Belum Absen'],
+            datasets: [{
+                label: 'Jumlah Siswa',
+                data: [hadir, sakit, izin, alpa, belumAbsen],
+                backgroundColor: ['#10B981', '#F59E0B', '#3B82F6', '#EF4444', '#9CA3AF'],
+                borderRadius: 6,
+                barPercentage: 0.6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    formatter: (value) => value > 0 ? value : '',
+                    font: { weight: 'bold', size: 11 },
+                    color: '#4B5563'
+                }
+            },
+            scales: {
+                y: { beginAtZero: true, grid: { borderDash: [2, 4], color: '#F3F4F6' }, ticks: { stepSize: 1 } },
+                x: { grid: { display: false } }
+            }
+        }
     });
 }
 
@@ -1073,75 +1073,75 @@ function showProfilGuruMobile() {
 // MANAJEMEN DATA AKUN (SISWA & GURU)
 // ============================================================
 async function loadDataSiswa() {
-    stopAndBack(false); 
-    setActiveMenu('Data Siswa'); 
+    stopAndBack(false);
+    setActiveMenu('Data Siswa');
     showView('view-data-siswa');
-    
+
     const dropdown = document.getElementById('filterKelasSiswa');
     if (dropdown && existingClasses && existingClasses.length > 0) {
-        const currentValue = dropdown.value; 
-        let options = '<option value="">Semua Kelas</option>'; 
-        existingClasses.forEach(kelas => { 
-            options += `<option value="${kelas}">${kelas}</option>`; 
+        const currentValue = dropdown.value;
+        let options = '<option value="">Semua Kelas</option>';
+        existingClasses.forEach(kelas => {
+            options += `<option value="${kelas}">${kelas}</option>`;
         });
-        dropdown.innerHTML = options; 
+        dropdown.innerHTML = options;
         if (currentValue) dropdown.value = currentValue;
     }
-    
+
     if (tableState.siswa.fullData.length > 0) {
         processTableData('siswa');
     } else {
         document.getElementById('tbody-siswa').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data siswa...</td></tr>';
         try {
             const result = await fetchAPI('getSiswaList');
-            if (result.success) { 
-                tableState.siswa.fullData = result.data; 
-                processTableData('siswa'); 
+            if (result.success) {
+                tableState.siswa.fullData = result.data;
+                processTableData('siswa');
             } else {
                 showAlert('error', result.message);
             }
-        } catch(e) {}
+        } catch (e) { }
     }
 }
 
 async function loadDataGuru() {
     stopAndBack(false); setActiveMenu('Data Guru'); showView('view-data-guru');
     const dropdown = document.getElementById('filterKelasGuru');
-    
+
     if (dropdown && existingClasses && existingClasses.length > 0) {
-        const currentValue = dropdown.value; 
-        let options = '<option value="">Semua Kelas</option>'; 
-        existingClasses.forEach(kelas => { 
-            options += `<option value="${kelas}">${kelas}</option>`; 
+        const currentValue = dropdown.value;
+        let options = '<option value="">Semua Kelas</option>';
+        existingClasses.forEach(kelas => {
+            options += `<option value="${kelas}">${kelas}</option>`;
         });
-        dropdown.innerHTML = options; 
+        dropdown.innerHTML = options;
         if (currentValue) dropdown.value = currentValue;
     }
-    
+
     if (tableState.guru.fullData.length > 0) {
         processTableData('guru');
     } else {
         document.getElementById('tbody-guru').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data guru...</td></tr>';
         try {
             const result = await fetchAPI('getGuruList', { token: currentUser.token });
-            if (result.success) { 
-                tableState.guru.fullData = result.data; 
-                processTableData('guru'); 
-            } else { 
-                document.getElementById('tbody-guru').innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500 font-bold">${result.message}</td></tr>`; 
-                showAlert('error', result.message); 
+            if (result.success) {
+                tableState.guru.fullData = result.data;
+                processTableData('guru');
+            } else {
+                document.getElementById('tbody-guru').innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500 font-bold">${result.message}</td></tr>`;
+                showAlert('error', result.message);
             }
-        } catch(error) {
+        } catch (error) {
             document.getElementById('tbody-guru').innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error: ${error}</td></tr>`;
         }
     }
 }
 
-async function loadKelasSuggestions() { 
+async function loadKelasSuggestions() {
     try {
         const result = await fetchAPI('getKelasList');
-        if (result.success) existingClasses = result.data; 
-    } catch(e) {}
+        if (result.success) existingClasses = result.data;
+    } catch (e) { }
 }
 
 function openKelasDropdown() {
@@ -1152,7 +1152,7 @@ function openKelasDropdown() {
 }
 
 function closeKelasDropdown() {
-    setTimeout(() => { const list = document.getElementById('dropdownKelasList'); if(list) list.classList.add('hidden'); }, 200);
+    setTimeout(() => { const list = document.getElementById('dropdownKelasList'); if (list) list.classList.add('hidden'); }, 200);
 }
 
 function filterKelasDropdown(query) {
@@ -1179,9 +1179,9 @@ function selectKelasItem(val) {
 // RENDERER ROW SISWA & GURU (Dipindahkan dari index.html)
 function renderSiswaRows(data, startIdx) {
     const tbody = document.getElementById('tbody-siswa');
-    if (data.length === 0) { 
-        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Data tidak ditemukan.</td></tr>'; 
-        return; 
+    if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Data tidak ditemukan.</td></tr>';
+        return;
     }
     tbody.innerHTML = data.map((siswa, i) => `
     <tr class="hover:bg-gray-50 transition border-b border-gray-50 group">
@@ -1211,9 +1211,9 @@ function renderSiswaRows(data, startIdx) {
 
 function renderGuruRows(data, startIdx) {
     const tbody = document.getElementById('tbody-guru');
-    if (data.length === 0) { 
-        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Data tidak ditemukan.</td></tr>'; 
-        return; 
+    if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Data tidak ditemukan.</td></tr>';
+        return;
     }
     tbody.innerHTML = data.map((guru, i) => {
         const passId = `pass-${startIdx + i}`;
@@ -1265,68 +1265,68 @@ function createImportModal(type) {
 
 function downloadTemplate(type) {
     let headers = [], fileName = "";
-    if(type === 'Siswa') { headers = [["nama", "nisn", "jenisKelamin", "tanggalLahir", "agama", "namaAyah", "namaIbu", "noHp", "kelas", "alamat"]]; fileName = "Template_Import_Siswa.xlsx"; } 
-    else if(type === 'Guru') { headers = [["username", "password", "kelas"]]; fileName = "Template_Import_Guru.xlsx"; }
-    else if(type === 'Pelanggaran') { headers = [["namaPelanggaran", "kategori", "poin"]]; fileName = "Template_Import_Pelanggaran.xlsx"; }
-    
-    const wb = XLSX.utils.book_new(); 
-    const ws = XLSX.utils.aoa_to_sheet(headers); 
-    XLSX.utils.book_append_sheet(wb, ws, "Template"); 
+    if (type === 'Siswa') { headers = [["nama", "nisn", "jenisKelamin", "tanggalLahir", "agama", "namaAyah", "namaIbu", "noHp", "kelas", "alamat"]]; fileName = "Template_Import_Siswa.xlsx"; }
+    else if (type === 'Guru') { headers = [["username", "password", "kelas"]]; fileName = "Template_Import_Guru.xlsx"; }
+    else if (type === 'Pelanggaran') { headers = [["namaPelanggaran", "kategori", "poin"]]; fileName = "Template_Import_Pelanggaran.xlsx"; }
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(headers);
+    XLSX.utils.book_append_sheet(wb, ws, "Template");
     XLSX.writeFile(wb, fileName);
 }
 
 function processImport(type) {
     const fileInput = document.getElementById('importFile');
-    if(!fileInput.files.length) { showAlert('error', 'Pilih file terlebih dahulu'); return; }
-    showLoading(); 
-    const file = fileInput.files[0]; 
+    if (!fileInput.files.length) { showAlert('error', 'Pilih file terlebih dahulu'); return; }
+    showLoading();
+    const file = fileInput.files[0];
     const reader = new FileReader();
-    
-    reader.onload = async function(e) {
-        const data = new Uint8Array(e.target.result); 
-        const workbook = XLSX.read(data, {type: 'array'});
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]]; 
+
+    reader.onload = async function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(firstSheet, { raw: false, defval: "" });
-        
+
         try {
             let res;
-            if(type === 'Siswa') {
+            if (type === 'Siswa') {
                 res = await fetchAPI('importSiswaBulk', { arr: jsonData });
                 hideLoading(); closeModal();
-                if(res.success) { tableState.siswa.fullData = []; loadDataSiswa(); showAlert('success', res.message); } 
+                if (res.success) { tableState.siswa.fullData = []; loadDataSiswa(); showAlert('success', res.message); }
                 else { showAlert('error', res.message); }
-            } else if(type === 'Guru') {
+            } else if (type === 'Guru') {
                 res = await fetchAPI('importGuruBulk', { arr: jsonData });
                 hideLoading(); closeModal();
-                if(res.success) { tableState.guru.fullData = []; loadDataGuru(); showAlert('success', res.message); } 
+                if (res.success) { tableState.guru.fullData = []; loadDataGuru(); showAlert('success', res.message); }
                 else { showAlert('error', res.message); }
-            } else if(type === 'Pelanggaran') {
+            } else if (type === 'Pelanggaran') {
                 res = await fetchAPI('importPelanggaranBulk', { token: currentUser.token, arr: jsonData });
                 hideLoading(); closeModal();
-                if(res.success) { tableState.pelanggaran.fullData = []; loadMasterPelanggaran(); showAlert('success', res.message); } 
+                if (res.success) { tableState.pelanggaran.fullData = []; loadMasterPelanggaran(); showAlert('success', res.message); }
                 else { showAlert('error', res.message); }
             }
-        } catch(err) { hideLoading(); showAlert('error', err); }
+        } catch (err) { hideLoading(); showAlert('error', err); }
     };
     reader.readAsArrayBuffer(file);
 }
 
 // LOGIKA CRUD GURU
 async function saveGuru(e, isEdit) {
-    e.preventDefault(); 
-    const form = e.target; 
-    const btn = form.querySelector('button[type="submit"]'); 
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
     const originalText = btn.innerHTML;
-    
-    btn.disabled = true; 
+
+    btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Menyimpan...';
-    
+
     const fd = new FormData(form);
     const username = "'" + fd.get('username');
     const password = "'" + fd.get('password');
     const kelas = fd.get('kelas');
     const token = currentUser ? currentUser.token : null;
-    
+
     try {
         let r;
         if (isEdit) {
@@ -1334,42 +1334,42 @@ async function saveGuru(e, isEdit) {
         } else {
             r = await fetchAPI('addGuru', { token: token, username: username, password: password, kelas: kelas });
         }
-        
-        btn.disabled = false; 
-        btn.innerHTML = originalText; 
-        
-        if (r && r.success) { 
-            closeModal(); 
-            tableState.guru.fullData = []; 
-            loadDataGuru(); 
-            showAlert('success', isEdit ? 'Data guru berhasil diperbarui' : 'Akun Guru berhasil dibuat'); 
+
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+
+        if (r && r.success) {
+            closeModal();
+            tableState.guru.fullData = [];
+            loadDataGuru();
+            showAlert('success', isEdit ? 'Data guru berhasil diperbarui' : 'Akun Guru berhasil dibuat');
         } else {
-            showAlert('error', r ? r.message : 'Terjadi kesalahan'); 
+            showAlert('error', r ? r.message : 'Terjadi kesalahan');
         }
-    } catch(error) {
-        btn.disabled = false; 
-        btn.innerHTML = originalText; 
-        showAlert('error', 'Gagal koneksi server: ' + error); 
+    } catch (error) {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        showAlert('error', 'Gagal koneksi server: ' + error);
     }
 }
 
 async function deleteGuruConfirm(username) {
-    if (confirm(`Hapus akses untuk guru: ${username}?`)) { 
-        showLoading(); 
-        const token = currentUser ? currentUser.token : null; 
+    if (confirm(`Hapus akses untuk guru: ${username}?`)) {
+        showLoading();
+        const token = currentUser ? currentUser.token : null;
         try {
             const r = await fetchAPI('deleteGuru', { token: token, username: username });
-            hideLoading(); 
-            if (r.success) { 
-                tableState.guru.fullData = []; 
-                loadDataGuru(); 
-                showAlert('success', 'Akun guru berhasil dihapus'); 
+            hideLoading();
+            if (r.success) {
+                tableState.guru.fullData = [];
+                loadDataGuru();
+                showAlert('success', 'Akun guru berhasil dihapus');
             } else {
-                showAlert('error', r.message); 
+                showAlert('error', r.message);
             }
-        } catch(error) {
-            hideLoading(); 
-            showAlert('error', 'Gagal menghapus: ' + error); 
+        } catch (error) {
+            hideLoading();
+            showAlert('error', 'Gagal menghapus: ' + error);
         }
     }
 }
@@ -1380,15 +1380,15 @@ function editGuru(guruData) { showModal(createGuruModal(guruData)); }
 function createGuruModal(guru = null) {
     const isEdit = guru !== null;
     const inputClass = "w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block p-3 transition-all mb-4";
-    
-    let kelasOptions = '<option value="">-- Pilih Kelas (Opsional) --</option>'; 
+
+    let kelasOptions = '<option value="">-- Pilih Kelas (Opsional) --</option>';
     if (existingClasses && existingClasses.length > 0) {
-        existingClasses.forEach(k => { 
-            const selected = (guru && guru.kelas === k) ? 'selected' : ''; 
-            kelasOptions += `<option value="${k}" ${selected}>${k}</option>`; 
+        existingClasses.forEach(k => {
+            const selected = (guru && guru.kelas === k) ? 'selected' : '';
+            kelasOptions += `<option value="${k}" ${selected}>${k}</option>`;
         });
     }
-    
+
     return `
     <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full relative overflow-hidden">
         <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
@@ -1414,30 +1414,30 @@ function createGuruModal(guru = null) {
 }
 
 async function changeAdminPass(e) {
-    e.preventDefault(); 
-    const fd = new FormData(e.target); 
+    e.preventDefault();
+    const fd = new FormData(e.target);
     const token = currentUser ? currentUser.token : null;
-    
-    if(fd.get('newPass').length < 6) { 
-        showAlert('error', 'Password minimal 6 karakter'); 
-        return; 
+
+    if (fd.get('newPass').length < 6) {
+        showAlert('error', 'Password minimal 6 karakter');
+        return;
     }
     showLoading();
     try {
-        const res = await fetchAPI('changeAdminPassword', { 
-            token: token, 
-            username: currentUser.username, 
-            oldPass: fd.get('oldPass'), 
-            newPass: fd.get('newPass') 
+        const res = await fetchAPI('changeAdminPassword', {
+            token: token,
+            username: currentUser.username,
+            oldPass: fd.get('oldPass'),
+            newPass: fd.get('newPass')
         });
-        hideLoading(); 
-        if(res.success) { 
-            e.target.reset(); 
-            showAlert('success', res.message); 
+        hideLoading();
+        if (res.success) {
+            e.target.reset();
+            showAlert('success', res.message);
         } else {
             showAlert('error', res.message);
         }
-    } catch(err) { hideLoading(); }
+    } catch (err) { hideLoading(); }
 }
 
 function showChangeGuruPassModal(username) {
@@ -1461,51 +1461,51 @@ function showChangeGuruPassModal(username) {
 }
 
 async function saveGuruPass(e, username) {
-    e.preventDefault(); 
-    const fd = new FormData(e.target); 
-    const newPass = fd.get('newPass'); 
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const newPass = fd.get('newPass');
     const token = currentUser ? currentUser.token : null;
-    
-    if(newPass.length < 6) { 
-        showAlert('error', 'Password terlalu pendek'); 
-        return; 
+
+    if (newPass.length < 6) {
+        showAlert('error', 'Password terlalu pendek');
+        return;
     }
     showLoading();
     try {
         const res = await fetchAPI('resetGuruPassword', { token: token, username: username, newPass: newPass });
-        hideLoading(); 
-        if(res.success) { 
-            closeModal(); 
-            showAlert('success', res.message); 
+        hideLoading();
+        if (res.success) {
+            closeModal();
+            showAlert('success', res.message);
         } else {
             showAlert('error', res.message);
         }
-    } catch(err) { hideLoading(); }
+    } catch (err) { hideLoading(); }
 }
 
 // LOGIKA CRUD SISWA
 async function saveSiswa(e, isEdit) {
-    e.preventDefault(); 
+    e.preventDefault();
     showLoading();
-    
+
     const fd = new FormData(e.target);
     let tgl = fd.get('tanggalLahir');
-    
+
     const siswaData = {
-        nama: fd.get('nama'), 
-        nisn: "'" + fd.get('nisn'), 
+        nama: fd.get('nama'),
+        nisn: "'" + fd.get('nisn'),
         jenisKelamin: fd.get('jenisKelamin'),
-        tanggalLahir: tgl, 
-        agama: fd.get('agama'), 
+        tanggalLahir: tgl,
+        agama: fd.get('agama'),
         namaAyah: fd.get('namaAyah'),
-        namaIbu: fd.get('namaIbu'), 
-        noHp: "'" + fd.get('noHp'), 
-        kelas: fd.get('kelas'), 
+        namaIbu: fd.get('namaIbu'),
+        noHp: "'" + fd.get('noHp'),
+        kelas: fd.get('kelas'),
         alamat: fd.get('alamat')
     };
-    
-    const token = currentUser ? currentUser.token : null; 
-    
+
+    const token = currentUser ? currentUser.token : null;
+
     try {
         let res;
         if (isEdit) {
@@ -1513,76 +1513,76 @@ async function saveSiswa(e, isEdit) {
         } else {
             res = await fetchAPI('addSiswa', { token: token, siswa: siswaData });
         }
-        
+
         hideLoading();
-        if (res.success) { 
-            closeModal(); 
-            tableState.siswa.fullData = []; 
-            loadDataSiswa(); 
-            showAlert('success', res.message); 
+        if (res.success) {
+            closeModal();
+            tableState.siswa.fullData = [];
+            loadDataSiswa();
+            showAlert('success', res.message);
         } else {
             showAlert('error', res.message);
         }
-    } catch(err) {
-        hideLoading(); 
-        showAlert('error', 'Terjadi kesalahan: ' + err); 
+    } catch (err) {
+        hideLoading();
+        showAlert('error', 'Terjadi kesalahan: ' + err);
     }
 }
 
 function deleteSiswaConfirm(nisn, nama) {
-    Swal.fire({ 
-        title: 'Apakah Anda yakin?', 
-        text: `Data siswa "${nama}" akan dihapus.`, 
-        icon: 'warning', 
-        showCancelButton: true, 
-        confirmButtonColor: '#EF4444', 
-        cancelButtonColor: '#6B7280', 
-        confirmButtonText: 'Ya, Hapus!', 
-        cancelButtonText: 'Batal', 
-        reverseButtons: true 
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: `Data siswa "${nama}" akan dihapus.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#EF4444',
+        cancelButtonColor: '#6B7280',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
     }).then(async (result) => {
-        if (result.isConfirmed) { 
-            showLoading(); 
-            const token = currentUser.token; 
+        if (result.isConfirmed) {
+            showLoading();
+            const token = currentUser.token;
             try {
                 const r = await fetchAPI('deleteSiswa', { token: token, nisn: nisn });
-                hideLoading(); 
-                if (r.success) { 
-                    tableState.siswa.fullData = []; 
-                    loadDataSiswa(); 
-                    Swal.fire('Terhapus!', 'Data siswa berhasil dihapus.', 'success'); 
+                hideLoading();
+                if (r.success) {
+                    tableState.siswa.fullData = [];
+                    loadDataSiswa();
+                    Swal.fire('Terhapus!', 'Data siswa berhasil dihapus.', 'success');
                 } else {
-                    Swal.fire('Gagal!', r.message, 'error'); 
+                    Swal.fire('Gagal!', r.message, 'error');
                 }
-            } catch(err) {
-                hideLoading(); 
-                Swal.fire('Error', 'Terjadi kesalahan server: ' + err, 'error'); 
+            } catch (err) {
+                hideLoading();
+                Swal.fire('Error', 'Terjadi kesalahan server: ' + err, 'error');
             }
         }
     });
 }
 
 function resetPasswordSiswaConfirm(nisn, nama) {
-    Swal.fire({ 
-        title: 'Reset Password?', 
-        text: `Yakin ingin reset password ${nama} menjadi standar "123456"?`, 
-        icon: 'warning', 
-        showCancelButton: true, 
-        confirmButtonColor: '#4f46e5', 
-        cancelButtonColor: '#6B7280', 
-        confirmButtonText: 'Ya, Reset!', 
-        cancelButtonText: 'Batal', 
-        reverseButtons: true 
+    Swal.fire({
+        title: 'Reset Password?',
+        text: `Yakin ingin reset password ${nama} menjadi standar "123456"?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4f46e5',
+        cancelButtonColor: '#6B7280',
+        confirmButtonText: 'Ya, Reset!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
     }).then(async (result) => {
-        if (result.isConfirmed) { 
-            showLoading(); 
+        if (result.isConfirmed) {
+            showLoading();
             try {
                 const r = await fetchAPI('resetSiswaPassword', { token: currentUser.token, nisn: nisn });
-                hideLoading(); 
-                if (r.success) { Swal.fire('Berhasil!', r.message, 'success'); } 
+                hideLoading();
+                if (r.success) { Swal.fire('Berhasil!', r.message, 'success'); }
                 else { Swal.fire('Gagal!', r.message, 'error'); }
-            } catch(err) { 
-                hideLoading(); Swal.fire('Error', err.toString(), 'error'); 
+            } catch (err) {
+                hideLoading(); Swal.fire('Error', err.toString(), 'error');
             }
         }
     });
@@ -1601,7 +1601,7 @@ function createViewSiswaModal(s) {
         </div>
         <div class="text-sm font-bold text-gray-800 break-words">${value || '-'}</div>
     </div>`;
-    
+
     return `
     <div class="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-2xl w-full animate-fade-in relative">
         <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-6 text-white flex justify-between items-start">
@@ -1652,7 +1652,7 @@ function createSiswaModal(s = null) {
     const isEdit = s !== null;
     const inputClass = "w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2.5 transition-all";
     const labelClass = "block mb-1 text-xs font-bold text-gray-500 uppercase tracking-wide";
-    
+
     return `
     <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
         <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
@@ -1730,10 +1730,10 @@ function createSiswaModal(s = null) {
 
 // LOGIKA DASHBOARD SISWA
 async function loadSiswaDashboard() {
-    stopAndBack(false); 
-    setActiveMenu('Dashboard'); 
-    showView('view-siswa-dashboard'); 
-    
+    stopAndBack(false);
+    setActiveMenu('Dashboard');
+    showView('view-siswa-dashboard');
+
     try {
         if (currentUser) {
             const fullName = currentUser.nama ? currentUser.nama : 'Siswa';
@@ -1741,26 +1741,26 @@ async function loadSiswaDashboard() {
             document.getElementById('profileNameSidebar').textContent = currentUser.nama;
             document.getElementById('profileNisnSidebar').textContent = currentUser.nisn;
             document.getElementById('profileKelasSidebar').textContent = currentUser.kelas;
-            
+
             let tglLahir = currentUser.tanggalLahir || '-';
-            if(tglLahir.includes("T")) {
-                tglLahir = new Date(tglLahir).toLocaleDateString('id-ID'); 
+            if (tglLahir.includes("T")) {
+                tglLahir = new Date(tglLahir).toLocaleDateString('id-ID');
             }
 
             document.getElementById('profileJKSidebar').textContent = currentUser.jenisKelamin || '-';
             document.getElementById('profileLahirSidebar').textContent = tglLahir;
         }
         document.getElementById('dashDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    } catch (e) {}
+    } catch (e) { }
 
     try {
         const result = await fetchAPI('getAbsensiToday', { nisn: currentUser.nisn });
-        
+
         if (result) {
             const absensi = result.success ? result.data : null;
-            const isLibur = result.isLibur; 
+            const isLibur = result.isLibur;
             const infoLibur = result.keteranganLibur;
-            const isWFH = result.isWFH; 
+            const isWFH = result.isWFH;
 
             const elHero = document.getElementById('heroCard');
             const elBadge = document.getElementById('dashStatusBadge');
@@ -1779,13 +1779,13 @@ async function loadSiswaDashboard() {
             boxMasuk.classList.remove('col-span-2');
             statusMasuk.textContent = "";
             statusPulang.textContent = "";
-            
+
             let ketPagi = ""; let ketSore = "";
             if (absensi && absensi.keterangan) {
                 let textKet = absensi.keterangan;
                 if (isWFH) {
-                    if(textKet.includes("PAGI:")) ketPagi = textKet.split("PAGI:")[1].split("|")[0].trim();
-                    if(textKet.includes("SORE:")) ketSore = textKet.split("SORE:")[1].split("|")[0].trim();
+                    if (textKet.includes("PAGI:")) ketPagi = textKet.split("PAGI:")[1].split("|")[0].trim();
+                    if (textKet.includes("SORE:")) ketSore = textKet.split("SORE:")[1].split("|")[0].trim();
                 } else {
                     if (textKet.includes("&")) {
                         let parts = textKet.split("&");
@@ -1797,16 +1797,16 @@ async function loadSiswaDashboard() {
                     }
                 }
             }
-            
+
             if (isLibur) {
                 elHero.className = "relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 to-red-800 p-6 text-white shadow-xl shadow-rose-200 transition-all duration-500 group";
                 elBadge.innerHTML = `<i class="fas fa-calendar-times mr-2"></i> HARI LIBUR`;
                 labelMasuk.innerHTML = "KETERANGAN";
                 elValMasuk.innerHTML = `<span class="text-sm font-bold uppercase tracking-widest">${infoLibur}</span>`;
-                boxPulang.style.display = 'none'; 
-                boxMasuk.classList.add('col-span-2'); 
+                boxPulang.style.display = 'none';
+                boxMasuk.classList.add('col-span-2');
                 elAlert.classList.add('hidden');
-                return; 
+                return;
             }
 
             if (isWFH) {
@@ -1815,11 +1815,11 @@ async function loadSiswaDashboard() {
 
                 if (!absensi) {
                     elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
-                    elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; 
+                    elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse";
                     elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN PAGI`;
                     elValMasuk.textContent = "--:--";
                     elValPulang.textContent = "--:--";
-                    
+
                     elAlert.innerHTML = `
                         <div class="bg-white p-2 rounded-full text-indigo-500 shadow-sm"><i class="fas fa-camera-retro"></i></div>
                         <div>
@@ -1837,7 +1837,7 @@ async function loadSiswaDashboard() {
                         elBadge.className = "px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold shadow-sm animate-pulse";
                         elBadge.innerHTML = `<i class="fas fa-clock mr-2"></i> BELUM ABSEN SORE`;
                         elValPulang.textContent = "--:--";
-                        
+
                         elAlert.innerHTML = `
                             <div class="bg-white p-2 rounded-full text-orange-500 shadow-sm"><i class="fas fa-sun"></i></div>
                             <div>
@@ -1855,18 +1855,18 @@ async function loadSiswaDashboard() {
                         elAlert.classList.add('hidden');
                     }
                 }
-            } 
+            }
             else {
                 labelMasuk.innerHTML = "JAM DATANG";
                 labelPulang.innerHTML = "JAM PULANG";
 
                 if (!absensi) {
                     elHero.className = "relative overflow-hidden rounded-3xl bg-slate-800 p-6 text-white shadow-xl shadow-slate-200 transition-all duration-500 group";
-                    elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse"; 
+                    elBadge.className = "px-4 py-2 rounded-xl bg-rose-500/20 backdrop-blur-md border border-rose-500/30 text-rose-200 text-xs font-bold shadow-sm animate-pulse";
                     elBadge.innerHTML = `<i class="fas fa-circle text-[8px] mr-2"></i> BELUM ABSEN`;
                     elValMasuk.textContent = "--:--";
                     elValPulang.textContent = "--:--";
-                    
+
                     elAlert.innerHTML = `
                         <div class="bg-white p-2 rounded-full text-rose-500 shadow-sm"><i class="fas fa-exclamation"></i></div>
                         <div>
@@ -1895,7 +1895,7 @@ async function loadSiswaDashboard() {
                 }
             }
         }
-    } catch(error) {}
+    } catch (error) { }
 }
 
 async function showProfilSiswa() {
@@ -1907,7 +1907,7 @@ async function showProfilSiswa() {
             const findSiswa = result.data.find(s => s.nisn == currentUser.nisn);
             if (findSiswa) { dataSiswa = findSiswa; }
         }
-    } catch(e) {}
+    } catch (e) { }
     hideLoading();
 
     const modalContent = `
@@ -1981,18 +1981,18 @@ async function submitUbahPasswordSiswa(e) {
     e.preventDefault();
     const oldPass = document.getElementById('oldPassSiswa').value;
     const newPass = document.getElementById('newPassSiswa').value;
-    
+
     showLoading();
     try {
         const res = await fetchAPI('changeSiswaPassword', { token: currentUser.token, oldPass: oldPass, newPass: newPass });
         hideLoading();
-        if(res.success) {
+        if (res.success) {
             showAlert('success', res.message);
             closeModal();
         } else {
             showAlert('error', res.message);
         }
-    } catch(err) {
+    } catch (err) {
         hideLoading();
         showAlert('error', 'Koneksi error: ' + err);
     }
