@@ -2,7 +2,7 @@
 // LOGIKA JAVASCRIPT MASTER PELANGGARAN
 // ============================================================
 async function loadMasterPelanggaran() {
-    stopAndBack(false); setActiveMenu('Data Pelanggaran'); showView('view-master-pelanggaran');
+    stopAndBack(false); setActiveMenu('Manaj. Disiplin'); showView('view-master-pelanggaran');
     document.getElementById('tbody-pelanggaran').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data...</td></tr>';
 
     try {
@@ -318,8 +318,16 @@ window.currentDetailKelas = "";
 
 async function loadRekapKasus() {
     stopAndBack(false);
-    if (currentUser.role === 'siswa') setActiveMenu('Dashboard'); else setActiveMenu('Rekap Pelanggaran');
+    if (currentUser.role === 'siswa') setActiveMenu('Dashboard'); 
+    else if (currentUser.role === 'admin') setActiveMenu('Manaj. Disiplin');
+    else setActiveMenu('Rekap Pelanggaran');
     showView('view-rekap-kasus');
+
+    const tabDis = document.getElementById('tab-disiplin-rekap');
+    if (tabDis) {
+        if (currentUser && currentUser.role === 'admin') tabDis.classList.remove('hidden');
+        else tabDis.classList.add('hidden');
+    }
 
     const elAdmin = document.getElementById('areaAdminUtama');
     const elDetail = document.getElementById('areaDetailSiswa');
