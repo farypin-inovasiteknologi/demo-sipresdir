@@ -370,6 +370,20 @@ function toggleInputPass(inputId, iconId) {
     else { inp.type = "password"; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
 }
 
+window.toggleTablePass = function(passId, iconId, password) {
+    const span = document.getElementById(passId);
+    const icon = document.getElementById(iconId);
+    if (span && icon) {
+        if (icon.classList.contains('fa-eye')) {
+            span.textContent = password;
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            span.textContent = '••••••••';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+}
+
 async function handleLogin(event) {
     event.preventDefault();
     showLoading();
