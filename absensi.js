@@ -62,7 +62,7 @@ async function onScanSuccess(decodedText) {
             nisn: decodedText,
             role: myRole,
             kelasGuru: myKelas,
-            apiKey: "SIPRESDIR_RAHASIA_2026_TIDAK_BOLEH_BOCOR"
+            token: currentUser ? currentUser.token : null
         });
 
         if (result.success) {
