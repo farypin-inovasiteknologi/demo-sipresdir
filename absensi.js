@@ -147,6 +147,17 @@ async function loadMonitoringAbsensi() {
 
     document.getElementById('monitoringDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
+    const dropdown = document.getElementById('filterKelasMonitoring');
+    if (dropdown && typeof existingClasses !== 'undefined' && existingClasses.length > 0) {
+        const currentValue = dropdown.value;
+        let options = '<option value="">Semua Kelas</option>';
+        existingClasses.forEach(kelas => {
+            options += `<option value="${kelas}">${kelas}</option>`;
+        });
+        dropdown.innerHTML = options;
+        if (currentValue) dropdown.value = currentValue;
+    }
+
     const myClass = currentUser.role === 'guru' ? currentUser.kelas : null;
 
     if (tableState.monitoring.fullData.length > 0) {
