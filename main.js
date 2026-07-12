@@ -823,19 +823,10 @@ function initMobileNav() {
         if (schoolInfo) { schoolInfo.classList.remove('flex'); schoolInfo.classList.add('hidden'); }
 
         navHTML += createBottomNav('Home', 'fa-home', 'loadAdminDashboard()');
-        navHTML += createBottomNavWithSub('sub-akun', 'Akun', 'fa-users', [
-            { label: 'Data Siswa', icon: 'fa-user-graduate', onclick: 'loadDataSiswa()' },
-            { label: 'Data Guru', icon: 'fa-chalkboard-teacher', onclick: 'loadDataGuru()' }
-        ]);
+        navHTML += createBottomNav('Akun', 'fa-users-cog', 'loadDataSiswa()');
         navHTML += createBottomNav('Scan', 'fa-qrcode', 'loadScanAbsensi()', true);
-        navHTML += createBottomNavWithSub('sub-absen', 'Presensi', 'fa-calendar-check', [
-            { label: 'Kelola', icon: 'fa-edit', onclick: 'loadKelolaAbsen()' },
-            { label: 'Laporan', icon: 'fa-file-alt', onclick: 'loadRekapAbsensi()' }
-        ]);
-        navHTML += createBottomNavWithSub('sub-disiplin', 'Disiplin', 'fa-gavel', [
-            { label: 'Jenis Kasus', icon: 'fa-list-ul', onclick: 'loadMasterPelanggaran()' },
-            { label: 'Rekap Kasus', icon: 'fa-balance-scale', onclick: 'loadRekapKasus()' }
-        ]);
+        navHTML += createBottomNav('Presensi', 'fa-calendar-check', 'loadKelolaAbsen()');
+        navHTML += createBottomNav('Disiplin', 'fa-balance-scale', 'loadMasterPelanggaran()');
 
     } else if (role === 'guru') {
         if (btnSettings) { btnSettings.classList.remove('flex'); btnSettings.classList.add('hidden'); }
