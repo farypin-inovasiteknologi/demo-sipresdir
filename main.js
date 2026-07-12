@@ -16,7 +16,7 @@ const tableState = {
     guru: { fullData: [], filtered: [], limit: 10, page: 1, search: '', classFilter: '' },
     libur: { fullData: [], filtered: [], limit: 5, page: 1, search: '' },
     rekap: { fullData: [], filtered: [], limit: 10, page: 1, search: '' },
-    monitoring: { fullData: [], filtered: [], limit: 10, page: 1, search: '', statusFilter: '' },
+    monitoring: { fullData: [], filtered: [], limit: 10, page: 1, search: '', statusFilter: '', classFilter: '' },
     wfh: { fullData: [], filtered: [], limit: 5, page: 1, search: '' },
     pelanggaran: { fullData: [], filtered: [], limit: 10, page: 1, search: '', kategoriFilter: '' }
 };
@@ -265,7 +265,7 @@ function processTableData(type) {
     const state = tableState[type];
     let result = [...state.fullData];
 
-    if ((type === 'siswa' || type === 'guru') && state.classFilter) {
+    if ((type === 'siswa' || type === 'guru' || type === 'monitoring' || type === 'pelanggaran') && state.classFilter) {
         result = result.filter(item => item.kelas === state.classFilter);
     }
     if (type === 'monitoring' && state.statusFilter) {
