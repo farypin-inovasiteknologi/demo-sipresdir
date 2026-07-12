@@ -904,6 +904,7 @@ let adminViolationChartInstance = null;
 async function loadAdminDashboard() {
     stopAndBack(false); setActiveMenu('Dashboard'); showView('view-admin-dashboard');
     document.getElementById('adminDateDisplay').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    document.querySelector('#view-admin-dashboard h2').textContent = 'Dashboard Admin';
 
     try {
         // 1. Get Realtime Stats (Cards)
@@ -1204,30 +1205,45 @@ async function openRaporKedisiplinan(nisn) {
 }
 
 async function loadGuruDashboard() {
-    stopAndBack(false); setActiveMenu('Dashboard'); showView('view-guru-dashboard');
-    document.getElementById('guruDashboardDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    stopAndBack(false); setActiveMenu('Dashboard'); showView('view-admin-dashboard');
+    document.getElementById('adminDateDisplay').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    
     const myClass = currentUser.role === 'guru' ? currentUser.kelas : null;
-    if (myClass) document.querySelector('#view-guru-dashboard h2').textContent = `Dashboard Guru (${myClass})`;
+    const titleEl = document.querySelector('#view-admin-dashboard h2');
+    if (myClass) {
+        titleEl.textContent = `Dashboard Guru (${myClass})`;
+    } else {
+        titleEl.textContent = `Dashboard Guru`;
+    }
 
     try {
-        const result = await fetchAPI('getMonitoringRealtime', { filterKelas: myClass });
+        const result = await fetchAPI('getMonitoringRealtime', { filterKelas: null });
         if (result.success) {
             const data = result.data;
-            const totalSiswa = data.length;
+            const total = data.length;
+            const hadir = data.filter(d => d.status === 'Hadir').length;
             const sakit = data.filter(d => d.status === 'Sakit').length;
             const izin = data.filter(d => d.status === 'Izin').length;
             const alpa = data.filter(d => d.status === 'Alpa').length;
-            const hadir = data.filter(d => d.status === 'Hadir').length;
-            const belumAbsen = data.filter(d => d.status === 'Belum Absen').length;
 
-            animateValue("statGuruTotal", 0, totalSiswa, 1000);
-            animateValue("statGuruSakit", 0, sakit, 1000);
-            animateValue("statGuruIzin", 0, izin, 1000);
-            animateValue("statGuruAlpa", 0, alpa, 1000);
-
-            renderGuruChart(hadir, sakit, izin, alpa, belumAbsen);
+            animateValue("admStatTotal", 0, total, 800);
+            animateValue("admStatHadir", 0, hadir, 800);
+            animateValue("admStatSakit", 0, sakit, 800);
+            animateValue("admStatIzin", 0, izin, 800);
+            animateValue("admStatAlpa", 0, alpa, 800);
         }
-    } catch (e) { }
+
+        const advRes = await fetchAPI('getDashboardAdvancedStats', { token: currentUser.token });
+        if(advRes.success) {
+            const adv = advRes.data;
+            renderAdminAttendanceLineChart(adv.attendanceTrend);
+            renderAdminViolationPieChart(adv.violationPie);
+            renderLeaderboardKelas(adv.topClasses);
+            renderLeaderboardSiswa(adv.topViolators);
+        }
+    } catch (e) { 
+        console.error(e);
+    }
 }
 
 function renderGuruChart(hadir, sakit, izin, alpa, belumAbsen) {
