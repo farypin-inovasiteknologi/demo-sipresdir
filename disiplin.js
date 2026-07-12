@@ -34,7 +34,7 @@ function renderPelanggaranRows(data, startIdx) {
             <td class="p-4 text-center text-gray-500 text-sm">${startIdx + i + 1}</td>
             <td class="p-4 font-bold text-sm text-gray-800">${item.namaPelanggaran} ${isSystem ? '<i class="fas fa-shield-alt text-indigo-400 ml-1" title="Aturan Sistem"></i>' : ''}</td>
             <td class="p-4 text-center"><span class="px-2 py-1 rounded text-[10px] font-bold ${colorCat}">${item.kategori}</span></td>
-            <td class="p-4 text-center"><span class="font-mono font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded-lg border border-rose-100">+ ${item.poin}</span></td>
+            <td class="p-4 text-center whitespace-nowrap"><span class="font-mono font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded-lg border border-rose-100 whitespace-nowrap">+ ${item.poin}</span></td>
             <td class="p-4 text-center">
                 <div class="flex justify-center space-x-2 opacity-80 group-hover:opacity-100">
                     <button onclick='editPelanggaran(${JSON.stringify(item)})' class="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition" title="Edit Data"><i class="fas fa-edit"></i></button>
@@ -413,7 +413,7 @@ function renderLeaderboardKasus(data) {
                 <div class="text-[9px] text-gray-500 font-mono mt-0.5">${d.nisn}</div>
             </td>
             <td class="p-3 text-center"><span class="px-2 py-1.5 rounded-lg bg-gray-100 border border-gray-200 text-gray-600 text-[10px] font-bold">${d.kelas}</span></td>
-            <td class="p-3 text-center"><span class="font-black text-rose-600 text-sm bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100">${d.totalPoin}</span></td>
+            <td class="p-3 text-center whitespace-nowrap"><span class="font-black text-rose-600 text-sm bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100 whitespace-nowrap">${d.totalPoin}</span></td>
             <td class="p-3 text-center">
                 <button onclick="lihatDetailKasus('${d.nisn}', '${d.nama.replace(/'/g, "\\'")}', '${d.kelas}', ${d.totalPoin})" class="bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white border border-indigo-200 px-3 py-1.5 rounded-lg text-[10px] font-bold transition shadow-sm whitespace-nowrap"><i class="fas fa-eye mr-1"></i> Lihat Rekap</button>
             </td>
@@ -500,7 +500,7 @@ function renderHistoryKasus(data) {
             <td class="p-3 text-center text-gray-400 text-[10px]">${i + 1}</td>
             <td class="p-3 text-[10px] text-gray-600 whitespace-nowrap">${d.tanggal}</td>
             <td class="p-3 text-[11px] font-bold text-gray-700 min-w-[140px]">${d.pelanggaran}</td>
-            <td class="p-3 text-center"><span class="font-mono font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded border border-rose-100 text-[10px]">+ ${d.poin}</span></td>
+            <td class="p-3 text-center whitespace-nowrap"><span class="font-mono font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded border border-rose-100 text-[10px] whitespace-nowrap">+ ${d.poin}</span></td>
             <td class="p-3 min-w-[150px]">
                 <div class="text-[9px] font-bold text-indigo-600 mb-0.5"><i class="fas fa-user-tie mr-1"></i>${d.guru}</div>
                 ${d.catatan ? `<div class="text-[10px] text-gray-600 italic leading-snug whitespace-normal break-words">"${d.catatan}"</div>` : '-'}
