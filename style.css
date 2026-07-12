@@ -114,6 +114,41 @@ input:checked ~ .dot {
     gap: 10px;
 }
 
+.print-button {
+    @apply flex items-center justify-center gap-2 w-full py-2 bg-indigo-50 text-indigo-600 font-medium rounded-lg transition-colors duration-200 mt-2 mb-4 hover:bg-indigo-100;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #modal-container, #modal-container * {
+        visibility: visible;
+    }
+    #modal-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: transparent !important;
+    }
+    .printable-rapor, .printable-rapor * {
+        visibility: visible;
+    }
+    .printable-rapor {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+    /* Sembunyikan elemen modal bawaan */
+    .bg-slate-800, button {
+        display: none !important;
+    }
+}
+
 /* Tampilan khusus HP untuk memisahkan Branding dan Form Login */
 @media (max-width: 1023px) {
     #panelForm {
