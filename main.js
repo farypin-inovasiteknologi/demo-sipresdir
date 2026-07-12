@@ -908,11 +908,14 @@ function animateValue(id, start, end, duration) {
     window.requestAnimationFrame(step);
 }
 
+let adminViolationChartInstance = null;
+
 async function loadAdminDashboard() {
     stopAndBack(false); setActiveMenu('Dashboard'); showView('view-admin-dashboard');
     document.getElementById('adminDateDisplay').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
     try {
+        // 1. Get Realtime Stats (Cards)
         const result = await fetchAPI('getMonitoringRealtime', { filterKelas: null });
         if (result.success) {
             const data = result.data;
@@ -921,62 +924,292 @@ async function loadAdminDashboard() {
             const sakit = data.filter(d => d.status === 'Sakit').length;
             const izin = data.filter(d => d.status === 'Izin').length;
             const alpa = data.filter(d => d.status === 'Alpa').length;
-            const belum = data.filter(d => d.status === 'Belum Absen').length;
 
             animateValue("admStatTotal", 0, total, 800);
             animateValue("admStatHadir", 0, hadir, 800);
             animateValue("admStatSakit", 0, sakit, 800);
             animateValue("admStatIzin", 0, izin, 800);
             animateValue("admStatAlpa", 0, alpa, 800);
-
-            renderAdminChart(hadir, sakit, izin, alpa, belum);
-        } else {
-            console.error("API Error in loadAdminDashboard:", result.message);
-            showAlert('error', "Gagal memuat data monitoring: " + result.message);
         }
+
+        // 2. Get Advanced Stats (Charts & Leaderboards)
+        const advRes = await fetchAPI('getDashboardAdvancedStats', { token: currentUser.token });
+        if(advRes.success) {
+            const adv = advRes.data;
+            renderAdminAttendanceLineChart(adv.attendanceTrend);
+            renderAdminViolationPieChart(adv.violationPie);
+            renderLeaderboardKelas(adv.topClasses);
+            renderLeaderboardSiswa(adv.topViolators);
+        }
+
     } catch (e) {
         console.error("Fetch Exception in loadAdminDashboard:", e);
         showAlert('error', "Terjadi kesalahan koneksi saat memuat dashboard.");
     }
 }
 
-function renderAdminChart(hadir, sakit, izin, alpa, belum) {
+function renderAdminAttendanceLineChart(historyData) {
     const ctx = document.getElementById('adminAttendanceChart');
     if (!ctx) return;
     if (adminChartInstance) adminChartInstance.destroy();
-    if (typeof ChartDataLabels !== 'undefined') { Chart.register(ChartDataLabels); }
+    
+    // Sort array so oldest is first
+    const sortedData = historyData.slice().reverse();
+    const labels = sortedData.map(d => d.date);
+    const hadirData = sortedData.map(d => d.hadir);
+    const alpaData = sortedData.map(d => d.alpa);
 
     adminChartInstance = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
-            labels: ['Hadir', 'Sakit', 'Izin', 'Alpa', 'Belum Absen'],
-            datasets: [{
-                label: 'Jumlah Siswa',
-                data: [hadir, sakit, izin, alpa, belum],
-                backgroundColor: ['#10B981', '#EAB308', '#3B82F6', '#EF4444', '#9CA3AF'],
-                borderRadius: 8,
-                barPercentage: 0.5
-            }]
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Hadir',
+                    data: hadirData,
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                },
+                {
+                    label: 'Alpa',
+                    data: alpaData,
+                    borderColor: '#EF4444',
+                    backgroundColor: 'transparent',
+                    tension: 0.4
+                }
+            ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { display: false },
-                datalabels: {
-                    anchor: 'end',
-                    align: 'top',
-                    formatter: (val) => val > 0 ? val : '',
-                    font: { weight: 'bold' },
-                    color: '#666'
-                }
+                legend: { position: 'bottom' },
+                datalabels: { display: false }
             },
             scales: {
-                y: { beginAtZero: true, grid: { borderDash: [2, 2] } },
-                x: { grid: { display: false } }
+                y: { beginAtZero: true }
             }
         }
     });
+}
+
+function renderAdminViolationPieChart(pieData) {
+    const ctx = document.getElementById('adminViolationChart');
+    if (!ctx) return;
+    if (adminViolationChartInstance) adminViolationChartInstance.destroy();
+
+    const dataArr = [pieData.ringan, pieData.sedang, pieData.berat];
+    // If all zero, render empty
+    if(dataArr.every(x => x === 0)) dataArr[0] = 0.001; 
+
+    adminViolationChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Ringan (<=10)', 'Sedang (11-25)', 'Berat (>25)'],
+            datasets: [{
+                data: [pieData.ringan, pieData.sedang, pieData.berat],
+                backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                borderWidth: 0,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+                legend: { position: 'bottom' },
+                datalabels: { display: false }
+            }
+        }
+    });
+}
+
+function renderLeaderboardKelas(topClasses) {
+    const tbody = document.getElementById('leaderboardKelas');
+    if(!tbody) return;
+    tbody.innerHTML = '';
+    if(topClasses.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" class="px-4 py-4 text-center text-xs text-gray-500">Belum ada data absensi hari ini.</td></tr>`;
+        return;
+    }
+    
+    topClasses.forEach((c, index) => {
+        const tr = document.createElement('tr');
+        let medal = `<span class="text-gray-500 font-bold">#${index+1}</span>`;
+        if(index === 0) medal = `<i class="fas fa-medal text-yellow-400 text-lg"></i>`;
+        else if(index === 1) medal = `<i class="fas fa-medal text-gray-400 text-lg"></i>`;
+        else if(index === 2) medal = `<i class="fas fa-medal text-orange-400 text-lg"></i>`;
+
+        tr.innerHTML = `
+            <td class="px-4 py-3 whitespace-nowrap text-center">${medal}</td>
+            <td class="px-4 py-3 whitespace-nowrap font-bold text-gray-800">${c.kelas}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-right">
+                <div class="flex items-center justify-end">
+                    <div class="w-24 bg-gray-200 rounded-full h-2 mr-2">
+                        <div class="bg-emerald-500 h-2 rounded-full" style="width: ${c.persentase}%"></div>
+                    </div>
+                    <span class="text-xs font-bold text-emerald-600">${c.persentase}%</span>
+                </div>
+                <div class="text-[9px] text-gray-400 mt-0.5">${c.hadir} dari ${c.total} siswa</div>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function renderLeaderboardSiswa(topSiswa) {
+    const tbody = document.getElementById('leaderboardSiswa');
+    if(!tbody) return;
+    tbody.innerHTML = '';
+    if(topSiswa.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" class="px-4 py-4 text-center text-xs text-gray-500">Siswa teladan, belum ada catatan pelanggaran.</td></tr>`;
+        return;
+    }
+
+    topSiswa.forEach(s => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-rose-50 cursor-pointer transition";
+        tr.onclick = () => openRaporKedisiplinan(s.nisn);
+        
+        tr.innerHTML = `
+            <td class="px-4 py-3">
+                <div class="text-sm font-bold text-gray-800 truncate max-w-[150px]">${s.nama}</div>
+                <div class="text-[10px] text-gray-400 font-mono">${s.nisn}</div>
+            </td>
+            <td class="px-4 py-3 whitespace-nowrap text-xs font-bold text-gray-600">${s.kelas}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-right">
+                <span class="bg-rose-100 text-rose-700 px-2.5 py-1 rounded-lg text-xs font-bold border border-rose-200">${s.totalPoin} Poin</span>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+async function openRaporKedisiplinan(nisn) {
+    if(!nisn) return;
+    Swal.fire({ title: 'Memuat Rapor...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+    try {
+        const res = await fetchAPI('getStudentDisciplineReport', { token: currentUser.token, nisn: nisn });
+        Swal.close();
+        if(res.success) {
+            const data = res.data;
+            const bio = data.biodata;
+            const abs = data.absensi;
+            
+            let ketPoin = "SANGAT BAIK"; let warna = "text-emerald-600"; let bg = "bg-emerald-50 border-emerald-200";
+            if(data.poin > 10) { ketPoin = "PERINGATAN"; warna = "text-yellow-600"; bg = "bg-yellow-50 border-yellow-200"; }
+            if(data.poin > 25) { ketPoin = "RAWAN"; warna = "text-orange-600"; bg = "bg-orange-50 border-orange-200"; }
+            if(data.poin > 50) { ketPoin = "TINDAK LANJUT"; warna = "text-rose-600"; bg = "bg-rose-50 border-rose-200"; }
+
+            let kasusHtml = '';
+            if(data.kasus.length === 0) {
+                kasusHtml = `<div class="text-center p-6 text-sm text-gray-400 italic">Siswa belum memiliki catatan pelanggaran.</div>`;
+            } else {
+                data.kasus.forEach(k => {
+                    kasusHtml += `
+                        <div class="p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 flex justify-between gap-4">
+                            <div>
+                                <div class="text-xs font-bold text-gray-800">${k.jenis}</div>
+                                <div class="text-[10px] text-gray-500 mt-1">${k.catatan || '-'}</div>
+                                <div class="text-[9px] text-gray-400 mt-2"><i class="fas fa-user-tie mr-1"></i> Dilaporkan: ${k.pelapor}</div>
+                            </div>
+                            <div class="text-right flex flex-col justify-between">
+                                <div class="text-[10px] text-gray-400 mb-1 whitespace-nowrap"><i class="far fa-calendar-alt mr-1"></i>${k.tanggal}</div>
+                                <div class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-100 inline-block">+${k.poin} Pts</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            const modalHtml = `
+                <div class="bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+                    <!-- Header -->
+                    <div class="bg-slate-800 p-4 flex justify-between items-center text-white">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-id-card-alt text-indigo-400 text-xl"></i>
+                            <h3 class="font-bold text-sm">Rapor Kedisiplinan</h3>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="window.print()" class="text-white bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                                <i class="fas fa-print mr-1"></i> Print
+                            </button>
+                            <button onclick="closeModal()" class="text-white bg-rose-500 hover:bg-rose-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-0 overflow-y-auto printable-rapor">
+                        <!-- Profil & Ringkasan -->
+                        <div class="p-6 bg-slate-50 border-b border-gray-200 flex flex-col md:flex-row gap-6 items-center md:items-start">
+                            <img src="${bio.foto}" class="w-24 h-24 rounded-2xl object-cover shadow-sm border border-gray-200">
+                            <div class="flex-1 text-center md:text-left">
+                                <h2 class="text-2xl font-black text-gray-800 uppercase tracking-tight">${bio.nama}</h2>
+                                <p class="text-sm text-gray-500 font-mono mt-1"><i class="fas fa-fingerprint mr-1 text-gray-400"></i> ${bio.nisn}</p>
+                                <div class="flex flex-wrap gap-2 justify-center md:justify-start mt-3">
+                                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg text-xs font-bold border border-indigo-200">Kelas ${bio.kelas}</span>
+                                    <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-lg text-xs font-bold border border-gray-300">${bio.jk === 'L' ? 'Laki-Laki' : 'Perempuan'}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Poin Besar -->
+                            <div class="w-full md:w-auto ${bg} p-4 rounded-xl text-center shadow-sm border mt-4 md:mt-0 flex-shrink-0">
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Total Poin Pelanggaran</p>
+                                <div class="text-4xl font-black ${warna} drop-shadow-sm">${data.poin}</div>
+                                <div class="text-[10px] font-bold px-2 py-0.5 rounded bg-white/50 border border-white mt-1 inline-block ${warna}">${ketPoin}</div>
+                            </div>
+                        </div>
+
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Kolom Kiri: Rekap Absensi -->
+                            <div>
+                                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center"><i class="fas fa-calendar-check text-emerald-500 mr-2"></i> Rekap Kehadiran</h4>
+                                <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4 grid grid-cols-2 gap-4">
+                                    <div class="text-center p-3 bg-emerald-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-emerald-600">${abs.hadir}</div>
+                                        <div class="text-[10px] text-gray-500 uppercase">Hadir</div>
+                                    </div>
+                                    <div class="text-center p-3 bg-yellow-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-yellow-600">${abs.sakit}</div>
+                                        <div class="text-[10px] text-gray-500 uppercase">Sakit</div>
+                                    </div>
+                                    <div class="text-center p-3 bg-blue-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-blue-600">${abs.izin}</div>
+                                        <div class="text-[10px] text-gray-500 uppercase">Izin</div>
+                                    </div>
+                                    <div class="text-center p-3 bg-rose-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-rose-600">${abs.alpa}</div>
+                                        <div class="text-[10px] text-gray-500 uppercase">Alpa</div>
+                                    </div>
+                                    <div class="col-span-2 text-center p-2 bg-orange-50 border border-orange-100 rounded-lg flex items-center justify-center gap-2">
+                                        <i class="fas fa-running text-orange-500"></i>
+                                        <span class="text-xs font-bold text-orange-700">Terlambat: ${abs.telat} Kali</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Kolom Kanan: Histori Pelanggaran -->
+                            <div class="flex flex-col h-full">
+                                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center"><i class="fas fa-history text-rose-500 mr-2"></i> Histori Pelanggaran</h4>
+                                <div class="bg-white border border-gray-100 rounded-xl shadow-sm flex-1 overflow-y-auto max-h-[300px]">
+                                    ${kasusHtml}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            showModal(modalHtml);
+        } else {
+            Swal.fire('Gagal!', res.message, 'error');
+        }
+    } catch(e) {
+        Swal.fire('Error', e.toString(), 'error');
+    }
 }
 
 async function loadGuruDashboard() {
