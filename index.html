@@ -7,6 +7,13 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <title>Demo SiPresDiR Plus</title>
     <link rel="icon" type="image/png" href="./imgsipresdir.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SiPresDiR+">
+    <link rel="apple-touch-icon" href="./imgsipresdir.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -35,7 +42,7 @@
         }
     </script>
 
-    <link rel="stylesheet" href="style.css?v=14">
+    <link rel="stylesheet" href="style.css?v=15">
 
 </head>
 
@@ -85,13 +92,13 @@
                                 class="text-3xl lg:text-5xl font-bold leading-tight mb-0 text-white drop-shadow-lg mt-0">
                                 SiPresDiR+</h1>
                         </div>
-                        <p class="font-bold text-xs lg:text-sm text-indigo-100 mt-2 tracking-wide drop-shadow-md">Sistem Presensi
-                            Digital Realtime <br> + Sistem Poin Pelanggaran Siswa</p>
+                        <p class="font-bold text-xs lg:text-sm text-indigo-100 mt-2 tracking-wide drop-shadow-md">Sistem
+                            Presensi
+                            Digital Realtime <br> + Catatan Pelanggaran Siswa</p>
                     </center>
                 </div>
 
-                <div
-                    class="relative z-10 mt-6 lg:mt-10 flex justify-center gap-4 text-[10px] lg:text-xs font-medium">
+                <div class="relative z-10 mt-6 lg:mt-10 flex justify-center gap-4 text-[10px] lg:text-xs font-medium">
                     <div
                         class="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white font-semibold shadow-sm hover:bg-white/20 transition-all cursor-pointer">
                         <a href='#' class="dyn-website-link" rel='dofollow'><i class="fas fa-globe mr-1"></i> <span
@@ -121,11 +128,13 @@
                                 class="w-12 lg:w-[70px] object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
                             <h2 class="text-xl lg:text-2xl font-bold text-white mt-4 drop-shadow-md">Welcome
                                 to SiPresDiR Plus</h2>
-                            <p class="text-indigo-50 text-xs lg:text-sm mt-1 drop-shadow-sm font-medium">Silakan login menggunakan akun Anda</p>
+                            <p class="text-indigo-50 text-xs lg:text-sm mt-1 drop-shadow-sm font-medium">Silakan login
+                                menggunakan akun Anda</p>
                         </center>
                     </div>
 
-                    <div class="bg-black/20 p-1.5 rounded-xl flex mb-6 lg:mb-8 border border-white/10 relative shadow-inner">
+                    <div
+                        class="bg-black/20 p-1.5 rounded-xl flex mb-6 lg:mb-8 border border-white/10 relative shadow-inner">
                         <button id="btnSiswaTab" onclick="switchLoginTab('siswa')"
                             class="flex-1 py-2.5 lg:py-3 text-sm font-bold rounded-lg shadow-md bg-white/20 text-white ring-1 ring-white/30 transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm">
                             <i class="fas fa-user-graduate"></i> Siswa
@@ -147,7 +156,7 @@
                                         class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-indigo-200">
                                         <i class="far fa-id-card text-lg"></i>
                                     </div>
-                                    <input type="number" id="nisn"
+                                    <input type="text" inputmode="numeric" pattern="[0-9]*" onblur="padNisn(this)" id="nisn"
                                         class="block w-full pl-12 pr-4 py-3 bg-white/20 border-white/20 border rounded-xl text-white text-sm placeholder-indigo-100/70 focus:bg-white/30 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all backdrop-blur-sm"
                                         placeholder="Masukkan NISN">
                                 </div>
@@ -221,8 +230,8 @@
                     </div>
                     <br>
                     <marquee
-                        class="dyn-runningtext px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white font-medium drop-shadow-sm"
-                        >Memuat Pengumuman...</marquee>
+                        class="dyn-runningtext px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white font-medium drop-shadow-sm">
+                        Memuat Pengumuman...</marquee>
                 </div>
             </div>
             <br> <br> <br>
@@ -265,7 +274,7 @@
                     <div class="sidebar-label transition-opacity duration-300 whitespace-nowrap">
                         <h1 class="font-bold text-base tracking-wide text-white">SiPresDiR+</h1>
                         <p class="text-[9px] text-indigo-200 uppercase tracking-wider font-semibold">Sistem Presensi
-                            Digital Realtime <br> + Sistem Poin Pelanggaran Siswa</p>
+                            Digital Realtime <br> + Catatan Pelanggaran Siswa</p>
                     </div>
                 </div>
             </div>
@@ -370,7 +379,7 @@
                         <div>
                             <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Dashboard Admin</h2>
                             <p class="text-sm text-gray-500 mt-1">Manajemen kehadiran siswa (Realtime) dan <br> Catatan
-                                poin pelanggaran disiplin</p>
+                                pelanggaran disiplin</p>
                         </div>
                         <div class="flex items-center gap-3">
                             <span
@@ -465,7 +474,7 @@
                         <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
                             <div class="flex justify-between items-center mb-6">
                                 <h3 class="text-sm font-bold text-gray-700 flex items-center"><i
-                                        class="fas fa-chart-pie text-rose-500 mr-2"></i> Persentase Poin Pelanggaran
+                                        class="fas fa-chart-pie text-rose-500 mr-2"></i> Persentase Pelanggaran
                                 </h3>
                             </div>
                             <div class="relative w-full h-[250px]">
@@ -509,7 +518,7 @@
                         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                             <div class="p-4 bg-rose-50 border-b border-rose-100 flex justify-between items-center">
                                 <h3 class="font-bold text-rose-800 text-sm"><i
-                                        class="fas fa-exclamation-triangle mr-2"></i>Top 10 Poin Pelanggaran</h3>
+                                        class="fas fa-exclamation-triangle mr-2"></i>Top 10 Catatan Pelanggaran</h3>
                                 <span
                                     class="text-[10px] text-rose-600 font-bold bg-white px-2 py-1 rounded-md shadow-sm">Semester
                                     Ini</span>
@@ -555,7 +564,7 @@
                                 <i class="fas fa-user-times"></i>
                             </div>
                             <h3 class="font-bold text-xl">Input Pelanggaran Siswa</h3>
-                            <p class="text-xs opacity-90 mt-1">Catat kasus indisipliner dan poin pelanggaran.</p>
+                            <p class="text-xs opacity-90 mt-1">Catat kasus indisipliner dan pelanggaran.</p>
                         </div>
                         <div class="p-6 md:p-8">
                             <form onsubmit="submitKasusSiswa(event)" class="space-y-5">
@@ -855,8 +864,26 @@
                 </div>
 
                 <div id="view-pengaturan" class="view-section animate-fade-in">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <!-- Tabs Navigation -->
+                    <div class="flex border-b border-gray-200 mb-6 space-x-4">
+                        <button type="button"
+                            onclick="document.getElementById('tab-umum').classList.remove('hidden'); document.getElementById('tab-keamanan').classList.add('hidden'); this.classList.add('border-indigo-600', 'text-indigo-600'); this.classList.remove('border-transparent', 'text-gray-500'); document.getElementById('btn-tab-keamanan').classList.remove('border-indigo-600', 'text-indigo-600'); document.getElementById('btn-tab-keamanan').classList.add('border-transparent', 'text-gray-500')"
+                            id="btn-tab-umum"
+                            class="py-2 px-4 border-b-2 border-indigo-600 text-indigo-600 font-bold text-sm transition-colors flex items-center">
+                            <i class="fas fa-sliders-h mr-2"></i> Pengaturan Umum
+                        </button>
+                        <button type="button"
+                            onclick="document.getElementById('tab-keamanan').classList.remove('hidden'); document.getElementById('tab-umum').classList.add('hidden'); this.classList.add('border-indigo-600', 'text-indigo-600'); this.classList.remove('border-transparent', 'text-gray-500'); document.getElementById('btn-tab-umum').classList.remove('border-indigo-600', 'text-indigo-600'); document.getElementById('btn-tab-umum').classList.add('border-transparent', 'text-gray-500')"
+                            id="btn-tab-keamanan"
+                            class="py-2 px-4 border-b-2 border-transparent text-gray-500 font-bold text-sm transition-colors hover:text-gray-700 flex items-center">
+                            <i class="fas fa-lock mr-2"></i> Keamanan Akun
+                        </button>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div>
+                        <!-- Tab Pengaturan Umum -->
+                        <div id="tab-umum" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                             <div class="p-5 border-b border-gray-100 bg-gray-50/50">
                                 <h3 class="font-bold text-gray-800"><i
                                         class="fas fa-sliders-h text-indigo-600 mr-2"></i> Pengaturan Umum</h3>
@@ -864,8 +891,9 @@
                             </div>
                             <div class="p-5">
                                 <form onsubmit="saveLinkData(event)">
-                                    <div class="space-y-4">
-                                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 mb-4">
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                        <!-- Kolom Kiri: Data Instansi -->
+                                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 h-full">
                                             <h4
                                                 class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mb-3">
                                                 Data Instansi (Atas)</h4>
@@ -893,7 +921,8 @@
                                             </div>
                                         </div>
 
-                                        <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 mb-4">
+                                        <!-- Kolom Kanan: Data Sekolah -->
+                                        <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 h-full">
                                             <h4
                                                 class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-3">
                                                 Data Sekolah (Bawah)</h4>
@@ -923,20 +952,24 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div><label class="block text-xs font-bold text-gray-700 mb-1">Tahun
-                                                Ajaran</label><input type="text" name="tahun"
-                                                class="w-full border-gray-300 rounded-lg text-sm p-2.5 bg-gray-50">
-                                        </div>
-                                        <div><label
-                                                class="block text-xs font-bold text-gray-700 mb-1">Website</label><input
-                                                type="text" name="website"
-                                                class="w-full border-gray-300 rounded-lg text-sm p-2.5 bg-gray-50">
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                                        <div class="space-y-4">
+                                            <div><label class="block text-xs font-bold text-gray-700 mb-1">Tahun
+                                                    Ajaran</label><input type="text" name="tahun"
+                                                    class="w-full border-gray-300 rounded-lg text-sm p-2.5 bg-gray-50">
+                                            </div>
+                                            <div><label
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Website</label><input
+                                                    type="text" name="website"
+                                                    class="w-full border-gray-300 rounded-lg text-sm p-2.5 bg-gray-50">
+                                            </div>
                                         </div>
                                         <div><label class="block text-xs font-bold text-gray-700 mb-1">Running
                                                 Text</label><textarea name="runningtext"
                                                 class="w-full border-gray-300 rounded-lg text-sm p-2.5 bg-gray-50"
-                                                rows="2"></textarea></div>
+                                                rows="4"></textarea></div>
                                     </div>
                                     <button type="submit" id="btnSaveLink"
                                         class="w-full mt-6 bg-indigo-600 text-white py-3 rounded-xl text-sm font-bold shadow-md hover:bg-indigo-700 transition transform active:scale-95"><i
@@ -944,7 +977,10 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-fit">
+
+                        <!-- Tab Keamanan Akun -->
+                        <div id="tab-keamanan"
+                            class="hidden bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-fit">
                             <div class="p-5 border-b border-gray-100 bg-gray-50/50">
                                 <h3 class="font-bold text-gray-800"><i class="fas fa-lock text-rose-600 mr-2"></i>
                                     Keamanan Akun</h3>
@@ -953,12 +989,20 @@
                             <div class="p-5">
                                 <form onsubmit="changeAdminPass(event)">
                                     <div class="space-y-4">
-                                        <div><label class="block text-xs font-bold text-gray-700 mb-1">Password
-                                                Lama</label><input type="password" name="oldPass" required
-                                                class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
-                                        <div><label class="block text-xs font-bold text-gray-700 mb-1">Password
-                                                Baru</label><input type="password" name="newPass" required
-                                                class="w-full border-gray-300 rounded-lg text-sm p-2.5"></div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-gray-700 mb-1">Password Lama</label>
+                                            <div class="relative group">
+                                                <input type="password" name="oldPass" id="oldPassAdmin" required class="w-full border-gray-300 rounded-lg text-sm p-2.5 pr-10 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                                                <button type="button" onclick="toggleInputPass('oldPassAdmin', 'eyeOldPassAdmin')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-600"><i class="fas fa-eye" id="eyeOldPassAdmin"></i></button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-gray-700 mb-1">Password Baru</label>
+                                            <div class="relative group">
+                                                <input type="password" name="newPass" id="newPassAdmin" required class="w-full border-gray-300 rounded-lg text-sm p-2.5 pr-10 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                                                <button type="button" onclick="toggleInputPass('newPassAdmin', 'eyeNewPassAdmin')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-600"><i class="fas fa-eye" id="eyeNewPassAdmin"></i></button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <button type="submit" id="btnChangePass"
                                         class="w-full mt-6 bg-rose-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-rose-700 transition">Update
@@ -1227,7 +1271,7 @@
 
                                     <button onclick="loadRekapKasus()"
                                         class="w-full mt-3 bg-rose-50 hover:bg-rose-100 text-rose-700 py-2.5 rounded-xl text-xs font-bold border border-rose-200 transition-colors flex items-center justify-center gap-2 shadow-sm"><i
-                                            class="fas fa-balance-scale"></i> Cek Poin Pelanggaran Disiplin
+                                            class="fas fa-balance-scale"></i> Cek Catatan Pelanggaran Disiplin
                                     </button>
 
                                     <button onclick="showUbahPasswordSiswaModal()"
@@ -1429,9 +1473,9 @@
 
                 <div id="view-kelola-absen" class="view-section animate-fade-in">
                     <div
-                        class="flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
+                        class="tab-presensi-monitoring flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
                         <button onclick="loadKelolaAbsen()"
-                            class="px-5 py-2.5 text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 bg-indigo-50/50 rounded-t-lg transition-all whitespace-nowrap"><i
+                            class="px-5 py-2.5 text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 bg-indigo-50/50 rounded-t-lg transition-all whitespace-nowrap admin-only-tab"><i
                                 class="fas fa-calendar-times mr-2"></i>Kelola Libur/WFH</button>
                         <button onclick="loadMonitoringAbsensi()"
                             class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
@@ -1440,6 +1484,31 @@
                             class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
                                 class="fas fa-file-alt mr-2"></i>Laporan Presensi</button>
                     </div>
+                    
+                    <!-- [BARU] Template Contoh Surat (Slim Top) -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6 flex items-center justify-between p-4">
+                        <div class="flex items-center gap-3">
+                            <div class="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+                                <i class="fas fa-file-upload"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-sm">Template Surat Izin</h3>
+                                <p class="text-[10px] text-gray-500">Gbr / DOC / PDF (Max 2MB)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <input type="file" id="inputTemplateSurat" accept="image/*,.pdf,.doc,.docx" class="hidden" onchange="previewTemplateSurat(this)">
+                            <label for="inputTemplateSurat" class="cursor-pointer px-3 py-2 border border-emerald-500 text-emerald-600 rounded-lg text-xs font-bold hover:bg-emerald-50 transition truncate max-w-[120px] md:max-w-[200px]" id="labelTemplateSurat">
+                                Pilih File
+                            </label>
+                            <button type="button" onclick="uploadTemplateSuratBtn(this)" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-emerald-700 transition flex items-center gap-2 whitespace-nowrap shrink-0">
+                                <i class="fas fa-paper-plane"></i> Upload
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Akhir Template Contoh Surat -->
+                    
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                         <div class="lg:col-span-1">
                             <div
@@ -1492,6 +1561,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <div class="lg:col-span-2">
                             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full">
@@ -1693,9 +1763,9 @@
                 </div>
                 <div id="view-monitoring" class="view-section animate-fade-in">
                     <div id="tab-presensi-monitoring"
-                        class="flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
+                        class="tab-presensi-monitoring flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
                         <button onclick="loadKelolaAbsen()"
-                            class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
+                            class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap admin-only-tab"><i
                                 class="fas fa-calendar-times mr-2"></i>Kelola Libur/WFH</button>
                         <button onclick="loadMonitoringAbsensi()"
                             class="px-5 py-2.5 text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 bg-indigo-50/50 rounded-t-lg transition-all whitespace-nowrap"><i
@@ -1745,7 +1815,8 @@
                                         <option value="all">Semua</option>
                                     </select>
                                 </div>
-                                <select id="filterKelasMonitoring" onchange="handleTableClassFilter('monitoring', this.value)"
+                                <select id="filterKelasMonitoring"
+                                    onchange="handleTableClassFilter('monitoring', this.value)"
                                     class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2 font-bold w-full sm:w-auto shadow-sm">
                                     <option value="">Semua Kelas</option>
                                 </select>
@@ -1772,12 +1843,13 @@
                                 <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-semibold">
                                     <tr>
                                         <th class="p-4 text-center w-10">No</th>
-                                        <th class="p-4">Siswa</th>
+                                        <th class="p-4 sticky left-0 bg-gray-50 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">Siswa</th>
                                         <th class="p-4 text-center">Kelas</th>
                                         <th class="p-4 text-center">Jam Datang</th>
                                         <th class="p-4 text-center">Jam Pulang</th>
                                         <th class="p-4 text-center">Keterangan Waktu</th>
                                         <th class="p-4 text-center">Status Kehadiran</th>
+                                        <th class="p-4 text-center">Bukti Izin/Sakit</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-monitoring" class="divide-y divide-gray-50 bg-white text-sm"></tbody>
@@ -1800,9 +1872,9 @@
 
                 <div id="view-rekap-absensi" class="view-section animate-fade-in">
                     <div
-                        class="flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
+                        class="tab-presensi-monitoring flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
                         <button onclick="loadKelolaAbsen()"
-                            class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
+                            class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap admin-only-tab"><i
                                 class="fas fa-calendar-times mr-2"></i>Kelola Libur/WFH</button>
                         <button onclick="loadMonitoringAbsensi()"
                             class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
@@ -2039,6 +2111,12 @@
                                     class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">
                                     <i class="fas fa-paper-plane"></i> Kirim Pengajuan
                                 </button>
+                                
+                                <div class="mt-4 pt-4 border-t border-gray-100 text-center">
+                                    <button type="button" onclick="bukaModalContohSurat()" class="text-xs text-blue-600 font-bold hover:text-blue-800 transition inline-flex items-center gap-1">
+                                        <i class="fas fa-info-circle"></i> Lihat / Unduh Contoh Surat Izin
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -2280,7 +2358,7 @@
                     </div>
 
                     <div class="px-6 py-6 max-h-[60vh] overflow-y-auto text-sm text-gray-600 leading-relaxed space-y-4">
-                        <p class="font-bold text-gray-800">Terakhir diperbarui: <span class="dyn-tahun"></span></p>
+                        <p class="font-bold text-gray-800">Terakhir diperbarui: <span id="privacy-update-date"></span></p>
 
                         <p>Selamat datang di <strong>SiPresDiR (Sistem Presensi Digital Realtime)</strong>. Kami
                             menghargai privasi Anda dan berkomitmen untuk melindungi data pribadi seluruh warga sekolah
@@ -2335,9 +2413,28 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="main.js?v=14"></script>
-    <script src="absensi.js?v=14"></script>
-    <script src="disiplin.js?v=14"></script>
+    <script src="main.js?v=15"></script>
+    <script src="absensi.js?v=15"></script>
+    <script src="disiplin.js?v=15"></script>
+
+    <!-- PWA Install Popup -->
+    <div id="pwaInstallPopup" class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] p-4 transform translate-y-full transition-transform duration-300 z-[60] flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfzGqA11LudTtI5aqUk93_GUJWPoHCR2uNbhgSgZhv71Bmx48aW6zBg7l7U6KoVNNmQpC7zai4T3KeV6DfH1VXfpwQDaxYPEiaCZ8opxte2Koje_yoSzejOD3eKTGt8tHeMuVVrldPZjsXCeRjUe1dbFibHnjpxZYcYlsGBz3YKr_ZU9E9n4z1y0dUrYXC/s425/logo%20sipresdir.png" alt="Logo" class="w-10 h-10 object-contain">
+            <div>
+                <h4 class="text-sm font-bold text-gray-800">SiPresDiR Plus</h4>
+                <p class="text-xs text-gray-500">Instal aplikasi untuk akses lebih cepat!</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button id="pwaCloseBtn" class="p-2 text-gray-400 hover:text-gray-600 transition">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            <button id="pwaInstallBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 transition active:scale-95">
+                Instal
+            </button>
+        </div>
+    </div>
 
 </body>
 
