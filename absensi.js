@@ -68,11 +68,21 @@ async function onScanSuccess(decodedText) {
     const myKelas = currentUser ? currentUser.kelas : '';
 
     try {
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        const hh = String(now.getHours()).padStart(2, '0');
+        const min = String(now.getMinutes()).padStart(2, '0');
+        const ss = String(now.getSeconds()).padStart(2, '0');
+        
         const result = await fetchAPI('scanAbsensi', {
             nisn: decodedText,
             role: myRole,
             kelasGuru: myKelas,
-            token: currentUser ? currentUser.token : null
+            token: currentUser ? currentUser.token : null,
+            clientDate: `${yyyy}-${mm}-${dd}`,
+            clientTime: `${hh}:${min}:${ss}`
         });
 
         if (result.success) {
@@ -139,38 +149,45 @@ async function loadMonitoringAbsensi() {
     if (currentUser && currentUser.role === 'admin') setActiveMenu('Manaj. Presensi');
     else setActiveMenu('Monitoring');
     showView('view-monitoring');
-    const tabMon = document.getElementById('tab-presensi-monitoring');
-    if (tabMon) {
-        if (currentUser && currentUser.role === 'admin') tabMon.classList.remove('hidden');
-        else tabMon.classList.add('hidden');
-    }
+    document.querySelectorAll('.tab-presensi-monitoring').forEach(tabMon => {
+        if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'guru')) {
+            tabMon.classList.remove('hidden');
+        } else {
+            tabMon.classList.add('hidden');
+        }
+    });
 
     document.getElementById('monitoringDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
+    const myClass = (currentUser && currentUser.role === 'guru') ? currentUser.kelas : null;
+
     const dropdown = document.getElementById('filterKelasMonitoring');
     if (dropdown && typeof existingClasses !== 'undefined' && existingClasses.length > 0) {
-        const currentValue = dropdown.value;
-        let options = '<option value="">Semua Kelas</option>';
-        existingClasses.forEach(kelas => {
-            options += `<option value="${kelas}">${kelas}</option>`;
-        });
-        dropdown.innerHTML = options;
-        if (currentValue) dropdown.value = currentValue;
+        if (myClass && myClass !== 'undefined' && myClass !== 'Semua Kelas' && myClass !== '') {
+            dropdown.innerHTML = `<option value="${myClass}">${myClass}</option>`;
+            dropdown.value = myClass;
+        } else {
+            const currentValue = dropdown.value;
+            let options = '<option value="">Semua Kelas</option>';
+            existingClasses.forEach(kelas => {
+                options += `<option value="${kelas}">${kelas}</option>`;
+            });
+            dropdown.innerHTML = options;
+            if (currentValue) dropdown.value = currentValue;
+        }
     }
-
-    const myClass = currentUser.role === 'guru' ? currentUser.kelas : null;
 
     if (tableState.monitoring.fullData.length > 0) {
         processTableData('monitoring');
     } else {
-        document.getElementById('tbody-monitoring').innerHTML = '<tr><td colspan="7" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data...</td></tr>';
+        document.getElementById('tbody-monitoring').innerHTML = '<tr><td colspan="8" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data...</td></tr>';
         try {
             const result = await fetchAPI('getMonitoringRealtime', { filterKelas: myClass });
             if (result.success) {
                 tableState.monitoring.fullData = result.data;
                 processTableData('monitoring');
             } else {
-                document.getElementById('tbody-monitoring').innerHTML = '<tr><td colspan="7" class="p-12 text-center text-gray-400 italic bg-white">Data tidak ditemukan.</td></tr>';
+                document.getElementById('tbody-monitoring').innerHTML = '<tr><td colspan="8" class="p-12 text-center text-gray-400 italic bg-white">Data tidak ditemukan.</td></tr>';
             }
         } catch (e) { }
     }
@@ -179,7 +196,7 @@ async function loadMonitoringAbsensi() {
 function renderMonitoringRows(data, startIdx) {
     const tbody = document.getElementById('tbody-monitoring');
     if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="p-12 text-center text-gray-400 italic bg-white">Tidak ada data ditemukan.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="p-12 text-center text-gray-400 italic bg-white">Tidak ada data ditemukan.</td></tr>';
         return;
     }
 
@@ -199,6 +216,7 @@ function renderMonitoringRows(data, startIdx) {
 
         let rawKet = String(d.keterangan || "-");
         let ketHtml = ``;
+        let buktiHtml = `<div class="w-28 text-center text-gray-400 font-mono text-[9px]">-</div>`;
 
         if (rawKet.includes("Maps:") && rawKet.includes("Foto:")) {
             const wfhSessions = rawKet.split('||');
@@ -233,8 +251,9 @@ function renderMonitoringRows(data, startIdx) {
         }
         else if (rawKet.includes("Surat:")) {
             let suratLink = rawKet.replace('Surat:', '').trim();
-            ketHtml = `
-            <div class="flex flex-nowrap items-center gap-1 w-max p-1">
+            ketHtml = `<div class="w-28"><span class="block text-center text-gray-400 font-mono text-[9px] truncate">Via Sistem</span></div>`;
+            buktiHtml = `
+            <div class="flex flex-nowrap items-center justify-center gap-1 w-max mx-auto p-1">
                 <a href="${suratLink}" target="_blank" class="bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-200 px-3 py-1 rounded text-[9px] font-bold transition shadow-sm inline-flex items-center gap-1 whitespace-nowrap"><i class="fas fa-file-medical"></i> Lihat Surat</a>
                 ${canEdit ? `<button onclick="hapusBuktiAbsen('${d.nisn}', '${targetDate}')" class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white border border-red-200 px-2 py-1 rounded text-[9px] font-bold transition shadow-sm inline-flex items-center whitespace-nowrap"><i class="fas fa-trash"></i></button>` : ''}
             </div>`;
@@ -247,7 +266,7 @@ function renderMonitoringRows(data, startIdx) {
         return `
         <tr class="hover:bg-gray-50 border-b border-gray-50 transition group">
             <td class="p-2 text-center text-gray-400 text-[10px]">${startIdx + i + 1}</td>
-            <td class="p-2 whitespace-nowrap min-w-[120px]">
+            <td class="p-2 whitespace-nowrap min-w-[120px] sticky left-0 bg-white group-hover:bg-gray-50 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
                 <div class="font-bold text-xs text-gray-900 break-words leading-tight line-clamp-2 max-w-[150px] whitespace-normal" title="${d.nama}">${d.nama}</div>
                 <div class="text-[9px] text-gray-500 font-mono mt-0.5">${d.nisn}</div>
             </td>
@@ -265,6 +284,7 @@ function renderMonitoringRows(data, startIdx) {
                 </select>
                 ${canEdit ? '<i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-[8px] pointer-events-none opacity-40"></i>' : ''}
             </td>
+            <td class="p-2 align-middle text-center">${buktiHtml}</td>
         </tr>`;
     }).join('');
 }
@@ -315,22 +335,39 @@ async function changeStatus(nisn, nama, kelas, selectElement) {
 // LOGIKA REKAP ABSENSI & CETAK EXCEL/PDF (GURU/ADMIN)
 // ============================================================
 function loadRekapAbsensi() {
-    stopAndBack(false); setActiveMenu('Manaj. Presensi'); showView('view-rekap-absensi');
+    stopAndBack(false); 
+    if (currentUser && currentUser.role === 'admin') setActiveMenu('Manaj. Presensi');
+    else setActiveMenu('Monitoring');
+    showView('view-rekap-absensi');
     document.getElementById('rekapEmptyState').classList.remove('hidden');
+    document.querySelectorAll('.tab-presensi-monitoring').forEach(tabMon => {
+        if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'guru')) {
+            tabMon.classList.remove('hidden');
+        } else {
+            tabMon.classList.add('hidden');
+        }
+    });
     document.getElementById('rekapContainer').classList.add('hidden');
     document.getElementById('rekapLoading').classList.add('hidden');
     tableState.rekap.fullData = [];
 
+    const myClass = (currentUser && currentUser.role === 'guru') ? currentUser.kelas : null;
+
     const selectKelas = document.getElementById('fKelasRekap');
     if (selectKelas) {
-        selectKelas.innerHTML = '<option value="">Semua Kelas</option>';
-        if (existingClasses && existingClasses.length > 0) {
-            existingClasses.forEach(kelas => {
-                const option = document.createElement('option');
-                option.value = kelas;
-                option.textContent = kelas;
-                selectKelas.appendChild(option);
-            });
+        if (myClass && myClass !== 'undefined' && myClass !== 'Semua Kelas' && myClass !== '') {
+            selectKelas.innerHTML = `<option value="${myClass}">${myClass}</option>`;
+            selectKelas.value = myClass;
+        } else {
+            selectKelas.innerHTML = '<option value="">Semua Kelas</option>';
+            if (existingClasses && existingClasses.length > 0) {
+                existingClasses.forEach(kelas => {
+                    const option = document.createElement('option');
+                    option.value = kelas;
+                    option.textContent = kelas;
+                    selectKelas.appendChild(option);
+                });
+            }
         }
     }
 }
@@ -1371,7 +1408,7 @@ function previewIzinFoto(event) {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
 
-            const MAX_WIDTH = 600;
+            const MAX_WIDTH = 800;
             let scaleSize = 1;
             if (img.width > MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }
 
@@ -1379,7 +1416,7 @@ function previewIzinFoto(event) {
             canvas.height = img.height * scaleSize;
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.5);
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
 
             document.getElementById('izinBase64').value = compressedBase64;
             const preview = document.getElementById('izinPreviewImg');
@@ -1458,4 +1495,110 @@ function hapusBuktiAbsen(nisn, tanggal) {
             }
         }
     });
+}
+
+// ==========================================
+// CONTOH SURAT IZIN / SAKIT SISWA
+// ==========================================
+
+function bukaModalContohSurat() {
+    if (window.settings && window.settings.url_template_surat) {
+        window.open(window.settings.url_template_surat, '_blank');
+        return;
+    }
+
+    const htmlContent = `
+        <div class="bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100 max-h-[90vh] flex flex-col">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-4 flex justify-between items-center shrink-0">
+                <h3 class="text-white font-bold text-lg flex items-center gap-2">
+                    <i class="fas fa-file-alt"></i> Contoh Surat Keterangan
+                </h3>
+                <button type="button" onclick="closeModal()" class="text-blue-100 hover:text-white transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto bg-gray-50 text-sm text-gray-800 leading-relaxed font-serif" style="background-image: radial-gradient(#e5e7eb 1px, transparent 1px); background-size: 20px 20px;">
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-gray-200" id="teksContohSurat">
+                    <p class="text-right mb-4">................., .................... 20...</p>
+                    
+                    <p class="mb-4">
+                        Yth. Bapak/Ibu Wali Kelas<br>
+                        Di Sekolah
+                    </p>
+                    
+                    <p class="mb-4">Dengan hormat,</p>
+                    <p class="mb-2">Yang bertanda tangan di bawah ini, selaku Orang Tua / Wali Murid dari:</p>
+                    
+                    <table class="mb-4 ml-4">
+                        <tr><td class="pr-4 py-1">Nama</td><td>: .......................................</td></tr>
+                        <tr><td class="pr-4 py-1">Kelas</td><td>: .......................................</td></tr>
+                        <tr><td class="pr-4 py-1">NISN</td><td>: .......................................</td></tr>
+                    </table>
+                    
+                    <p class="mb-4 text-justify">
+                        Memberitahukan bahwa anak kami tidak dapat mengikuti kegiatan belajar mengajar pada hari ini dikarenakan <strong>Sakit / Ada Keperluan Keluarga (Izin)*</strong>.
+                    </p>
+                    
+                    <p class="mb-6 text-justify">
+                        Demikian surat keterangan ini kami sampaikan agar dapat dimaklumi. Atas perhatian dan izin dari Bapak/Ibu, kami ucapkan terima kasih.
+                    </p>
+                    
+                    <div class="flex justify-end mt-8">
+                        <div class="text-center">
+                            <p class="mb-16">Hormat kami,</p>
+                            <p class="font-bold">( ....................................... )</p>
+                            <p class="text-xs text-gray-500">Tanda tangan & Nama Terang</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-[10px] text-gray-400 mt-8 italic border-t pt-2">* Coret yang tidak perlu / Sesuaikan alasannya.</p>
+                </div>
+            </div>
+            
+            <div class="p-5 bg-white border-t border-gray-100 flex flex-col sm:flex-row justify-end gap-3 shrink-0">
+                <button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-bold hover:bg-gray-50 transition w-full sm:w-auto">
+                    Tutup
+                </button>
+                <button type="button" onclick="unduhContohSurat()" class="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-md transition flex items-center justify-center gap-2 w-full sm:w-auto">
+                    <i class="fas fa-download"></i> Unduh Surat (TXT)
+                </button>
+            </div>
+        </div>
+    `;
+    showModal(htmlContent);
+}
+
+function unduhContohSurat() {
+    const textContent = `................., .................... 20...
+
+Yth. Bapak/Ibu Wali Kelas
+Di Sekolah
+
+Dengan hormat,
+Yang bertanda tangan di bawah ini, selaku Orang Tua / Wali Murid dari:
+
+Nama  : .......................................
+Kelas : .......................................
+NISN  : .......................................
+
+Memberitahukan bahwa anak kami tidak dapat mengikuti kegiatan belajar mengajar pada hari ini dikarenakan Sakit / Ada Keperluan Keluarga (Izin).
+
+Demikian surat keterangan ini kami sampaikan agar dapat dimaklumi. Atas perhatian dan izin dari Bapak/Ibu, kami ucapkan terima kasih.
+
+Hormat kami,
+
+
+( ....................................... )
+Orang Tua / Wali Murid`;
+
+    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Contoh_Surat_Keterangan.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
