@@ -2493,14 +2493,51 @@ async function uploadTemplateSuratBtn(btn) {
 let deferredPrompt;
 
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-            .then(registration => {
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            })
-            .catch(err => {
-                console.log('ServiceWorker registration failed: ', err);
+    window.addEventListener('load', async () => {
+        try {
+            // Langkah 1: Unregister SEMUA service worker lama yang mungkin masih aktif
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            for (const reg of registrations) {
+                // Jika bukan sw.js terbaru kita (atau SW lama masih ada), paksa unregister
+                if (!reg.active || !reg.active.scriptURL.includes('sw.js')) {
+                    await reg.unregister();
+                }
+            }
+
+            // Langkah 2: Hapus semua cache lama (v1, v2, dst.) kecuali cache terbaru kita
+            const CURRENT_CACHE = 'sipresdir-cache';
+            const cacheKeys = await caches.keys();
+            await Promise.all(
+                cacheKeys
+                    .filter(key => key !== CURRENT_CACHE)
+                    .map(key => {
+                        console.log('[SW] Menghapus cache lama:', key);
+                        return caches.delete(key);
+                    })
+            );
+
+            // Langkah 3: Daftarkan service worker terbaru
+            const registration = await navigator.serviceWorker.register('sw.js');
+
+            // Langkah 4: Jika ada SW baru yang menunggu, aktifkan segera (skipWaiting)
+            if (registration.waiting) {
+                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+            registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                if (newWorker) {
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // SW baru siap — reload otomatis untuk tampilkan versi terbaru
+                            window.location.reload();
+                        }
+                    });
+                }
             });
+
+        } catch (err) {
+            console.warn('[SW] Registrasi gagal:', err);
+        }
     });
 }
 
