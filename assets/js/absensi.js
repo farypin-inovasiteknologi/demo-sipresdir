@@ -1570,17 +1570,14 @@ async function deleteWfhConfirm(tgl) {
 async function loadAbsenWFH() {
     stopAndBack(false);
     setActiveMenu('Rekam-WFH');
-
-    showView('view-absen-wfh');
-    startWFHCamera();
-    getLocation();
+    showLoading();
 
     try {
         const cek = await fetchAPI('cekWFHToday');
+        hideLoading();
 
         if (cek) {
             if (cek.isLibur) {
-                if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
                 Swal.fire({
                     title: 'Perekaman Ditolak!',
                     text: `Anda tidak bisa melakukan perekaman karena hari ini adalah Hari Libur (${cek.keterangan}).`,
@@ -1589,11 +1586,8 @@ async function loadAbsenWFH() {
                 }).then(() => {
                     loadSiswaDashboard();
                 });
-            } else if (cek.isWFH) {
-                const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-                Toast.fire({ icon: 'info', title: cek.keterangan });
-            } else {
-                if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
+                return;
+            } else if (!cek.isWFH) {
                 Swal.fire({
                     title: 'Akses Ditolak!',
                     text: 'Hari ini bukan jadwal WFH. Silakan lakukan presensi scan QR di sekolah.',
@@ -1602,13 +1596,23 @@ async function loadAbsenWFH() {
                 }).then(() => {
                     loadSiswaDashboard();
                 });
+                return;
+            } else {
+                const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+                Toast.fire({ icon: 'info', title: cek.keterangan });
             }
         }
     } catch (e) {
-        if (wfhStream) { wfhStream.getTracks().forEach(track => track.stop()); }
+        hideLoading();
         showAlert('error', 'Gagal mengecek jadwal ke server.');
         loadSiswaDashboard();
+        return;
     }
+
+    // Hanya tampilkan kamera & cari lokasi jika dizinkan WFH
+    showView('view-absen-wfh');
+    startWFHCamera();
+    getLocation();
 }
 
 function getLocation() {
@@ -1621,15 +1625,6 @@ function getLocation() {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
                 const acc = position.coords.accuracy;
-
-                if (acc === 10 || acc === 20 || acc === 65 || acc === 100 || (acc % 10 === 0 && acc > 5)) {
-                    gpsText.innerHTML = `<span class="text-rose-600 font-bold"><i class="fas fa-ban"></i> Terdeteksi Fake GPS / Mock Location!</span>`;
-                    currentGPS.lat = null; currentGPS.lon = null;
-
-                    Swal.fire('Peringatan!', 'Harap matikan aplikasi Fake GPS / Lokasi Palsu Anda sebelum melakukan presensi.', 'error');
-                    checkWFHReady();
-                    return;
-                }
 
                 currentGPS.lat = lat;
                 currentGPS.lon = lon;
@@ -1645,7 +1640,7 @@ function getLocation() {
 
                 gpsText.innerHTML = `<span class="text-red-500 font-bold"><i class="fas fa-exclamation-triangle"></i> ${errMsg}</span>`;
             },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+            { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 }
         );
     } else {
         gpsText.innerHTML = "GPS tidak didukung browser ini.";
