@@ -1621,8 +1621,26 @@ function getLocation() {
     if (navigator.geolocation) {
         gpsText.innerHTML = `<i class="fas fa-spinner fa-spin text-indigo-500"></i> Memeriksa sensor lokasi...`;
 
+        let locationResolved = false;
+        
+        // Manual Timeout 5 Detik Anti-Hang
+        const fallbackTimer = setTimeout(() => {
+            if (!locationResolved) {
+                locationResolved = true;
+                gpsText.innerHTML = `<span class="text-orange-500 font-bold text-xs"><i class="fas fa-exclamation-triangle"></i> GPS tidak merespon (Lanjut Tanpa GPS)</span>`;
+                currentGPS.lat = 0;
+                currentGPS.lon = 0;
+                currentGPS.acc = 0;
+                checkWFHReady();
+            }
+        }, 5000);
+
         navigator.geolocation.getCurrentPosition(
             (position) => {
+                if (locationResolved) return;
+                locationResolved = true;
+                clearTimeout(fallbackTimer);
+
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
                 const acc = position.coords.accuracy;
@@ -1635,13 +1653,16 @@ function getLocation() {
                 checkWFHReady();
             },
             (error) => {
+                if (locationResolved) return;
+                locationResolved = true;
+                clearTimeout(fallbackTimer);
+
                 let errMsg = "Izin Lokasi Ditolak!";
                 if (error.code === 2) errMsg = "Sinyal GPS mati.";
                 else if (error.code === 3) errMsg = "Timeout lokasi.";
 
                 gpsText.innerHTML = `<span class="text-orange-500 font-bold text-xs"><i class="fas fa-exclamation-triangle"></i> ${errMsg} (Lanjut Tanpa GPS)</span>`;
                 
-                // FALLBACK: Tetap izinkan foto meskipun GPS gagal (lat/lon = 0)
                 currentGPS.lat = 0;
                 currentGPS.lon = 0;
                 currentGPS.acc = 0;
@@ -1651,6 +1672,8 @@ function getLocation() {
         );
     } else {
         gpsText.innerHTML = "GPS tidak didukung browser ini.";
+        currentGPS.lat = 0; currentGPS.lon = 0; currentGPS.acc = 0;
+        checkWFHReady();
     }
 }
 
