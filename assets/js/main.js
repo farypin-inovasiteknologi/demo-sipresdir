@@ -125,7 +125,7 @@ async function initAppConfigs() {
             document.querySelectorAll('.dyn-namasekolah').forEach(el => el.innerHTML = result.namasekolah);
             document.querySelectorAll('.dyn-alamat').forEach(el => el.innerHTML = result.alamat);
             document.querySelectorAll('.dyn-website').forEach(el => el.innerHTML = result.website);
-            document.querySelectorAll('.dyn-website-link').forEach(el => { if (result.website) el.href = (result.website.startsWith('http') ? result.website : 'https://' + result.website); });
+            document.querySelectorAll('.dyn-website-link').forEach(el => el.href = (result.website.startsWith('http') ? result.website : 'https://' + result.website));
             document.querySelectorAll('.dyn-runningtext').forEach(el => el.innerHTML = result.runningtext);
             document.querySelectorAll('.dyn-tahun').forEach(el => el.innerHTML = result.tahun);
 
