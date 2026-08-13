@@ -28,11 +28,25 @@ textarea {
     border-radius: 20px;
 }
 
-.tab-button.active {
-    background-color: #eef2ff;
-    color: #4338ca;
-    border-bottom: 2px solid #4338ca;
+/* Tab button: border-b-2 diganti shadow agar tidak ada layout shift */
+.tab-btn-fix {
+    position: relative;
+    min-height: 44px;
+    border-bottom: 2px solid transparent !important;
 }
+.tab-btn-fix.tab-active {
+    border-bottom: 2px solid #4f46e5 !important;
+    color: #4338ca;
+    background-color: rgba(238, 242, 255, 0.5);
+}
+
+/* Fix tab tengah turun: semua button di flex tab container sejajar */
+.flex.items-end > button,
+.flex.items-end > a {
+    align-self: flex-end;
+    box-sizing: border-box;
+}
+
 
 /* Toggle Switch CSS */
 input:checked ~ .toggle-bg {
