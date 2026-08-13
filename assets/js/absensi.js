@@ -1623,7 +1623,7 @@ function getLocation() {
 
         let locationResolved = false;
         
-        // Manual Timeout 5 Detik Anti-Hang
+        // Manual Timeout 12 Detik Anti-Hang
         const fallbackTimer = setTimeout(() => {
             if (!locationResolved) {
                 locationResolved = true;
@@ -1633,7 +1633,7 @@ function getLocation() {
                 currentGPS.acc = 0;
                 checkWFHReady();
             }
-        }, 5000);
+        }, 12000);
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -1668,7 +1668,7 @@ function getLocation() {
                 currentGPS.acc = 0;
                 checkWFHReady();
             },
-            { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
+            { enableHighAccuracy: false, timeout: 12000, maximumAge: 60000 }
         );
     } else {
         gpsText.innerHTML = "GPS tidak didukung browser ini.";
@@ -1694,6 +1694,8 @@ async function startWFHCamera() {
     const loadingText = document.getElementById('wfhLoadingText');
     const btn = document.getElementById('btnCaptureWFH');
     
+    // Reset tombol setiap kali buka WFH
+    btn.innerHTML = '<i class="fas fa-camera mr-1"></i> Kirim Presensi';
     btn.disabled = true;
     loading.classList.remove('hidden');
     loadingText.innerText = "Menyiapkan Kamera...";
