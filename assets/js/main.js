@@ -1986,7 +1986,9 @@ function toggleStatusSiswaConfirm(nisn, newStatus) {
         if (result.isConfirmed) {
             showLoading();
             try {
-                const r = await fetchAPI('toggleStatusSiswa', { nisn: nisn, status: newStatus });
+                // [FIX] Gunakan nama action yang sesuai backend dan sertakan token admin
+                const action = newStatus === 'aktif' ? 'aktifkanSiswa' : 'nonaktifkanSiswa';
+                const r = await fetchAPI(action, { token: currentUser.token, nisn: nisn });
                 hideLoading();
                 if (r.success) {
                     // Reset cache so they are fetched again
