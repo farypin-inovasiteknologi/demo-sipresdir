@@ -1633,7 +1633,7 @@ function getLocation() {
                 currentGPS.acc = 0;
                 checkWFHReady();
             }
-        }, 12000);
+        }, 15000);
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -1668,7 +1668,7 @@ function getLocation() {
                 currentGPS.acc = 0;
                 checkWFHReady();
             },
-            { enableHighAccuracy: false, timeout: 12000, maximumAge: 60000 }
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
         );
     } else {
         gpsText.innerHTML = "GPS tidak didukung browser ini.";
