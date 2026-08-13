@@ -1635,12 +1635,18 @@ function getLocation() {
             },
             (error) => {
                 let errMsg = "Izin Lokasi Ditolak!";
-                if (error.code === 2) errMsg = "Sinyal GPS mati / tidak ditemukan.";
-                else if (error.code === 3) errMsg = "Timeout pencarian lokasi.";
+                if (error.code === 2) errMsg = "Sinyal GPS mati.";
+                else if (error.code === 3) errMsg = "Timeout lokasi.";
 
-                gpsText.innerHTML = `<span class="text-red-500 font-bold"><i class="fas fa-exclamation-triangle"></i> ${errMsg}</span>`;
+                gpsText.innerHTML = `<span class="text-orange-500 font-bold text-xs"><i class="fas fa-exclamation-triangle"></i> ${errMsg} (Lanjut Tanpa GPS)</span>`;
+                
+                // FALLBACK: Tetap izinkan foto meskipun GPS gagal (lat/lon = 0)
+                currentGPS.lat = 0;
+                currentGPS.lon = 0;
+                currentGPS.acc = 0;
+                checkWFHReady();
             },
-            { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 }
+            { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
         );
     } else {
         gpsText.innerHTML = "GPS tidak didukung browser ini.";
