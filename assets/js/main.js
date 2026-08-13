@@ -4,10 +4,10 @@
 // Konfigurasi Multitenant (Banyak Sekolah dalam 1 Frontend)
 const TENANT_CONFIG = {
     // Ganti nilai-nilai ini dengan URL Web App Google Apps Script masing-masing sekolah
-    "demo": "https://script.google.com/macros/s/AKfycbxU4iFljlgcf7ti_B00FNYL65BU4LVYz772wp8k0xoRRNZ-2wN3RXvzc4hpM8LXnaYw/exec",
+    "demo": "https://script.google.com/macros/s/AKfycbxIqVbjKJhvmRO0DQ_4XBAU5TJSwze_7Ql1kucaIdX_248M3H7-DH5NiSGYYVhFmsPLEg/exec",
     "sekolah2": "https://script.google.com/macros/s/AKfycb.../exec",
     "sekolah3": "https://script.google.com/macros/s/AKfycb.../exec",
-    "default": "https://script.google.com/macros/s/AKfycbxU4iFljlgcf7ti_B00FNYL65BU4LVYz772wp8k0xoRRNZ-2wN3RXvzc4hpM8LXnaYw/exec" // HARUS ADA!
+    "default": "https://script.google.com/macros/s/AKfycbxIqVbjKJhvmRO0DQ_4XBAU5TJSwze_7Ql1kucaIdX_248M3H7-DH5NiSGYYVhFmsPLEg/exec" // HARUS ADA!
 };
 
 let API_URL = '';
