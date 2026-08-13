@@ -10,14 +10,14 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Demo SiPresDiR Plus</title>
-    <link rel="icon" type="image/png" href="./imgsipresdir.png">
+    <link rel="icon" type="image/png" href="assets/img/imgsipresdir.png">
     <link rel="manifest" href="manifest.json">
-    
+
     <!-- iOS Support -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="SiPresDiR+">
-    <link rel="apple-touch-icon" href="./imgsipresdir.png">
+    <link rel="apple-touch-icon" href="assets/img/imgsipresdir.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -27,7 +27,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -46,7 +47,7 @@
         }
     </script>
 
-    <link rel="stylesheet" href="style.css?v=15">
+    <link rel="stylesheet" href="assets/css/style.css?v=15">
 
 </head>
 
@@ -90,7 +91,7 @@
 
                     <center>
                         <div class="judul-container flex items-center justify-center gap-2">
-                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfzGqA11LudTtI5aqUk93_GUJWPoHCR2uNbhgSgZhv71Bmx48aW6zBg7l7U6KoVNNmQpC7zai4T3KeV6DfH1VXfpwQDaxYPEiaCZ8opxte2Koje_yoSzejOD3eKTGt8tHeMuVVrldPZjsXCeRjUe1dbFibHnjpxZYcYlsGBz3YKr_ZU9E9n4z1y0dUrYXC/s425/logo%20sipresdir.png"
+                            <img src="assets/img/imgsipresdir.png"
                                 alt="Logo" class="w-8 lg:w-[50px] object-contain">
                             <h1
                                 class="text-3xl lg:text-5xl font-bold leading-tight mb-0 text-white drop-shadow-lg mt-0">
@@ -128,7 +129,7 @@
                     </button>
                     <div class="text-center lg:text-left mb-6 lg:mb-10">
                         <center>
-                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfzGqA11LudTtI5aqUk93_GUJWPoHCR2uNbhgSgZhv71Bmx48aW6zBg7l7U6KoVNNmQpC7zai4T3KeV6DfH1VXfpwQDaxYPEiaCZ8opxte2Koje_yoSzejOD3eKTGt8tHeMuVVrldPZjsXCeRjUe1dbFibHnjpxZYcYlsGBz3YKr_ZU9E9n4z1y0dUrYXC/s425/logo%20sipresdir.png"
+                            <img src="assets/img/imgsipresdir.png"
                                 class="w-12 lg:w-[70px] object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
                             <h2 class="text-xl lg:text-2xl font-bold text-white mt-4 drop-shadow-md">Welcome
                                 to SiPresDiR Plus</h2>
@@ -160,7 +161,8 @@
                                         class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-indigo-200">
                                         <i class="far fa-id-card text-lg"></i>
                                     </div>
-                                    <input type="text" inputmode="numeric" pattern="[0-9]*" onblur="padNisn(this)" id="nisn"
+                                    <input type="text" inputmode="numeric" pattern="[0-9]*" onblur="padNisn(this)"
+                                        id="nisn"
                                         class="block w-full pl-12 pr-4 py-3 bg-white/20 border-white/20 border rounded-xl text-white text-sm placeholder-indigo-100/70 focus:bg-white/30 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all backdrop-blur-sm"
                                         placeholder="Masukkan NISN">
                                 </div>
@@ -195,7 +197,7 @@
                                     </div>
                                     <input type="text" id="username"
                                         class="block w-full pl-12 pr-4 py-3 lg:py-4 bg-white/20 border-white/20 border rounded-xl text-white text-sm focus:bg-white/30 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all placeholder-indigo-100/70 backdrop-blur-sm"
-                                        placeholder="User: (admin/walas/gurupiket)">
+                                        placeholder="Username">
                                 </div>
                             </div>
                             <div>
@@ -208,7 +210,7 @@
                                     </div>
                                     <input type="password" id="password"
                                         class="block w-full pl-12 pr-10 py-3 lg:py-4 bg-white/20 border-white/20 border rounded-xl text-white text-sm focus:bg-white/30 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all placeholder-indigo-100/70 backdrop-blur-sm"
-                                        placeholder="(demo123)">
+                                        placeholder="Password">
                                     <button type="button" onclick="togglePassword()"
                                         class="absolute inset-y-0 right-0 pr-4 flex items-center text-indigo-200 hover:text-white focus:outline-none transition">
                                         <i class="fas fa-eye" id="togglePasswordIcon"></i>
@@ -378,7 +380,8 @@
             <div id="mainContentArea"
                 class="flex-1 overflow-y-auto p-4 pt-20 pb-28 md:pt-4 md:pb-6 md:p-6 scroll-smooth">
 
-                <div id="view-admin-dashboard" class="view-section animate-fade-in">
+                <div id="view-dashboard_admin" class="view-section hidden">
+<div id="view-admin-dashboard" class="view-section animate-fade-in">
                     <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
                         <div>
                             <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Dashboard Admin</h2>
@@ -547,8 +550,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="view-input-kasus" class="view-section animate-fade-in">
+</div>
+                <div id="view-pelanggaran_input" class="view-section hidden">
+<div id="view-input-kasus" class="view-section animate-fade-in">
                     <div
                         class="flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
                         <button onclick="loadMasterPelanggaran()"
@@ -649,8 +653,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="view-rekap-kasus" class="view-section animate-fade-in">
+</div>
+                <div id="view-pelanggaran_rekap" class="view-section hidden">
+<div id="view-rekap-kasus" class="view-section animate-fade-in">
                     <div id="tab-disiplin-rekap"
                         class="flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
                         <button onclick="loadMasterPelanggaran()"
@@ -663,7 +668,7 @@
                             class="px-5 py-2.5 text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 bg-indigo-50/50 rounded-t-lg transition-all whitespace-nowrap"><i
                                 class="fas fa-history mr-2"></i>Laporan Pelanggaran</button>
                     </div>
-                    
+
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/30">
                             <div>
@@ -671,12 +676,12 @@
                             </div>
                             <div class="flex flex-wrap items-center gap-2 justify-end">
                                 <button onclick="loadRekapKasus()"
-                                    class="bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-gray-50 transition" title="Refresh Data"><i
-                                        class="fas fa-sync-alt"></i></button>
+                                    class="bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-gray-50 transition"
+                                    title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
                                 <button onclick="exportExcelKasus()"
                                     class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-700 transition"><i
-                                        class="fas fa-file-excel"></i> <span
-                                        class="hidden sm:inline ml-1">Export Excel</span></button>
+                                        class="fas fa-file-excel"></i> <span class="hidden sm:inline ml-1">Export
+                                        Excel</span></button>
                             </div>
                         </div>
 
@@ -691,17 +696,20 @@
                         </div>
 
                         <div id="areaAdminUtama" class="hidden flex-col">
-                            <div class="p-4 bg-white border-b border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                            <div
+                                class="p-4 bg-white border-b border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
                                 <div class="flex items-center gap-2 w-full md:w-auto">
                                     <span class="text-gray-500 font-bold text-xs whitespace-nowrap">Show</span>
-                                    <select id="limitLeaderboard" onchange="changeLimitLeaderboard(this.value)" class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2">
+                                    <select id="limitLeaderboard" onchange="changeLimitLeaderboard(this.value)"
+                                        class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2">
                                         <option value="10">10</option>
                                         <option value="25">25</option>
                                         <option value="50">50</option>
                                         <option value="100">100</option>
                                         <option value="all">Semua</option>
                                     </select>
-                                    <select id="filterKelasKasus" onchange="applyFilterLeaderboard()" class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2">
+                                    <select id="filterKelasKasus" onchange="applyFilterLeaderboard()"
+                                        class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2">
                                         <option value="">Semua Kelas</option>
                                     </select>
                                 </div>
@@ -709,13 +717,16 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i class="fas fa-search text-gray-400"></i>
                                     </div>
-                                    <input type="text" id="cariNamaKasus" onkeyup="applyFilterLeaderboard()" class="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 p-2" placeholder="Cari Nama / NISN...">
+                                    <input type="text" id="cariNamaKasus" onkeyup="applyFilterLeaderboard()"
+                                        class="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 p-2"
+                                        placeholder="Cari Nama / NISN...">
                                 </div>
                             </div>
 
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left">
-                                    <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-bold border-b border-gray-200">
+                                    <thead
+                                        class="bg-gray-50 text-gray-500 text-[10px] uppercase font-bold border-b border-gray-200">
                                         <tr>
                                             <th class="p-3 text-center w-10">No</th>
                                             <th class="p-3">Nama Siswa</th>
@@ -724,39 +735,57 @@
                                             <th class="p-3 text-center">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbody-leaderboard-kasus" class="divide-y divide-gray-50 bg-white text-xs"></tbody>
+                                    <tbody id="tbody-leaderboard-kasus"
+                                        class="divide-y divide-gray-50 bg-white text-xs"></tbody>
                                 </table>
                             </div>
                             <div class="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50/30">
-                                <span id="info-leaderboard" class="text-xs text-gray-500 font-bold">Menampilkan 0 data</span>
+                                <span id="info-leaderboard" class="text-xs text-gray-500 font-bold">Menampilkan 0
+                                    data</span>
                                 <div class="flex space-x-2">
-                                    <button onclick="changePageLeaderboard(-1)" id="btn-prev-leaderboard" class="px-3 py-1 bg-white border border-gray-200 rounded text-xs text-gray-600 hover:bg-gray-50 disabled:opacity-50 font-bold transition">Prev</button>
-                                    <button onclick="changePageLeaderboard(1)" id="btn-next-leaderboard" class="px-3 py-1 bg-white border border-gray-200 rounded text-xs text-gray-600 hover:bg-gray-50 disabled:opacity-50 font-bold transition">Next</button>
+                                    <button onclick="changePageLeaderboard(-1)" id="btn-prev-leaderboard"
+                                        class="px-3 py-1 bg-white border border-gray-200 rounded text-xs text-gray-600 hover:bg-gray-50 disabled:opacity-50 font-bold transition">Prev</button>
+                                    <button onclick="changePageLeaderboard(1)" id="btn-next-leaderboard"
+                                        class="px-3 py-1 bg-white border border-gray-200 rounded text-xs text-gray-600 hover:bg-gray-50 disabled:opacity-50 font-bold transition">Next</button>
                                 </div>
                             </div>
                         </div>
 
                         <div id="areaDetailSiswa" class="hidden flex-col">
-                            <div id="headerDetailKasus" class="p-4 border-b border-gray-100 bg-indigo-50/50 flex flex-col md:flex-row justify-between items-center gap-4">
+                            <div id="headerDetailKasus"
+                                class="p-4 border-b border-gray-100 bg-indigo-50/50 flex flex-col md:flex-row justify-between items-center gap-4">
                                 <div class="w-full md:w-auto text-center md:text-left">
                                     <h4 id="detailNamaSiswa" class="font-bold text-sm text-gray-800">Nama Siswa</h4>
                                     <p id="detailInfoSiswa" class="text-xs text-gray-600">NISN: - | Kelas: -</p>
                                 </div>
                                 <div class="flex flex-wrap items-center gap-2 justify-center md:justify-end">
                                     <div class="flex items-center gap-2">
-                                        <input type="month" id="filterBulanDetail" class="bg-white border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2" title="Pilih Bulan dan Tahun">
-                                        <select id="filterJenisDetail" class="bg-white border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2" title="Jenis Pelanggaran">
+                                        <input type="month" id="filterBulanDetail"
+                                            class="bg-white border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2"
+                                            title="Pilih Bulan dan Tahun">
+                                        <select id="filterJenisDetail"
+                                            class="bg-white border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2"
+                                            title="Jenis Pelanggaran">
                                             <option value="">Semua Jenis Pelanggaran</option>
                                         </select>
                                     </div>
-                                    <button onclick="applyFilterDetailKasus()" class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-indigo-700 transition" title="Terapkan Filter"><i class="fas fa-filter"></i></button>
-                                    <button onclick="cetakPDFDetailKasus()" class="bg-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-rose-700 transition"><i class="fas fa-file-pdf"></i> <span class="hidden sm:inline ml-1">PDF</span></button>
-                                    <button onclick="kembaliKeLeaderboard()" class="bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-gray-50 transition"><i class="fas fa-times"></i> <span class="hidden sm:inline ml-1">Tutup</span></button>
+                                    <button onclick="applyFilterDetailKasus()"
+                                        class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-indigo-700 transition"
+                                        title="Terapkan Filter"><i class="fas fa-filter"></i></button>
+                                    <button onclick="cetakPDFDetailKasus()"
+                                        class="bg-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-rose-700 transition"><i
+                                            class="fas fa-file-pdf"></i> <span
+                                            class="hidden sm:inline ml-1">PDF</span></button>
+                                    <button onclick="kembaliKeLeaderboard()"
+                                        class="bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-gray-50 transition"><i
+                                            class="fas fa-times"></i> <span
+                                            class="hidden sm:inline ml-1">Tutup</span></button>
                                 </div>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left">
-                                    <thead id="thead-history-kasus" class="bg-gray-50 text-gray-500 text-[10px] uppercase font-bold border-b border-gray-200">
+                                    <thead id="thead-history-kasus"
+                                        class="bg-gray-50 text-gray-500 text-[10px] uppercase font-bold border-b border-gray-200">
                                         <tr>
                                             <th class="p-3 text-center w-10">No</th>
                                             <th class="p-3">Tanggal</th>
@@ -765,19 +794,21 @@
                                             <th class="p-3">Pelapor / Catatan</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbody-history-kasus" class="divide-y divide-gray-50 bg-white text-xs"></tbody>
+                                    <tbody id="tbody-history-kasus" class="divide-y divide-gray-50 bg-white text-xs">
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div id="view-master-pelanggaran" class="view-section animate-fade-in">
+</div>
+                <div id="view-pelanggaran_master" class="view-section hidden">
+<div id="view-master-pelanggaran" class="view-section animate-fade-in">
                     <div
                         class="flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
                         <button onclick="loadMasterPelanggaran()"
                             class="px-5 py-2.5 text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 bg-indigo-50/50 rounded-t-lg transition-all whitespace-nowrap admin-only-tab"><i
-                                class="fas fa-gavel mr-2"></i>Data Pelanggaran</button>
+                                class="fas fa-gavel mr-2"></i>Jenis Pelanggaran</button>
                         <button onclick="loadInputKasus()"
                             class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
                                 class="fas fa-edit mr-2"></i>Monitor Pelanggaran</button>
@@ -788,7 +819,7 @@
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/30">
                             <div>
-                                <h3 class="font-bold text-sm text-gray-800">Master Data Pelanggaran</h3>
+                                <h3 class="font-bold text-sm text-gray-800">Master Jenis Pelanggaran</h3>
                             </div>
                             <div class="flex flex-wrap items-center gap-2 justify-end">
                                 <button onclick="loadMasterPelanggaran()"
@@ -853,8 +884,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="view-pengaturan" class="view-section animate-fade-in">
+</div>
+                <div id="view-pengaturan" class="view-section hidden">
+<div id="view-pengaturan" class="view-section animate-fade-in">
                     <!-- Tabs Navigation -->
                     <div class="flex border-b border-gray-200 mb-6 space-x-4">
                         <button type="button"
@@ -981,17 +1013,27 @@
                                 <form onsubmit="changeAdminPass(event)">
                                     <div class="space-y-4">
                                         <div>
-                                            <label class="block text-xs font-bold text-gray-700 mb-1">Password Lama</label>
+                                            <label class="block text-xs font-bold text-gray-700 mb-1">Password
+                                                Lama</label>
                                             <div class="relative group">
-                                                <input type="password" name="oldPass" id="oldPassAdmin" required class="w-full border-gray-300 rounded-lg text-sm p-2.5 pr-10 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
-                                                <button type="button" onclick="toggleInputPass('oldPassAdmin', 'eyeOldPassAdmin')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-600"><i class="fas fa-eye" id="eyeOldPassAdmin"></i></button>
+                                                <input type="password" name="oldPass" id="oldPassAdmin" required
+                                                    class="w-full border-gray-300 rounded-lg text-sm p-2.5 pr-10 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                                                <button type="button"
+                                                    onclick="toggleInputPass('oldPassAdmin', 'eyeOldPassAdmin')"
+                                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-600"><i
+                                                        class="fas fa-eye" id="eyeOldPassAdmin"></i></button>
                                             </div>
                                         </div>
                                         <div>
-                                            <label class="block text-xs font-bold text-gray-700 mb-1">Password Baru</label>
+                                            <label class="block text-xs font-bold text-gray-700 mb-1">Password
+                                                Baru</label>
                                             <div class="relative group">
-                                                <input type="password" name="newPass" id="newPassAdmin" required class="w-full border-gray-300 rounded-lg text-sm p-2.5 pr-10 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
-                                                <button type="button" onclick="toggleInputPass('newPassAdmin', 'eyeNewPassAdmin')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-600"><i class="fas fa-eye" id="eyeNewPassAdmin"></i></button>
+                                                <input type="password" name="newPass" id="newPassAdmin" required
+                                                    class="w-full border-gray-300 rounded-lg text-sm p-2.5 pr-10 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                                                <button type="button"
+                                                    onclick="toggleInputPass('newPassAdmin', 'eyeNewPassAdmin')"
+                                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-600"><i
+                                                        class="fas fa-eye" id="eyeNewPassAdmin"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -1027,8 +1069,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="view-guru-dashboard" class="view-section animate-fade-in">
+</div>
+                <div id="view-dashboard_guru" class="view-section hidden">
+<div id="view-guru-dashboard" class="view-section animate-fade-in">
                     <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
                         <div>
                             <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Dashboard Guru</h2>
@@ -1140,8 +1183,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="view-siswa-dashboard" class="view-section animate-fade-in">
+</div>
+                <div id="view-dashboard_siswa" class="view-section hidden">
+<div id="view-siswa-dashboard" class="view-section animate-fade-in">
                     <div class="flex justify-end mb-4">
                         <button onclick="refreshData('dashboard')"
                             class="flex items-center space-x-2 text-xs font-bold text-indigo-600 bg-white border border-indigo-100 px-3 py-1.5 rounded-lg shadow-sm hover:bg-indigo-50 transition">
@@ -1289,8 +1333,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="view-data-siswa" class="view-section animate-fade-in">
+</div>
+                <div id="view-master_siswa" class="view-section hidden">
+<div id="view-data-siswa" class="view-section animate-fade-in">
                     <div
                         class="flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
                         <button onclick="loadDataSiswa()"
@@ -1299,6 +1344,9 @@
                         <button onclick="loadDataGuru()"
                             class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
                                 class="fas fa-chalkboard-teacher mr-2"></i>Data Guru</button>
+                        <button onclick="loadDataSiswaNonaktif()"
+                            class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
+                                class="fas fa-user-times mr-2"></i>Siswa Nonaktif</button>
                     </div>
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/30">
@@ -1313,6 +1361,9 @@
                                     class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition transform active:scale-95"><i
                                         class="fas fa-print"></i> <span class="hidden sm:inline ml-1">Cetak
                                         Semua</span></button>
+                                <button onclick="showBulkDeactivateModal()"
+                                    class="bg-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-rose-700 transition transform active:scale-95"><i
+                                        class="fas fa-users-slash"></i> <span class="hidden sm:inline ml-1">Nonaktifkan Massal</span></button>
                                 <button onclick="showImportSiswaModal()"
                                     class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-700 transition"><i
                                         class="fas fa-file-excel"></i> <span
@@ -1378,8 +1429,93 @@
                         </div>
                     </div>
                 </div>
+</div>
+                <div id="view-master_siswa_nonaktif" class="view-section hidden">
+<div id="view-data-siswa-nonaktif" class="view-section hidden animate-fade-in">
+    <div class="flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
+        <button onclick="loadDataSiswa()"
+            class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
+                class="fas fa-user-graduate mr-2"></i>Data Siswa</button>
+        <button onclick="loadDataGuru()"
+            class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
+                class="fas fa-chalkboard-teacher mr-2"></i>Data Guru</button>
+        <button onclick="loadDataSiswaNonaktif()"
+            class="px-5 py-2.5 text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 bg-indigo-50/50 rounded-t-lg transition-all whitespace-nowrap"><i
+                class="fas fa-user-times mr-2"></i>Siswa Nonaktif</button>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/30">
+            <div>
+                <h3 class="font-bold text-sm text-gray-800">Direktori Siswa Nonaktif</h3>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 justify-end">
+                <button onclick="bulkDeleteSiswaNonaktifConfirm()"
+                    class="bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-red-100 transition"><i
+                        class="fas fa-trash-alt mr-1"></i>Hapus Massal</button>
+                <button onclick="refreshData('siswaNonaktif')"
+                    class="bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-gray-50 transition"><i
+                        class="fas fa-sync-alt"></i></button>
+            </div>
+        </div>
+        <div
+            class="p-4 bg-white border-b border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex flex-col sm:flex-row items-center gap-3 text-xs w-full md:w-auto">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <span class="text-gray-500 font-bold whitespace-nowrap">Show</span>
+                    <select onchange="handleTableLimit('siswaNonaktif', this.value)"
+                        class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2 w-full sm:w-auto">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="all">Semua</option>
+                    </select>
+                </div>
+                <select id="filterKelasNonaktif" onchange="handleTableClassFilter('siswaNonaktif', this.value)"
+                    class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2 w-full sm:w-40 font-bold shadow-sm">
+                    <option value="">Semua Kelas</option>
+                </select>
+            </div>
+            <div class="relative w-full md:w-64">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i
+                        class="fas fa-search text-gray-400 text-xs"></i></div>
+                <input type="text" oninput="handleTableSearch('siswaNonaktif', this.value)"
+                    class="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 p-2 transition-all"
+                    placeholder="Cari Nama / NISN...">
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-semibold">
+                    <tr>
+                        <th class="p-3 text-center w-10">No</th>
+                        <th class="p-3">Nama</th>
+                        <th class="p-3">NISN</th>
+                        <th class="p-3">Kelas</th>
+                        <th class="p-3 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-siswa-nonaktif" class="divide-y divide-gray-50 bg-white text-xs"></tbody>
+            </table>
+        </div>
+        <div id="footer-siswaNonaktif"
+            class="p-4 border-t border-gray-100 bg-gray-50/30 flex justify-between items-center text-xs text-gray-500">
+            <span id="info-siswaNonaktif">Menampilkan 0 data</span>
+            <div class="flex gap-1">
+                <button onclick="changePage('siswaNonaktif', -1)"
+                    class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50 transition"
+                    id="btn-prev-siswaNonaktif">Prev</button>
+                <button onclick="changePage('siswaNonaktif', 1)"
+                    class="px-3 py-1 bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-50 transition"
+                    id="btn-next-siswaNonaktif">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <div id="view-data-guru" class="view-section animate-fade-in">
+</div>
+                <div id="view-master_guru" class="view-section hidden">
+<div id="view-data-guru" class="view-section animate-fade-in">
                     <div
                         class="flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
                         <button onclick="loadDataSiswa()"
@@ -1388,6 +1524,9 @@
                         <button onclick="loadDataGuru()"
                             class="px-5 py-2.5 text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 bg-indigo-50/50 rounded-t-lg transition-all whitespace-nowrap"><i
                                 class="fas fa-chalkboard-teacher mr-2"></i>Data Guru</button>
+                        <button onclick="loadDataSiswaNonaktif()"
+                            class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
+                                class="fas fa-user-times mr-2"></i>Siswa Nonaktif</button>
                     </div>
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/30">
@@ -1418,7 +1557,7 @@
                                         <option value="10">10</option>
                                         <option value="25">25</option>
                                         <option value="50">50</option>
-                                    <option value="100">100</option>
+                                        <option value="100">100</option>
                                         <option value="all">Semua</option>
                                     </select></div>
                                 <select id="filterKelasGuru" onchange="handleTableClassFilter('guru', this.value)"
@@ -1462,8 +1601,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="view-kelola-absen" class="view-section animate-fade-in">
+</div>
+                <div id="view-absen_kelola" class="view-section hidden">
+<div id="view-kelola-absen" class="view-section animate-fade-in">
                     <div
                         class="tab-presensi-monitoring flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
                         <button onclick="loadKelolaAbsen()"
@@ -1476,11 +1616,13 @@
                             class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-t-lg transition-all whitespace-nowrap"><i
                                 class="fas fa-file-alt mr-2"></i>Laporan Presensi</button>
                     </div>
-                    
+
                     <!-- [BARU] Template Contoh Surat (Slim Top) -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6 flex items-center justify-between p-4">
+                    <div
+                        class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6 flex items-center justify-between p-4">
                         <div class="flex items-center gap-3">
-                            <div class="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+                            <div
+                                class="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
                                 <i class="fas fa-file-upload"></i>
                             </div>
                             <div>
@@ -1488,25 +1630,38 @@
                                 <p class="text-[10px] text-gray-500">Gbr / DOC / PDF (Max 2MB)</p>
                             </div>
                         </div>
-                        
+
                         <div class="flex items-center gap-2">
-                            <input type="file" id="inputTemplateSurat" accept="image/*,.pdf,.doc,.docx" class="hidden" onchange="previewTemplateSurat(this)">
-                            <label for="inputTemplateSurat" class="cursor-pointer px-3 py-2 border border-emerald-500 text-emerald-600 rounded-lg text-xs font-bold hover:bg-emerald-50 transition truncate max-w-[120px] md:max-w-[200px]" id="labelTemplateSurat">
+                            <!-- [BARU] Container Tombol Aksi Template -->
+                            <div id="actionTemplateSuratContainer" class="hidden flex items-center gap-2 mr-2 border-r border-gray-200 pr-2">
+                                <a id="btnLihatTemplateSurat" href="#" target="_blank" class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold hover:bg-blue-100 transition"><i class="fas fa-external-link-alt mr-1"></i>Lihat File</a>
+                                <button type="button" onclick="hapusTemplateSuratBtn()" class="px-3 py-2 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold hover:bg-rose-100 transition"><i class="fas fa-trash-alt mr-1"></i>Hapus</button>
+                            </div>
+                            
+                            <input type="file" id="inputTemplateSurat" accept="image/*,.pdf,.doc,.docx" class="hidden"
+                                onchange="previewTemplateSurat(this)">
+                            <label for="inputTemplateSurat"
+                                class="cursor-pointer px-3 py-2 border border-emerald-500 text-emerald-600 rounded-lg text-xs font-bold hover:bg-emerald-50 transition truncate max-w-[120px] md:max-w-[200px]"
+                                id="labelTemplateSurat">
                                 Pilih File
                             </label>
-                            <button type="button" onclick="uploadTemplateSuratBtn(this)" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-emerald-700 transition flex items-center gap-2 whitespace-nowrap shrink-0">
+                            <button type="button" onclick="uploadTemplateSuratBtn(this)"
+                                class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-emerald-700 transition flex items-center gap-2 whitespace-nowrap shrink-0">
                                 <i class="fas fa-paper-plane"></i> Upload
                             </button>
                         </div>
                     </div>
                     <!-- Akhir Template Contoh Surat -->
-                    
+
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                         <div class="lg:col-span-1">
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-24">
+                            <div
+                                class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-24">
                                 <div class="p-4 border-b border-gray-100 bg-indigo-50/50">
-                                    <h3 class="font-bold text-gray-800 flex items-center"><i class="fas fa-school text-indigo-600 mr-2"></i> Waktu Sekolah</h3>
-                                    <p class="text-xs text-gray-500 mt-0.5">Jam absen per kelompok hari (Tatap Muka).</p>
+                                    <h3 class="font-bold text-gray-800 flex items-center"><i
+                                            class="fas fa-school text-indigo-600 mr-2"></i> Waktu Sekolah</h3>
+                                    <p class="text-xs text-gray-500 mt-0.5">Jam absen per kelompok hari (Tatap Muka).
+                                    </p>
                                 </div>
                                 <!-- Tab Navigation -->
                                 <div class="flex border-b border-gray-200 text-[11px] font-bold">
@@ -1528,15 +1683,27 @@
                                     <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                                         <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Datang</p>
                                         <div class="grid grid-cols-2 gap-2">
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai Buka</label><input type="time" id="conf_sk_masuk_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Batas Terlambat</label><input type="time" id="conf_sk_masuk_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai
+                                                    Buka</label><input type="time" id="conf_sk_masuk_mulai"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Batas
+                                                    Terlambat</label><input type="time" id="conf_sk_masuk_akhir"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                                         <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Pulang</p>
                                         <div class="grid grid-cols-2 gap-2">
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai Buka</label><input type="time" id="conf_sk_pulang_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Tutup Absen</label><input type="time" id="conf_sk_pulang_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai
+                                                    Buka</label><input type="time" id="conf_sk_pulang_mulai"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Tutup
+                                                    Absen</label><input type="time" id="conf_sk_pulang_akhir"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1545,15 +1712,27 @@
                                     <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                                         <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Datang</p>
                                         <div class="grid grid-cols-2 gap-2">
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai Buka</label><input type="time" id="conf_jum_masuk_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Batas Terlambat</label><input type="time" id="conf_jum_masuk_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai
+                                                    Buka</label><input type="time" id="conf_jum_masuk_mulai"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Batas
+                                                    Terlambat</label><input type="time" id="conf_jum_masuk_akhir"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                                         <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Pulang</p>
                                         <div class="grid grid-cols-2 gap-2">
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai Buka</label><input type="time" id="conf_jum_pulang_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Tutup Absen</label><input type="time" id="conf_jum_pulang_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai
+                                                    Buka</label><input type="time" id="conf_jum_pulang_mulai"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Tutup
+                                                    Absen</label><input type="time" id="conf_jum_pulang_akhir"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1562,15 +1741,27 @@
                                     <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                                         <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Datang</p>
                                         <div class="grid grid-cols-2 gap-2">
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai Buka</label><input type="time" id="conf_sab_masuk_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Batas Terlambat</label><input type="time" id="conf_sab_masuk_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai
+                                                    Buka</label><input type="time" id="conf_sab_masuk_mulai"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Batas
+                                                    Terlambat</label><input type="time" id="conf_sab_masuk_akhir"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                                         <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">Absen Pulang</p>
                                         <div class="grid grid-cols-2 gap-2">
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai Buka</label><input type="time" id="conf_sab_pulang_mulai" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Tutup Absen</label><input type="time" id="conf_sab_pulang_akhir" class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500"></div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Mulai
+                                                    Buka</label><input type="time" id="conf_sab_pulang_mulai"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
+                                            <div><label class="block text-[10px] font-bold text-gray-600 mb-1">Tutup
+                                                    Absen</label><input type="time" id="conf_sab_pulang_akhir"
+                                                    class="w-full border-gray-300 rounded-lg text-xs p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1780,7 +1971,9 @@
                         </div>
                     </div>
                 </div>
-                <div id="view-monitoring" class="view-section animate-fade-in">
+</div>
+                <div id="view-absen_monitoring" class="view-section hidden">
+<div id="view-monitoring" class="view-section animate-fade-in">
                     <div id="tab-presensi-monitoring"
                         class="tab-presensi-monitoring flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
                         <button onclick="loadKelolaAbsen()"
@@ -1831,7 +2024,7 @@
                                         <option value="10">10</option>
                                         <option value="25">25</option>
                                         <option value="50">50</option>
-                                    <option value="100">100</option>
+                                        <option value="100">100</option>
                                         <option value="all">Semua</option>
                                     </select>
                                 </div>
@@ -1863,7 +2056,9 @@
                                 <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-semibold">
                                     <tr>
                                         <th class="p-4 text-center w-10">No</th>
-                                        <th class="p-4 sticky left-0 bg-gray-50 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">Siswa</th>
+                                        <th
+                                            class="p-4 sticky left-0 bg-gray-50 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
+                                            Siswa</th>
                                         <th class="p-4 text-center">Kelas</th>
                                         <th class="p-4 text-center">Jam Datang</th>
                                         <th class="p-4 text-center">Jam Pulang</th>
@@ -1889,8 +2084,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="view-rekap-absensi" class="view-section animate-fade-in">
+</div>
+                <div id="view-absen_rekap" class="view-section hidden">
+<div id="view-rekap-absensi" class="view-section animate-fade-in">
                     <div
                         class="tab-presensi-monitoring flex space-x-1 border-b border-gray-200 mb-6 bg-white p-1 rounded-t-xl overflow-x-auto shadow-sm">
                         <button onclick="loadKelolaAbsen()"
@@ -1952,7 +2148,7 @@
                                         <option value="10">10</option>
                                         <option value="25">25</option>
                                         <option value="50">50</option>
-                                    <option value="100">100</option>
+                                        <option value="100">100</option>
                                         <option value="all">Semua</option>
                                     </select>
                                 </div>
@@ -2010,8 +2206,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="view-scanner" class="view-section animate-fade-in">
+</div>
+                <div id="view-scanner" class="view-section hidden">
+<div id="view-scanner" class="view-section animate-fade-in">
                     <div class="max-w-xs mx-auto">
                         <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
                             <div class="p-4 bg-gray-900 text-white text-center">
@@ -2041,8 +2238,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="view-absen-wfh" class="view-section animate-fade-in">
+</div>
+                <div id="view-scanner_wfh" class="view-section hidden">
+<div id="view-absen-wfh" class="view-section animate-fade-in">
                     <div class="max-w-sm mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
                         <div class="p-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center">
                             <h3 class="font-bold text-lg"><i class="fas fa-camera-retro mr-2"></i> Presensi WFH</h3>
@@ -2085,6 +2283,7 @@
                         </div>
                     </div>
                 </div>
+</div>
 
                 <div id="view-izin-siswa" class="view-section animate-fade-in">
                     <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
@@ -2132,9 +2331,10 @@
                                     class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">
                                     <i class="fas fa-paper-plane"></i> Kirim Pengajuan
                                 </button>
-                                
+
                                 <div class="mt-4 pt-4 border-t border-gray-100 text-center">
-                                    <button type="button" onclick="bukaModalContohSurat()" class="text-xs text-blue-600 font-bold hover:text-blue-800 transition inline-flex items-center gap-1">
+                                    <button type="button" onclick="bukaModalContohSurat()"
+                                        class="text-xs text-blue-600 font-bold hover:text-blue-800 transition inline-flex items-center gap-1">
                                         <i class="fas fa-info-circle"></i> Lihat / Unduh Contoh Surat Izin
                                     </button>
                                 </div>
@@ -2379,7 +2579,8 @@
                     </div>
 
                     <div class="px-6 py-6 max-h-[60vh] overflow-y-auto text-sm text-gray-600 leading-relaxed space-y-4">
-                        <p class="font-bold text-gray-800">Terakhir diperbarui: <span id="privacy-update-date"></span></p>
+                        <p class="font-bold text-gray-800">Terakhir diperbarui: <span id="privacy-update-date"></span>
+                        </p>
 
                         <p>Selamat datang di <strong>SiPresDiR (Sistem Presensi Digital Realtime)</strong>. Kami
                             menghargai privasi Anda dan berkomitmen untuk melindungi data pribadi seluruh warga sekolah
@@ -2434,14 +2635,16 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="main.js?v=15"></script>
-    <script src="absensi.js?v=15"></script>
-    <script src="disiplin.js?v=15"></script>
+    <script src="assets/js/main.js?v=<?= time(); ?>"></script>
+    <script src="assets/js/absensi.js?v=<?= time(); ?>"></script>
+    <script src="assets/js/disiplin.js?v=<?= time(); ?>"></script>
 
     <!-- PWA Install Popup -->
-    <div id="pwaInstallPopup" class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] p-4 transform translate-y-full transition-transform duration-300 z-[60] flex items-center justify-between">
+    <div id="pwaInstallPopup"
+        class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] p-4 transform translate-y-full transition-transform duration-300 z-[60] flex items-center justify-between">
         <div class="flex items-center gap-3">
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfzGqA11LudTtI5aqUk93_GUJWPoHCR2uNbhgSgZhv71Bmx48aW6zBg7l7U6KoVNNmQpC7zai4T3KeV6DfH1VXfpwQDaxYPEiaCZ8opxte2Koje_yoSzejOD3eKTGt8tHeMuVVrldPZjsXCeRjUe1dbFibHnjpxZYcYlsGBz3YKr_ZU9E9n4z1y0dUrYXC/s425/logo%20sipresdir.png" alt="Logo" class="w-10 h-10 object-contain">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfzGqA11LudTtI5aqUk93_GUJWPoHCR2uNbhgSgZhv71Bmx48aW6zBg7l7U6KoVNNmQpC7zai4T3KeV6DfH1VXfpwQDaxYPEiaCZ8opxte2Koje_yoSzejOD3eKTGt8tHeMuVVrldPZjsXCeRjUe1dbFibHnjpxZYcYlsGBz3YKr_ZU9E9n4z1y0dUrYXC/s425/logo%20sipresdir.png"
+                alt="Logo" class="w-10 h-10 object-contain">
             <div>
                 <h4 class="text-sm font-bold text-gray-800">SiPresDiR Plus</h4>
                 <p class="text-xs text-gray-500">Instal aplikasi untuk akses lebih cepat!</p>
@@ -2451,12 +2654,16 @@
             <button id="pwaCloseBtn" class="p-2 text-gray-400 hover:text-gray-600 transition">
                 <i class="fas fa-times text-lg"></i>
             </button>
-            <button id="pwaInstallBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 transition active:scale-95">
+            <button id="pwaInstallBtn"
+                class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 transition active:scale-95">
                 Instal
             </button>
         </div>
+        </div>
     </div>
 
+    <!-- Application Logic -->
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
 </body>
-
 </html>
