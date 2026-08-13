@@ -352,8 +352,10 @@ async function changeStatus(nisn, nama, kelas, tanggal, selectElement) {
     selectElement.style.opacity = '0.5';
     const token = currentUser ? currentUser.token : null;
 
+    let targetDate = document.getElementById('tgl_export_harian') ? document.getElementById('tgl_export_harian').value : null;
+
     try {
-        const res = await fetchAPI('updateAbsensiStatus', { token: token, nisn: nisn, nama: nama, kelas: kelas, tanggal: tanggal, newStatus: newStatus });
+        const res = await fetchAPI('updateAbsensiStatus', { token: token, nisn: nisn, nama: nama, kelas: kelas, tanggal: targetDate, newStatus: newStatus });
         selectElement.disabled = false;
         selectElement.style.opacity = '1';
 
