@@ -1614,6 +1614,7 @@ async function loadAbsenWFH() {
     startWFHCamera();
     getLocation();
 }
+let currentGPS = { lat: null, lon: null, acc: null };
 
 function getLocation() {
     const gpsText = document.getElementById('gpsLocationText');
