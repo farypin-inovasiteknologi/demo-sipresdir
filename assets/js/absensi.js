@@ -1653,6 +1653,107 @@ function getLocation() {
     }
 }
 
+let wfhStream = null;
+
+function checkWFHReady() {
+    const btn = document.getElementById('btnCaptureWFH');
+    if (wfhStream && currentGPS.lat !== null) {
+        btn.disabled = false;
+    } else {
+        btn.disabled = true;
+    }
+}
+
+async function startWFHCamera() {
+    const video = document.getElementById('wfhVideo');
+    const loading = document.getElementById('wfhLoading');
+    const loadingText = document.getElementById('wfhLoadingText');
+    const btn = document.getElementById('btnCaptureWFH');
+    
+    btn.disabled = true;
+    loading.classList.remove('hidden');
+    loadingText.innerText = "Menyiapkan Kamera...";
+    
+    if (wfhStream) {
+        wfhStream.getTracks().forEach(track => track.stop());
+    }
+
+    try {
+        wfhStream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'user' },
+            audio: false
+        });
+        video.srcObject = wfhStream;
+        
+        video.onloadedmetadata = () => {
+            loading.classList.add('hidden');
+            checkWFHReady();
+        };
+    } catch (err) {
+        loading.classList.add('hidden');
+        showAlert('error', 'Kamera tidak dapat diakses atau diblokir browser.');
+    }
+}
+
+function captureAndSendWFH() {
+    const video = document.getElementById('wfhVideo');
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    const base64Foto = canvas.toDataURL('image/jpeg', 0.7);
+    
+    Swal.fire({
+        title: 'Kirim Presensi WFH?',
+        text: 'Pastikan wajah Anda terlihat jelas.',
+        imageUrl: base64Foto,
+        imageHeight: 200,
+        showCancelButton: true,
+        confirmButtonColor: '#4f46e5',
+        cancelButtonColor: '#6B7280',
+        confirmButtonText: 'Ya, Kirim!',
+        cancelButtonText: 'Batal'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            submitWFH(base64Foto);
+        }
+    });
+}
+
+async function submitWFH(base64Foto) {
+    const btn = document.getElementById('btnCaptureWFH');
+    const originalText = btn.innerHTML;
+    btn.disabled = true; 
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+    showLoading();
+
+    try {
+        const res = await fetchAPI('absenWFH', {
+            token: currentUser.token, 
+            nisn: currentUser.nisn, 
+            foto: base64Foto,
+            lokasi: `${currentGPS.lat},${currentGPS.lon}`
+        });
+        hideLoading();
+        
+        if (res.success) {
+            showAlert('success', res.message);
+            if(wfhStream) wfhStream.getTracks().forEach(t => t.stop());
+            setTimeout(() => { loadSiswaDashboard(); }, 1500);
+        } else {
+            showAlert('error', res.message); 
+            btn.disabled = false; 
+            btn.innerHTML = originalText;
+        }
+    } catch (error) {
+        hideLoading(); 
+        showAlert('error', 'Gagal koneksi server!'); 
+        btn.disabled = false; 
+        btn.innerHTML = originalText;
+    }
+}
+
 function loadIzinSiswa() {
     stopAndBack(false);
     setActiveMenu('Izin / Sakit');
