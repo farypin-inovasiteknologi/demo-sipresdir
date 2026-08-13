@@ -171,7 +171,7 @@ function returnToDashboard() {
 // ============================================================
 // LOGIKA MONITORING REALTIME
 // ============================================================
-async function loadMonitoringAbsensi() {
+async function loadMonitoringAbsensi(forceDate = false) {
     stopAndBack(false);
     if (currentUser && currentUser.role === 'admin') setActiveMenu('Kelola Presensi');
     else setActiveMenu('Monitoring');
@@ -184,7 +184,19 @@ async function loadMonitoringAbsensi() {
         }
     });
 
-    document.getElementById('monitoringDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    let targetDate = null;
+    let textDate = new Date();
+    
+    if (forceDate) {
+        targetDate = document.getElementById('tgl_export_harian').value;
+        if (!targetDate) {
+            showAlert('error', 'Pilih tanggal terlebih dahulu!');
+            return;
+        }
+        textDate = new Date(targetDate);
+    }
+    
+    document.getElementById('monitoringDate').textContent = textDate.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     const myClass = (currentUser && currentUser.role === 'guru') ? currentUser.kelas : null;
 
@@ -204,15 +216,21 @@ async function loadMonitoringAbsensi() {
         }
     }
 
-    if (tableState.monitoring.fullData.length > 0) {
+    if (tableState.monitoring.fullData.length > 0 && !forceDate) {
         processTableData('monitoring');
     } else {
         document.getElementById('tbody-monitoring').innerHTML = '<tr><td colspan="8" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data...</td></tr>';
         try {
-            const result = await fetchAPI('getMonitoringRealtime', { filterKelas: myClass });
+            const result = await fetchAPI('getMonitoringRealtime', { filterKelas: myClass, filterTanggal: targetDate });
             if (result.success) {
-                tableState.monitoring.fullData = result.data;
-                processTableData('monitoring');
+                if(result.isLibur) {
+                    tableState.monitoring.fullData = [];
+                    processTableData('monitoring');
+                    document.getElementById('tbody-monitoring').innerHTML = `<tr><td colspan="8" class="p-12 text-center font-bold text-rose-500 bg-white"><i class="fas fa-calendar-times mb-2 text-2xl"></i><br>${result.message}</td></tr>`;
+                } else {
+                    tableState.monitoring.fullData = result.data;
+                    processTableData('monitoring');
+                }
             } else {
                 document.getElementById('tbody-monitoring').innerHTML = '<tr><td colspan="8" class="p-12 text-center text-gray-400 italic bg-white">Data tidak ditemukan.</td></tr>';
             }
