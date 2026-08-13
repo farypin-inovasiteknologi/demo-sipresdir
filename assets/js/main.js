@@ -555,6 +555,9 @@ function showView(viewId) {
         target.classList.add('active');
         target.style.display = 'block';
         target.classList.add('animate-fade-in');
+        // Reset scroll ke atas setiap ganti halaman/tab
+        const mainArea = document.getElementById('mainContentArea');
+        if (mainArea) mainArea.scrollTop = 0;
     }
 
 
@@ -1471,7 +1474,8 @@ async function loadDataSiswa() {
         try {
             const result = await fetchAPI('getSiswaList');
             if (result.success) {
-                tableState.siswa.fullData = result.data;
+                // Filter: hanya tampilkan siswa dengan status 'aktif' atau yang belum ada statusnya
+                tableState.siswa.fullData = result.data.filter(s => !s.status || s.status === '' || s.status === 'aktif');
                 processTableData('siswa');
             } else {
                 showAlert('error', result.message);
@@ -2663,9 +2667,10 @@ async function loadDataSiswaNonaktif() {
     } else {
         document.getElementById('tbody-siswa-nonaktif').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data siswa...</td></tr>';
         try {
-            const result = await fetchAPI('getSiswaList', { status: 'nonaktif' });
+            const result = await fetchAPI('getSiswaList');
             if (result.success) {
-                tableState.siswaNonaktif.fullData = result.data;
+                // Filter: hanya tampilkan siswa dengan status 'nonaktif'
+                tableState.siswaNonaktif.fullData = result.data.filter(s => s.status === 'nonaktif');
                 processTableData('siswaNonaktif');
             } else {
                 throw new Error(result.message || 'Gagal memuat data');
