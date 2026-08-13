@@ -4,10 +4,10 @@
 // Konfigurasi Multitenant (Banyak Sekolah dalam 1 Frontend)
 const TENANT_CONFIG = {
     // Ganti nilai-nilai ini dengan URL Web App Google Apps Script masing-masing sekolah
-    "demo": "https://script.google.com/macros/s/AKfycbz1GhYh6xFpAcMdvraBLYNyDbmhmbj0ao3ZwvzbRavLvbU2rN1Bkhh2XqBOVmtLZ-I/exec",
+    "demo": "https://script.google.com/macros/s/AKfycbxHMAocccJeWYOtt5v8H9d4vZJ8xciw86NfNQI5avdz05J2JY-YDp2IVN_UCQ3bFv64/exec",
     "sekolah2": "https://script.google.com/macros/s/AKfycb.../exec",
     "sekolah3": "https://script.google.com/macros/s/AKfycb.../exec",
-    "default": "https://script.google.com/macros/s/AKfycbz1GhYh6xFpAcMdvraBLYNyDbmhmbj0ao3ZwvzbRavLvbU2rN1Bkhh2XqBOVmtLZ-I/exec" // HARUS ADA!
+    "default": "https://script.google.com/macros/s/AKfycbxHMAocccJeWYOtt5v8H9d4vZJ8xciw86NfNQI5avdz05J2JY-YDp2IVN_UCQ3bFv64/exec" // HARUS ADA!
 };
 
 let API_URL = '';
@@ -60,7 +60,7 @@ async function fetchAPI(action, params = {}) {
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             redirect: 'follow'
         });
-        
+
         const text = await response.text();
         try {
             return JSON.parse(text);
@@ -132,7 +132,7 @@ async function initAppConfigs() {
             try {
                 const result = JSON.parse(cachedConfig);
                 applyAppConfigToUI(result);
-            } catch(e) {}
+            } catch (e) { }
         }
 
         const result = await fetchAPI('getSettings');
@@ -197,7 +197,7 @@ async function loadPengaturan() {
                 document.getElementById('previewLogoSetting').src = data.logo || defLogo;
                 document.getElementById('finalLogoInstansiData').value = data.logoInstansi || '';
                 document.getElementById('previewLogoInstansiSetting').src = data.logoInstansi || defLogo;
-            } catch(e) {}
+            } catch (e) { }
         }
 
         const res = await fetchAPI('getLinkSettings', { token: token });
@@ -1028,7 +1028,7 @@ async function loadAdminDashboard() {
         // [OPTIMASI KILAT] Tampilkan dari Cache dulu jika ada
         const cachedRealtime = localStorage.getItem('cache_admin_realtime');
         const cachedAdv = localStorage.getItem('cache_admin_adv');
-        
+
         if (cachedRealtime) {
             try {
                 const data = JSON.parse(cachedRealtime);
@@ -1037,9 +1037,9 @@ async function loadAdminDashboard() {
                 animateValue("admStatSakit", 0, data.filter(d => d.status === 'Sakit').length, 800);
                 animateValue("admStatIzin", 0, data.filter(d => d.status === 'Izin').length, 800);
                 animateValue("admStatAlpa", 0, data.filter(d => d.status === 'Alpa').length, 800);
-            } catch(e) {}
+            } catch (e) { }
         }
-        
+
         if (cachedAdv) {
             try {
                 const adv = JSON.parse(cachedAdv);
@@ -1047,7 +1047,7 @@ async function loadAdminDashboard() {
                 renderAdminViolationPieChart(adv.violationPie);
                 renderLeaderboardKelas(adv.topClasses);
                 renderLeaderboardSiswa(adv.topViolators);
-            } catch(e) {}
+            } catch (e) { }
         }
 
         // 1. Get Realtime Stats (Cards) - Background Fetch
@@ -1363,7 +1363,7 @@ async function loadGuruDashboard() {
         // [OPTIMASI KILAT] Tampilkan dari Cache dulu jika ada
         const cachedRealtime = localStorage.getItem('cache_guru_realtime');
         const cachedAdv = localStorage.getItem('cache_guru_adv');
-        
+
         if (cachedRealtime) {
             try {
                 const data = JSON.parse(cachedRealtime);
@@ -1372,9 +1372,9 @@ async function loadGuruDashboard() {
                 animateValue("admStatSakit", 0, data.filter(d => d.status === 'Sakit').length, 800);
                 animateValue("admStatIzin", 0, data.filter(d => d.status === 'Izin').length, 800);
                 animateValue("admStatAlpa", 0, data.filter(d => d.status === 'Alpa').length, 800);
-            } catch(e) {}
+            } catch (e) { }
         }
-        
+
         if (cachedAdv) {
             try {
                 const adv = JSON.parse(cachedAdv);
@@ -1382,7 +1382,7 @@ async function loadGuruDashboard() {
                 renderAdminViolationPieChart(adv.violationPie);
                 renderLeaderboardKelas(adv.topClasses);
                 renderLeaderboardSiswa(adv.topViolators);
-            } catch(e) {}
+            } catch (e) { }
         }
 
         const result = await fetchAPI('getMonitoringRealtime', { filterKelas: null });
@@ -1574,7 +1574,7 @@ async function loadDataSiswa() {
             try {
                 tableState.siswa.fullData = JSON.parse(cached);
                 processTableData('siswa');
-            } catch(e) {}
+            } catch (e) { }
         } else {
             document.getElementById('tbody-siswa').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data siswa...</td></tr>';
         }
@@ -1584,7 +1584,7 @@ async function loadDataSiswa() {
             if (result.success) {
                 // Filter: hanya tampilkan siswa dengan status 'aktif' atau yang belum ada statusnya
                 const aktifData = result.data.filter(s => !s.status || s.status === '' || s.status === 'aktif');
-                
+
                 // Simpan SEMUA data siswa ke master cache (biar nonaktif juga bisa pake)
                 localStorage.setItem('cache_data_siswa_master', JSON.stringify(result.data));
                 localStorage.setItem('cache_data_siswa', JSON.stringify(aktifData));
@@ -1626,7 +1626,7 @@ async function loadDataGuru() {
             try {
                 tableState.guru.fullData = JSON.parse(cached);
                 processTableData('guru');
-            } catch(e) {}
+            } catch (e) { }
         } else {
             document.getElementById('tbody-guru').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data guru...</td></tr>';
         }
@@ -1636,7 +1636,7 @@ async function loadDataGuru() {
             if (result.success) {
                 // Simpan ke cache untuk kunjungan berikutnya
                 localStorage.setItem('cache_data_guru', JSON.stringify(result.data));
-                
+
                 // Jika panjang data beda atau cache kosong, update tabel
                 if (!cached || JSON.stringify(tableState.guru.fullData) !== JSON.stringify(result.data)) {
                     tableState.guru.fullData = result.data;
@@ -2347,9 +2347,9 @@ async function loadSiswaDashboard() {
     try {
         const cached = localStorage.getItem('cache_siswa_absensi_today');
         if (cached) {
-            try { renderAbsensiTodaySiswa(JSON.parse(cached)); } catch(e) {}
+            try { renderAbsensiTodaySiswa(JSON.parse(cached)); } catch (e) { }
         }
-        
+
         const result = await fetchAPI('getAbsensiToday', { nisn: currentUser.nisn });
         if (result) {
             localStorage.setItem('cache_siswa_absensi_today', JSON.stringify(result));
@@ -2818,19 +2818,19 @@ async function loadDataSiswaNonaktif() {
         // [OPTIMASI KILAT] Cek apakah ada cache di local storage
         const cached = localStorage.getItem('cache_data_siswa_nonaktif');
         const masterCached = localStorage.getItem('cache_data_siswa_master');
-        
+
         if (cached) {
             try {
                 tableState.siswaNonaktif.fullData = JSON.parse(cached);
                 processTableData('siswaNonaktif');
-            } catch(e) {}
+            } catch (e) { }
         } else if (masterCached) {
             // Coba ambil dari master cache jika ada
             try {
                 const masterData = JSON.parse(masterCached);
                 tableState.siswaNonaktif.fullData = masterData.filter(s => s.status === 'nonaktif');
                 processTableData('siswaNonaktif');
-            } catch(e) {}
+            } catch (e) { }
         } else {
             document.getElementById('tbody-siswa-nonaktif').innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500"><i class="fas fa-circle-notch fa-spin mr-2"></i>Memuat data siswa...</td></tr>';
         }
@@ -2839,7 +2839,7 @@ async function loadDataSiswaNonaktif() {
             const result = await fetchAPI('getSiswaList');
             if (result.success) {
                 const nonaktifData = result.data.filter(s => s.status === 'nonaktif');
-                
+
                 // Simpan ke cache
                 localStorage.setItem('cache_data_siswa_master', JSON.stringify(result.data));
                 localStorage.setItem('cache_data_siswa_nonaktif', JSON.stringify(nonaktifData));
