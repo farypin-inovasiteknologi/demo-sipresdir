@@ -60,7 +60,17 @@ async function fetchAPI(action, params = {}) {
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             redirect: 'follow'
         });
-        return await response.json();
+        
+        const text = await response.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            console.error("Fetch API Error parsing JSON. Response text:", text);
+            // Ekstrak tag title jika ada
+            let titleMatch = text.match(/<title>(.*?)<\/title>/i);
+            let title = titleMatch ? titleMatch[1] : "HTML Error";
+            throw new Error(`Server Response Error: [${title}] ${text.substring(0, 50)}...`);
+        }
     } catch (error) {
         console.error("Fetch Error:", error);
         throw error;
@@ -116,36 +126,53 @@ function showAlert(type, message) {
 // ============================================================
 async function initAppConfigs() {
     try {
+        // [BARU] Load dari cache lokal dulu agar UI terasa sangat cepat
+        const cachedConfig = localStorage.getItem('appConfigCache');
+        if (cachedConfig) {
+            try {
+                const result = JSON.parse(cachedConfig);
+                applyAppConfigToUI(result);
+            } catch(e) {}
+        }
+
         const result = await fetchAPI('getSettings');
         if (result) {
-            window.appConfig = result;
-            document.querySelectorAll('.dyn-logo').forEach(el => { if (el.tagName === 'IMG') el.src = result.logo; });
-            document.querySelectorAll('.dyn-logoInstansi').forEach(el => { if (el.tagName === 'IMG') el.src = result.logoInstansi || result.logo; });
-            document.querySelectorAll('.dyn-namaInstansi').forEach(el => el.innerHTML = result.namaInstansi);
-            document.querySelectorAll('.dyn-namasekolah').forEach(el => el.innerHTML = result.namasekolah);
-            document.querySelectorAll('.dyn-alamat').forEach(el => el.innerHTML = result.alamat);
-            document.querySelectorAll('.dyn-website').forEach(el => el.innerHTML = result.website);
-            document.querySelectorAll('.dyn-website-link').forEach(el => el.href = (result.website.startsWith('http') ? result.website : 'https://' + result.website));
-            document.querySelectorAll('.dyn-runningtext').forEach(el => el.innerHTML = result.runningtext);
-            document.querySelectorAll('.dyn-tahun').forEach(el => el.innerHTML = result.tahun);
-
-            // [BARU] Logika Tampilan Template Surat
-            const actContainer = document.getElementById('actionTemplateSuratContainer');
-            const btnLihat = document.getElementById('btnLihatTemplateSurat');
-            if (actContainer && btnLihat) {
-                if (result.url_template_surat) {
-                    actContainer.classList.remove('hidden');
-                    btnLihat.href = result.url_template_surat;
-                } else {
-                    actContainer.classList.add('hidden');
-                }
-            }
+            // Update cache dengan data terbaru dari server
+            localStorage.setItem('appConfigCache', JSON.stringify(result));
+            applyAppConfigToUI(result);
         }
 
         // Ambil status libur hari ini
         const statusHari = await fetchAPI('cekWFHToday');
         if (statusHari) window.appStatusHari = statusHari;
-    } catch (e) { console.log("Gagal memuat pengaturan awal", e); }
+    } catch (error) {
+        console.error("Gagal memuat konfigurasi aplikasi", error);
+    }
+}
+
+function applyAppConfigToUI(result) {
+    window.appConfig = result;
+    document.querySelectorAll('.dyn-logo').forEach(el => { if (el.tagName === 'IMG') el.src = result.logo; });
+    document.querySelectorAll('.dyn-logoInstansi').forEach(el => { if (el.tagName === 'IMG') el.src = result.logoInstansi || result.logo; });
+    document.querySelectorAll('.dyn-namaInstansi').forEach(el => el.innerHTML = result.namaInstansi);
+    document.querySelectorAll('.dyn-namasekolah').forEach(el => el.innerHTML = result.namasekolah);
+    document.querySelectorAll('.dyn-alamat').forEach(el => el.innerHTML = result.alamat);
+    document.querySelectorAll('.dyn-website').forEach(el => el.innerHTML = result.website);
+    document.querySelectorAll('.dyn-website-link').forEach(el => el.href = (result.website.startsWith('http') ? result.website : 'https://' + result.website));
+    document.querySelectorAll('.dyn-runningtext').forEach(el => el.innerHTML = result.runningtext);
+    document.querySelectorAll('.dyn-tahun').forEach(el => el.innerHTML = result.tahun);
+
+    // Logika Tampilan Template Surat
+    const actContainer = document.getElementById('actionTemplateSuratContainer');
+    const btnLihat = document.getElementById('btnLihatTemplateSurat');
+    if (actContainer && btnLihat) {
+        if (result.url_template_surat) {
+            actContainer.classList.remove('hidden');
+            btnLihat.href = result.url_template_surat;
+        } else {
+            actContainer.classList.add('hidden');
+        }
+    }
 }
 
 async function loadPengaturan() {
