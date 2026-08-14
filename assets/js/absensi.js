@@ -76,32 +76,15 @@ async function onScanSuccess(decodedText) {
         const min = String(now.getMinutes()).padStart(2, '0');
         const ss = String(now.getSeconds()).padStart(2, '0');
 
-        // --- MENGGUNAKAN API PHP LOKAL ---
-        const response = await fetch('api/absen.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                nisn: decodedText,
-                role: myRole,
-                kelasGuru: myKelas,
-                token: currentUser ? currentUser.token : null,
-                clientDate: `${yyyy}-${mm}-${dd}`,
-                clientTime: `${hh}:${min}:${ss}`
-            })
+        // --- MENGGUNAKAN API GOOGLE APPS SCRIPT ---
+        const result = await fetchAPI('scanAbsensi', {
+            nisn: decodedText,
+            role: myRole,
+            kelasGuru: myKelas,
+            token: currentUser ? currentUser.token : null,
+            clientDate: `${yyyy}-${mm}-${dd}`,
+            clientTime: `${hh}:${min}:${ss}`
         });
-
-        const jsonResponse = await response.json();
-
-        // Memetakan ulang respons PHP ke format lama agar UI tidak error
-        const result = {
-            success: jsonResponse.status === 'success',
-            message: jsonResponse.message,
-            nama: jsonResponse.data ? jsonResponse.data.nama : '',
-            kelas: jsonResponse.data ? jsonResponse.data.kelas : '',
-            type: jsonResponse.data ? jsonResponse.data.jenis : '',
-            jamDatang: jsonResponse.data ? jsonResponse.data.waktu : '',
-            jamPulang: jsonResponse.data ? jsonResponse.data.waktu : ''
-        };
 
         if (result.success) {
             const color = result.type === 'datang' ? 'green' : 'blue';
