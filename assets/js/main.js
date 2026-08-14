@@ -3050,7 +3050,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     const installPopup = document.getElementById('pwaInstallPopup');
     if (installPopup) {
         setTimeout(() => {
-            installPopup.classList.remove('translate-y-full');
+            installPopup.classList.remove('-translate-y-full');
         }, 3000);
     }
 });
@@ -3062,7 +3062,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
-            if (installPopup) installPopup.classList.add('translate-y-full');
+            if (installPopup) installPopup.classList.add('-translate-y-full');
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
@@ -3073,7 +3073,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
-            if (installPopup) installPopup.classList.add('translate-y-full');
+            if (installPopup) installPopup.classList.add('-translate-y-full');
         });
     }
 
