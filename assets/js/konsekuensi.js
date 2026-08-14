@@ -159,10 +159,24 @@ function generateKonsekuensi() {
     const checked = Array.from(document.querySelectorAll('[id^="checkKons_"]:checked')).map(function(cb) { return cb.value; });
     if (!checked.length) { Swal.fire('Peringatan', 'Pilih minimal 1 jenis konsekuensi.', 'warning'); return; }
     
-    // Siapkan array siswa kosong pada tiap konsekuensi yang aktif
-    const konsekuensiAktif = jenisKonsekuensiList.filter(function(k) { return checked.includes(k.id); }).map(function(k) { return Object.assign({}, k, { siswa: [] }); });
+    // Siapkan array siswa kosong pada tiap konsekuensi yang aktif (pertahankan yang sudah ada jika ada)
+    const konsekuensiAktif = jenisKonsekuensiList.filter(function(k) { return checked.includes(k.id); }).map(function(k) { 
+        const existing = (hasilGenerateKonsekuensi || []).find(e => e.id === k.id);
+        return Object.assign({}, k, { siswa: existing ? [...existing.siswa] : [] }); 
+    });
+
+    // Kumpulkan semua nama siswa yang SUDAH terpetakan sebelumnya di konsekuensi yang aktif
+    const assignedNames = new Set();
+    konsekuensiAktif.forEach(k => {
+        k.siswa.forEach(s => assignedNames.add(s.nama));
+    });
+
+    let newAddedCount = 0;
 
     siswaTerlambatList.forEach(function(siswa) {
+        if (assignedNames.has(siswa.nama)) return; // Lewati jika sudah ditugaskan sebelumnya
+        
+        newAddedCount++;
         const isLaki = siswa.jenisKelamin && siswa.jenisKelamin.toLowerCase().includes('laki');
         
         // Cari tugas yang cocok
@@ -182,6 +196,12 @@ function generateKonsekuensi() {
 
     hasilGenerateKonsekuensi = konsekuensiAktif;
     renderHasilGenerate();
+    
+    if (newAddedCount > 0) {
+        Swal.fire({ icon: 'success', title: 'Berhasil', text: newAddedCount + ' siswa baru berhasil dipetakan!', timer: 2000, showConfirmButton: false });
+    } else {
+        Swal.fire({ icon: 'info', title: 'Sudah Terpetakan', text: 'Semua siswa sudah ada dalam daftar. Tidak ada tambahan baru.', timer: 2000, showConfirmButton: false });
+    }
 }
 
 function renderHasilGenerate() {
