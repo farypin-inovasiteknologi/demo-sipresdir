@@ -200,4 +200,9 @@ function lihatDetailKonsekuensi(idx) {
     Swal.fire({ title: item.nama, html: '<div class="text-left overflow-auto max-h-80 rounded-xl border border-gray-100"><table class="w-full text-sm"><thead class="bg-gray-50"><tr><th class="px-4 py-2 text-left text-xs font-bold text-gray-500">#</th><th class="px-4 py-2 text-left text-xs font-bold text-gray-500">Nama</th><th class="px-4 py-2 text-left text-xs font-bold text-gray-500">Kelas</th><th class="px-4 py-2 text-center text-xs font-bold text-gray-500">JK</th></tr></thead><tbody>' + rows + '</tbody></table></div>', showCloseButton: true, showConfirmButton: false, width: '600px' });
 }
 
-async function loadHalamanKonsekuensi() { switchKonsekuensiTab('jenis'); }
+async function loadHalamanKonsekuensi() { 
+    stopAndBack(false); 
+    setActiveMenu('Konsekuensi Harian'); 
+    showView('view-konsekuensi');
+    switchKonsekuensiTab('jenis'); 
+}
