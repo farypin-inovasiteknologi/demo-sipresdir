@@ -39,15 +39,8 @@ function renderJenisKonsekuensiTable() {
     }
     const objekBadge = { 'Laki-laki': 'bg-blue-100 text-blue-700', 'Perempuan': 'bg-pink-100 text-pink-700', 'Semua': 'bg-purple-100 text-purple-700' };
     const objekIcon = { 'Laki-laki': 'fa-mars', 'Perempuan': 'fa-venus', 'Semua': 'fa-venus-mars' };
-    tbody.innerHTML = jenisKonsekuensiList.map(function(item, idx) {
-        return '<tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">' +
-            '<td class="px-4 py-3 text-sm text-gray-500">' + (idx + 1) + '</td>' +
-            '<td class="px-4 py-3 font-semibold text-gray-800">' + item.nama + '</td>' +
-            '<td class="px-4 py-3"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ' + (objekBadge[item.objek] || 'bg-gray-100 text-gray-600') + '"><i class="fas ' + (objekIcon[item.objek] || 'fa-users') + '"></i> ' + item.objek + '</span></td>' +
-            '<td class="px-4 py-3 text-right">' +
-                '<button onclick="openEditKonsekuensiModal(\'' + item.id + '\')" class="inline-flex items-center gap-1 text-xs bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 px-3 py-1.5 rounded-lg font-bold transition mr-1"><i class="fas fa-pen"></i> Edit</button>' +
-                '<button onclick="hapusJenisKonsekuensi(\'' + item.id + '\', \'' + item.nama + '\')" class="inline-flex items-center gap-1 text-xs bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 px-3 py-1.5 rounded-lg font-bold transition"><i class="fas fa-trash"></i> Hapus</button>' +
-            '</td></tr>';
+    tbody.innerHTML = jenisKonsekuensiList.map(function(item, i) {
+        return '<tr class="border-t border-gray-100 hover:bg-gray-50/50 transition"><td class="px-4 py-3 text-gray-500 font-medium">' + (i+1) + '</td><td class="px-4 py-3"><p class="text-sm font-bold text-gray-800">' + item.nama + '</p><div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full ' + (item.objek==='L' ? 'bg-blue-500' : item.objek==='P' ? 'bg-pink-500' : 'bg-purple-500') + '"></span><span class="text-xs text-gray-500">' + item.objek + '</span></div></td><td class="px-4 py-3 text-right"><div class="flex justify-end gap-2"><button onclick="openEditKonsekuensiModal(\'' + item.id + '\')" class="bg-amber-100 text-amber-700 hover:bg-amber-200 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1"><i class="fas fa-edit"></i> Edit</button><button onclick="hapusJenisKonsekuensi(\'' + item.id + '\', \'' + item.nama.replace(/'/g,"\\'") + '\')" class="bg-rose-100 text-rose-700 hover:bg-rose-200 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1"><i class="fas fa-trash"></i> Hapus</button></div></td></tr>';
     }).join('');
 }
 
@@ -125,8 +118,11 @@ async function loadPetakanKonsekuensi() {
 
 async function loadSiswaTerlambatKons() {
     const container = document.getElementById('daftarSiswaTerlambatKons');
+    const dateInput = document.getElementById('konsFilterDate');
+    const dateStr = dateInput && dateInput.value ? dateInput.value : '';
+    
     container.innerHTML = '<div class="text-center py-8 text-gray-400"><i class="fas fa-circle-notch fa-spin text-2xl"></i><p class="mt-2 text-sm">Memuat...</p></div>';
-    const res = await fetchAPI('getSiswaTerlambatHariIni', { token: currentUser.token });
+    const res = await fetchAPI('getSiswaTerlambat', { token: currentUser.token, date: dateStr });
     if (!res.success) { container.innerHTML = '<p class="text-red-500 text-sm text-center py-4">Gagal: ' + res.message + '</p>'; return; }
     siswaTerlambatList = res.data || [];
     if (!siswaTerlambatList.length) {
@@ -159,26 +155,30 @@ async function loadChecklistKonsekuensi() {
 function toggleAllKonsekuensi(state) { document.querySelectorAll('[id^="checkKons_"]').forEach(function(cb) { cb.checked = state; }); }
 
 function generateKonsekuensi() {
-    if (!siswaTerlambatList.length) { Swal.fire('Info', 'Tidak ada siswa terlambat hari ini.', 'info'); return; }
+    if (!siswaTerlambatList.length) { Swal.fire('Info', 'Tidak ada siswa terlambat untuk data ini.', 'info'); return; }
     const checked = Array.from(document.querySelectorAll('[id^="checkKons_"]:checked')).map(function(cb) { return cb.value; });
     if (!checked.length) { Swal.fire('Peringatan', 'Pilih minimal 1 jenis konsekuensi.', 'warning'); return; }
+    
+    // Siapkan array siswa kosong pada tiap konsekuensi yang aktif
     const konsekuensiAktif = jenisKonsekuensiList.filter(function(k) { return checked.includes(k.id); }).map(function(k) { return Object.assign({}, k, { siswa: [] }); });
 
-    const poolLaki = siswaTerlambatList.filter(function(s) { return s.jenisKelamin && s.jenisKelamin.toLowerCase().includes('laki'); });
-    const poolPerempuan = siswaTerlambatList.filter(function(s) { return s.jenisKelamin && s.jenisKelamin.toLowerCase().includes('perempuan'); });
+    siswaTerlambatList.forEach(function(siswa) {
+        const isLaki = siswa.jenisKelamin && siswa.jenisKelamin.toLowerCase().includes('laki');
+        
+        // Cari tugas yang cocok
+        const eligibleTasks = konsekuensiAktif.filter(k => {
+            if (k.objek === 'L/P') return true;
+            if (k.objek === 'L' && isLaki) return true;
+            if (k.objek === 'P' && !isLaki) return true;
+            return false;
+        });
 
-    const konsBuatLaki = konsekuensiAktif.filter(function(k) { return k.objek === 'Laki-laki'; });
-    const konsBuatPerempuan = konsekuensiAktif.filter(function(k) { return k.objek === 'Perempuan'; });
-    const konsBuatSemua = konsekuensiAktif.filter(function(k) { return k.objek === 'Semua'; });
-
-    function distribusi(pool, konsGroup) {
-        if (!konsGroup.length || !pool.length) return;
-        pool.forEach(function(siswa, idx) { konsGroup[idx % konsGroup.length].siswa.push(siswa); });
-    }
-
-    distribusi(poolLaki, konsBuatLaki);
-    distribusi(poolPerempuan, konsBuatPerempuan);
-    distribusi(siswaTerlambatList, konsBuatSemua);
+        if (eligibleTasks.length > 0) {
+            // Cari tugas yang saat ini memiliki siswa paling sedikit (untuk meratakan pembagian)
+            eligibleTasks.sort((a, b) => a.siswa.length - b.siswa.length);
+            eligibleTasks[0].siswa.push(siswa);
+        }
+    });
 
     hasilGenerateKonsekuensi = konsekuensiAktif;
     renderHasilGenerate();
@@ -215,7 +215,87 @@ function lihatDetailKonsekuensi(idx) {
             return '<tr class="border-t border-gray-100"><td class="px-4 py-2 text-gray-400">' + (i+1) + '</td><td class="px-4 py-2 font-semibold text-gray-800">' + s.nama + '</td><td class="px-4 py-2 text-gray-500">' + s.kelas + '</td><td class="px-4 py-2 text-center"><span class="text-xs font-bold ' + (isLaki ? 'text-blue-600' : 'text-pink-600') + '"><i class="fas ' + (isLaki ? 'fa-mars' : 'fa-venus') + '"></i></span></td></tr>';
         }).join('')
         : '<tr><td colspan="4" class="text-center py-8 text-gray-400">Tidak ada siswa</td></tr>';
-    Swal.fire({ title: item.nama, html: '<div class="text-left overflow-auto max-h-80 rounded-xl border border-gray-100"><table class="w-full text-sm"><thead class="bg-gray-50"><tr><th class="px-4 py-2 text-left text-xs font-bold text-gray-500">#</th><th class="px-4 py-2 text-left text-xs font-bold text-gray-500">Nama</th><th class="px-4 py-2 text-left text-xs font-bold text-gray-500">Kelas</th><th class="px-4 py-2 text-center text-xs font-bold text-gray-500">JK</th></tr></thead><tbody>' + rows + '</tbody></table></div>', showCloseButton: true, showConfirmButton: false, width: '600px' });
+    const printBtn = '<div class="mt-4 flex justify-end"><button onclick="cetakKonsekuensi(' + idx + ')" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-indigo-700 transition flex items-center gap-2"><i class="fas fa-print"></i> Cetak Kartu</button></div>';
+    Swal.fire({ title: item.nama, html: '<div class="text-left overflow-auto max-h-80 rounded-xl border border-gray-100"><table class="w-full text-sm"><thead class="bg-gray-50"><tr><th class="px-4 py-2 text-left text-xs font-bold text-gray-500">#</th><th class="px-4 py-2 text-left text-xs font-bold text-gray-500">Nama</th><th class="px-4 py-2 text-left text-xs font-bold text-gray-500">Kelas</th><th class="px-4 py-2 text-center text-xs font-bold text-gray-500">JK</th></tr></thead><tbody>' + rows + '</tbody></table></div>' + printBtn, showCloseButton: true, showConfirmButton: false, width: '600px' });
+}
+
+function cetakKonsekuensi(idx) {
+    const item = hasilGenerateKonsekuensi[idx];
+    if (!item) return;
+
+    const dateInput = document.getElementById('konsFilterDate');
+    const tgl = (dateInput && dateInput.value) ? new Date(dateInput.value) : new Date();
+    const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+    const dateStr = days[tgl.getDay()] + ', ' + tgl.getDate().toString().padStart(2, '0') + '-' + (tgl.getMonth()+1).toString().padStart(2, '0') + '-' + tgl.getFullYear();
+
+    const appName = document.getElementById('navbarTitle') ? document.getElementById('navbarTitle').textContent : 'SEKOLAH';
+    
+    let html = `
+    <html><head><title>Cetak Konsekuensi</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; color: #000; font-size: 14px; line-height: 1.5; }
+        .text-center { text-align: center; }
+        .font-bold { font-weight: bold; }
+        h2 { margin: 0 0 5px 0; font-size: 18px; text-transform: uppercase; }
+        h3 { margin: 0 0 20px 0; font-size: 16px; font-weight: normal; }
+        .info { margin-bottom: 20px; }
+        .info div { margin-bottom: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th, td { border: 1px solid #000; padding: 8px 10px; text-align: left; }
+        th { background-color: #f0f0f0; }
+        .ttd-box { float: right; width: 250px; text-align: center; margin-bottom: 30px; }
+        .ttd-space { height: 80px; }
+        .ttd-line { border-bottom: 1px solid #000; display: inline-block; width: 80%; }
+        .keterangan-box { border: 1px solid #000; padding: 15px; clear: both; }
+        .keterangan-title { font-weight: bold; margin-bottom: 10px; }
+        .checkbox-item { margin-bottom: 8px; display: flex; align-items: center; }
+        .box { width: 14px; height: 14px; border: 1px solid #000; display: inline-block; margin-right: 10px; }
+        .catatan-line { border-bottom: 1px dotted #000; width: 100%; display: inline-block; margin-top: 15px; margin-bottom: 10px; height: 20px; }
+        @media print { button { display: none; } }
+    </style>
+    </head><body>
+        <div class="text-center font-bold">
+            <h2>BUKTI MELAKSANAKAN KONSEKUENSI SISWA TERLAMBAT</h2>
+            <h3>${appName}</h3>
+        </div>
+        <div class="info">
+            <div><strong>Jenis konsekuensi :</strong> ${item.nama}</div>
+            <div><strong>Hari/tanggal :</strong> ${dateStr}</div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px;">No</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${item.siswa.map((s, i) => `<tr><td>${i+1}</td><td>${s.nama}</td><td>${s.kelas}</td></tr>`).join('')}
+            </tbody>
+        </table>
+        
+        <div class="ttd-box">
+            <div>Mengetahui,</div>
+            <div>Petugas / Guru Piket</div>
+            <div class="ttd-space"></div>
+            <div>( <span class="ttd-line"></span> )</div>
+        </div>
+
+        <div class="keterangan-box">
+            <div class="keterangan-title">KETERANGAN PELAKSANAAN:</div>
+            <div class="checkbox-item"><span class="box"></span> Selesai dan Tuntas</div>
+            <div class="checkbox-item"><span class="box"></span> Kerjakan Kembali</div>
+            <div style="margin-top: 15px;">Catatan:</div>
+            <span class="catatan-line"></span>
+            <span class="catatan-line"></span>
+        </div>
+        <script>window.onload = function() { window.print(); }</script>
+    </body></html>`;
+    
+    const win = window.open('', '_blank', 'width=800,height=600');
+    win.document.write(html);
+    win.document.close();
 }
 
 async function loadHalamanKonsekuensi() { 
