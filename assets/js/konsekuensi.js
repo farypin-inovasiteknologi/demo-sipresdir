@@ -230,65 +230,81 @@ function cetakKonsekuensi(idx) {
 
     const appName = document.getElementById('navbarTitle') ? document.getElementById('navbarTitle').textContent : 'SEKOLAH';
     
+    // Siapkan baris tabel, minimal 4 baris
+    let tbodyRows = '';
+    const minRows = 4;
+    const totalRows = Math.max(item.siswa.length, minRows);
+    
+    for (let i = 0; i < totalRows; i++) {
+        const s = item.siswa[i] || { nama: '', kelas: '' };
+        tbodyRows += '<tr>';
+        tbodyRows += '<td class="text-center">' + (i+1) + '</td>';
+        tbodyRows += '<td>' + s.nama + '</td>';
+        tbodyRows += '<td class="text-center">' + s.kelas + '</td>';
+        
+        // Kolom tanda tangan hanya di baris pertama dan rowspan sejumlah total baris
+        if (i === 0) {
+            tbodyRows += '<td rowspan="' + totalRows + '" class="text-center" style="vertical-align: bottom; padding-bottom: 15px;">';
+            tbodyRows += '<div style="margin-bottom: 60px; font-weight: bold;">Mengetahui,<br>Petugas / Guru Piket</div>';
+            tbodyRows += '( ............................................... )';
+            tbodyRows += '</td>';
+        }
+        tbodyRows += '</tr>';
+    }
+    
     let html = `
     <html><head><title>Cetak Konsekuensi</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; color: #000; font-size: 14px; line-height: 1.5; }
+        body { font-family: Arial, sans-serif; padding: 20px; color: #000; font-size: 13px; line-height: 1.4; }
         .text-center { text-align: center; }
         .font-bold { font-weight: bold; }
-        h2 { margin: 0 0 5px 0; font-size: 18px; text-transform: uppercase; }
-        h3 { margin: 0 0 20px 0; font-size: 16px; font-weight: normal; }
-        .info { margin-bottom: 20px; }
-        .info div { margin-bottom: 5px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-        th, td { border: 1px solid #000; padding: 8px 10px; text-align: left; }
-        th { background-color: #f0f0f0; }
-        .ttd-box { float: right; width: 250px; text-align: center; margin-bottom: 30px; }
-        .ttd-space { height: 80px; }
-        .ttd-line { border-bottom: 1px solid #000; display: inline-block; width: 80%; }
-        .keterangan-box { border: 1px solid #000; padding: 15px; clear: both; }
-        .keterangan-title { font-weight: bold; margin-bottom: 10px; }
-        .checkbox-item { margin-bottom: 8px; display: flex; align-items: center; }
-        .box { width: 14px; height: 14px; border: 1px solid #000; display: inline-block; margin-right: 10px; }
-        .catatan-line { border-bottom: 1px dotted #000; width: 100%; display: inline-block; margin-top: 15px; margin-bottom: 10px; height: 20px; }
+        h2 { margin: 0 0 5px 0; font-size: 16px; text-transform: uppercase; }
+        h3 { margin: 0 0 15px 0; font-size: 14px; font-weight: normal; }
+        .info { margin-bottom: 10px; }
+        .info div { margin-bottom: 3px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 0; }
+        th, td { border: 1px solid #000; padding: 6px 8px; text-align: left; }
+        th { background-color: #f0f0f0; text-align: center; font-weight: bold; }
+        .keterangan-box { border: 1px solid #000; border-top: none; padding: 10px 15px; }
+        .keterangan-title { font-weight: bold; margin-bottom: 8px; }
+        .checkbox-item { margin-bottom: 5px; display: inline-flex; align-items: center; margin-right: 20px; }
+        .box { width: 12px; height: 12px; border: 1px solid #000; display: inline-block; margin-right: 6px; }
+        .catatan-line { border-bottom: 1px dotted #000; width: 100%; display: inline-block; margin-top: 12px; height: 15px; }
         @media print { button { display: none; } }
     </style>
     </head><body>
-        <div class="text-center font-bold">
-            <h2>BUKTI MELAKSANAKAN KONSEKUENSI SISWA TERLAMBAT</h2>
-            <h3>${appName}</h3>
-        </div>
-        <div class="info">
-            <div><strong>Jenis konsekuensi :</strong> ${item.nama}</div>
-            <div><strong>Hari/tanggal :</strong> ${dateStr}</div>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 50px;">No</th>
-                    <th>Nama Siswa</th>
-                    <th>Kelas</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${item.siswa.map((s, i) => `<tr><td>${i+1}</td><td>${s.nama}</td><td>${s.kelas}</td></tr>`).join('')}
-            </tbody>
-        </table>
-        
-        <div class="ttd-box">
-            <div>Mengetahui,</div>
-            <div>Petugas / Guru Piket</div>
-            <div class="ttd-space"></div>
-            <div>( <span class="ttd-line"></span> )</div>
-        </div>
-
-        <div class="keterangan-box">
-            <div class="keterangan-title">KETERANGAN PELAKSANAAN:</div>
-            <div class="checkbox-item"><span class="box"></span> Selesai dan Tuntas</div>
-            <div class="checkbox-item"><span class="box"></span> Kerjakan Kembali</div>
-            <div style="margin-top: 15px;">Catatan:</div>
-            <span class="catatan-line"></span>
-            <span class="catatan-line"></span>
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div class="text-center font-bold">
+                <h2>BUKTI MELAKSANAKAN KONSEKUENSI SISWA TERLAMBAT</h2>
+                <h3>${appName}</h3>
+            </div>
+            <div class="info">
+                <div><strong>Jenis Konsekuensi :</strong> ${item.nama}</div>
+                <div><strong>Hari / Tanggal :</strong> ${dateStr}</div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 40px;">No</th>
+                        <th style="width: 250px;">Nama Siswa</th>
+                        <th style="width: 80px;">Kelas</th>
+                        <th style="width: 200px;">Tanda Tangan Petugas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tbodyRows}
+                </tbody>
+            </table>
+            
+            <div class="keterangan-box">
+                <div style="display: flex; align-items: center; flex-wrap: wrap;">
+                    <div class="keterangan-title" style="margin-bottom: 0; margin-right: 20px;">KETERANGAN PELAKSANAAN:</div>
+                    <div class="checkbox-item"><span class="box"></span> Selesai dan Tuntas</div>
+                    <div class="checkbox-item" style="margin-right: 0;"><span class="box"></span> Kerjakan Kembali</div>
+                </div>
+                <div style="margin-top: 8px;">Catatan:</div>
+                <span class="catatan-line"></span>
+            </div>
         </div>
         <script>window.onload = function() { window.print(); }</script>
     </body></html>`;
