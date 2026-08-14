@@ -4,10 +4,10 @@
 // Konfigurasi Multitenant (Banyak Sekolah dalam 1 Frontend)
 const TENANT_CONFIG = {
     // Ganti nilai-nilai ini dengan URL Web App Google Apps Script masing-masing sekolah
-    "demo": "https://script.google.com/macros/s/AKfycbw_EssUp4sCVylBaIzu7e1xbkDgayFn-Br8sTsxmoBYyA7mSFL0mlGath9B_QxOfovmkA/exec",
+    "demo": "https://script.google.com/macros/s/AKfycbw_pS7KAvWJaBSmNFwZpNd5wm8yAjoooBAWat-axero1WalY4a860Ms7lB_kl-yPZe3/exec",
     "sekolah2": "https://script.google.com/macros/s/AKfycb.../exec",
     "sekolah3": "https://script.google.com/macros/s/AKfycb.../exec",
-    "default": "https://script.google.com/macros/s/AKfycbw_EssUp4sCVylBaIzu7e1xbkDgayFn-Br8sTsxmoBYyA7mSFL0mlGath9B_QxOfovmkA/exec" // HARUS ADA!
+    "default": "https://script.google.com/macros/s/AKfycbw_pS7KAvWJaBSmNFwZpNd5wm8yAjoooBAWat-axero1WalY4a860Ms7lB_kl-yPZe3/exec" // HARUS ADA!
 };
 
 let API_URL = '';
@@ -802,12 +802,12 @@ function initDashboard() {
     const menuContainer = document.getElementById('sidebarMenu');
     let menuHTML = '';
 
-    const createItem = (label, icon, onclick, isDefaultActive = false) => {
+    const createItem = (label, icon, onclick, isDefaultActive = false, extraClass = '') => {
         const hideText = !isSidebarOpen ? 'hidden' : '';
         const centerClass = !isSidebarOpen ? 'justify-center px-0' : 'space-x-3 px-4';
         const style = isDefaultActive ? "bg-indigo-600 text-white shadow-lg shadow-indigo-900/50" : "text-gray-400 hover:bg-gray-800 hover:text-white";
         return `
-        <a data-name="${label}" onclick="${onclick}" class="flex items-center ${centerClass} py-3 rounded-xl transition-all duration-200 group overflow-hidden whitespace-nowrap cursor-pointer ${style}">
+        <a data-name="${label}" onclick="${onclick}" class="flex items-center ${centerClass} py-3 rounded-xl transition-all duration-200 group overflow-hidden whitespace-nowrap cursor-pointer ${style} ${extraClass}">
             <i class="fas ${icon} w-6 text-center flex-shrink-0 group-hover:scale-110 transition-transform"></i>
             <span class="sidebar-label font-medium transition-opacity duration-300 ${hideText}">${label}</span>
         </a>`;
@@ -846,6 +846,7 @@ function initDashboard() {
         menuHTML += createItem('Kelola Presensi', 'fa-calendar-check', 'loadKelolaAbsen()');
         menuHTML += createItem('Kelola Disiplin', 'fa-balance-scale', 'loadMasterPelanggaran()');
         menuHTML += createItem('Scan Presensi', 'fa-qrcode', 'loadScanAbsensi()');
+        menuHTML += createItem('Konsekuensi Harian', 'fa-gavel', 'loadHalamanKonsekuensi()', false, 'hidden md:flex');
         menuHTML += createItem('Pengaturan', 'fa-cog', 'loadPengaturan()');
 
     } else if (currentUser.role === 'guru') {
