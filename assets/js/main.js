@@ -624,6 +624,7 @@ function showView(viewId) {
         case 'view-absen-wfh': title = "Presensi WFH"; break;
         case 'view-izin-siswa': title = "Pengajuan Izin / Sakit"; break;
         case 'view-master-pelanggaran': title = "Data Pelanggaran"; break;
+        case 'view-konsekuensi': title = "Konsekuensi Harian"; break;
         case 'view-input-kasus': title = "Catat Pelanggaran"; break;
         case 'view-rekap-kasus': title = "Rekap Pelanggaran"; break;
     }
@@ -806,8 +807,10 @@ function initDashboard() {
         const hideText = !isSidebarOpen ? 'hidden' : '';
         const centerClass = !isSidebarOpen ? 'justify-center px-0' : 'space-x-3 px-4';
         const style = isDefaultActive ? "bg-indigo-600 text-white shadow-lg shadow-indigo-900/50" : "text-gray-400 hover:bg-gray-800 hover:text-white";
+        // Jika ada class hidden di extraClass, jangan gunakan flex bawaan agar tidak bentrok
+        const baseClass = extraClass.includes('hidden') ? 'items-center py-3 rounded-xl transition-all duration-200 group overflow-hidden whitespace-nowrap cursor-pointer' : 'flex items-center py-3 rounded-xl transition-all duration-200 group overflow-hidden whitespace-nowrap cursor-pointer';
         return `
-        <a data-name="${label}" onclick="${onclick}" class="flex items-center ${centerClass} py-3 rounded-xl transition-all duration-200 group overflow-hidden whitespace-nowrap cursor-pointer ${style} ${extraClass}">
+        <a data-name="${label}" onclick="${onclick}" class="${baseClass} ${centerClass} ${style} ${extraClass}">
             <i class="fas ${icon} w-6 text-center flex-shrink-0 group-hover:scale-110 transition-transform"></i>
             <span class="sidebar-label font-medium transition-opacity duration-300 ${hideText}">${label}</span>
         </a>`;
