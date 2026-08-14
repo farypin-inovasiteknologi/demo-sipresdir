@@ -938,6 +938,7 @@
                                         <i class="fas fa-user-clock text-red-500"></i> Siswa Terlambat
                                     </h3>
                                     <div class="flex items-center gap-2 w-full sm:w-auto">
+                                        <button onclick="loadSiswaTerlambatKons()" class="px-2.5 py-1.5 text-sm bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-lg transition" title="Refresh Data"><i class="fas fa-redo"></i></button>
                                         <input type="date" id="konsFilterDate" onchange="loadSiswaTerlambatKons()" class="px-3 py-1.5 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 flex-1 sm:flex-none">
                                         <button onclick="document.getElementById('konsFilterDate').value = ''; loadSiswaTerlambatKons()" class="px-3 py-1.5 text-sm font-bold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg transition whitespace-nowrap"><i class="fas fa-sync-alt mr-1"></i> Hari Ini</button>
                                     </div>
