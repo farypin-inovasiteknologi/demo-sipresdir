@@ -55,8 +55,14 @@ function openTambahKonsekuensiModal() {
     document.getElementById('kons_id').value = '';
     document.getElementById('kons_nama').value = '';
     document.getElementById('kons_objek').value = 'L/P';
-    document.getElementById('modalKonsekuensiTitle').textContent = 'Tambah Jenis Konsekuensi';
-    document.getElementById('modalKonsekuensi').classList.remove('hidden');
+    document.getElementById('modalKonsekuensiTitle').innerHTML = '<i class="fas fa-gavel text-indigo-600"></i> Tambah Konsekuensi';
+    const m = document.getElementById('modalKonsekuensi');
+    m.classList.remove('hidden');
+    setTimeout(() => {
+        m.classList.remove('opacity-0');
+        m.firstElementChild.classList.remove('scale-95');
+        m.firstElementChild.classList.add('scale-100');
+    }, 10);
 }
 
 function openEditKonsekuensiModal(id) {
@@ -65,11 +71,23 @@ function openEditKonsekuensiModal(id) {
     document.getElementById('kons_id').value = item.id;
     document.getElementById('kons_nama').value = item.nama;
     document.getElementById('kons_objek').value = item.objek;
-    document.getElementById('modalKonsekuensiTitle').textContent = 'Edit Jenis Konsekuensi';
-    document.getElementById('modalKonsekuensi').classList.remove('hidden');
+    document.getElementById('modalKonsekuensiTitle').innerHTML = '<i class="fas fa-edit text-indigo-600"></i> Edit Konsekuensi';
+    const m = document.getElementById('modalKonsekuensi');
+    m.classList.remove('hidden');
+    setTimeout(() => {
+        m.classList.remove('opacity-0');
+        m.firstElementChild.classList.remove('scale-95');
+        m.firstElementChild.classList.add('scale-100');
+    }, 10);
 }
 
-function closeModalKonsekuensi() { document.getElementById('modalKonsekuensi').classList.add('hidden'); }
+function closeModalKonsekuensi() { 
+    const m = document.getElementById('modalKonsekuensi');
+    m.classList.add('opacity-0');
+    m.firstElementChild.classList.add('scale-95');
+    m.firstElementChild.classList.remove('scale-100');
+    setTimeout(() => m.classList.add('hidden'), 300);
+}
 
 async function simpanKonsekuensi() {
     const id = document.getElementById('kons_id').value;
