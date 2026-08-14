@@ -52,9 +52,9 @@ function renderJenisKonsekuensiTable() {
 }
 
 function openTambahKonsekuensiModal() {
-    document.getElementById('formKonsekuensiId').value = '';
-    document.getElementById('formKonsekuensiNama').value = '';
-    document.getElementById('formKonsekuensiObjek').value = 'Semua';
+    document.getElementById('kons_id').value = '';
+    document.getElementById('kons_nama').value = '';
+    document.getElementById('kons_objek').value = 'L/P';
     document.getElementById('modalKonsekuensiTitle').textContent = 'Tambah Jenis Konsekuensi';
     document.getElementById('modalKonsekuensi').classList.remove('hidden');
 }
@@ -62,19 +62,19 @@ function openTambahKonsekuensiModal() {
 function openEditKonsekuensiModal(id) {
     const item = jenisKonsekuensiList.find(function(k) { return k.id === id; });
     if (!item) return;
-    document.getElementById('formKonsekuensiId').value = item.id;
-    document.getElementById('formKonsekuensiNama').value = item.nama;
-    document.getElementById('formKonsekuensiObjek').value = item.objek;
+    document.getElementById('kons_id').value = item.id;
+    document.getElementById('kons_nama').value = item.nama;
+    document.getElementById('kons_objek').value = item.objek;
     document.getElementById('modalKonsekuensiTitle').textContent = 'Edit Jenis Konsekuensi';
     document.getElementById('modalKonsekuensi').classList.remove('hidden');
 }
 
 function closeModalKonsekuensi() { document.getElementById('modalKonsekuensi').classList.add('hidden'); }
 
-async function submitFormKonsekuensi() {
-    const id = document.getElementById('formKonsekuensiId').value;
-    const nama = document.getElementById('formKonsekuensiNama').value.trim();
-    const objek = document.getElementById('formKonsekuensiObjek').value;
+async function simpanKonsekuensi() {
+    const id = document.getElementById('kons_id').value;
+    const nama = document.getElementById('kons_nama').value.trim();
+    const objek = document.getElementById('kons_objek').value;
     if (!nama) { Swal.fire('Peringatan', 'Nama konsekuensi wajib diisi!', 'warning'); return; }
     const btn = document.getElementById('btnSubmitKonsekuensi');
     const origText = btn.innerHTML;
