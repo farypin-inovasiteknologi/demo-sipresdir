@@ -4,10 +4,10 @@
 // Konfigurasi Multitenant (Banyak Sekolah dalam 1 Frontend)
 const TENANT_CONFIG = {
     // Ganti nilai-nilai ini dengan URL Web App Google Apps Script masing-masing sekolah
-    "demo": "https://script.google.com/macros/s/AKfycbw_pS7KAvWJaBSmNFwZpNd5wm8yAjoooBAWat-axero1WalY4a860Ms7lB_kl-yPZe3/exec",
+    "demo": "https://script.google.com/macros/s/AKfycbxdEsgNulCkCco9x9k1Vt4_2qnbReGwQWQz6G_OwUU-iyOUlDUJnyh3gPYsNZjEIikz/exec",
     "sekolah2": "https://script.google.com/macros/s/AKfycb.../exec",
     "sekolah3": "https://script.google.com/macros/s/AKfycb.../exec",
-    "default": "https://script.google.com/macros/s/AKfycbw_pS7KAvWJaBSmNFwZpNd5wm8yAjoooBAWat-axero1WalY4a860Ms7lB_kl-yPZe3/exec" // HARUS ADA!
+    "default": "https://script.google.com/macros/s/AKfycbxdEsgNulCkCco9x9k1Vt4_2qnbReGwQWQz6G_OwUU-iyOUlDUJnyh3gPYsNZjEIikz/exec" // HARUS ADA!
 };
 
 let API_URL = '';
@@ -233,7 +233,7 @@ function applyPengaturanFormData(form, data) {
         console.warn('applyPengaturanFormData: form or data is missing', { form, data });
         return;
     }
-    
+
     const source = data.data && typeof data.data === 'object' ? data.data : data;
     const normalized = {
         namaInstansi: source.namaInstansi ?? source.instansi ?? '',
@@ -256,7 +256,7 @@ function applyPengaturanFormData(form, data) {
     ['namaInstansi', 'namaOpd', 'namasekolah', 'alamat', 'teleponSekolah', 'emailSekolah', 'website', 'runningtext'].forEach(name => {
         let input = form.elements[name];
         if (!input) input = form.querySelector(`[name="${name}"]`);
-        
+
         if (input && normalized[name] !== undefined && normalized[name] !== null) {
             input.value = normalized[name];
         }
@@ -265,7 +265,7 @@ function applyPengaturanFormData(form, data) {
     ['gradient1', 'gradient2', 'gradient3', 'gradient4'].forEach((name, index) => {
         let input = form.elements[name];
         if (!input) input = form.querySelector(`[name="${name}"]`);
-        
+
         if (input) {
             input.value = normalized[name] || ['#6366f1', '#a855f7', '#3b82f6', '#ec4899'][index];
         }
@@ -274,7 +274,7 @@ function applyPengaturanFormData(form, data) {
     const defLogo = 'assets/img/imgsipresdir.png';
     const logo = normalized.logo;
     const logoInstansi = normalized.logoInstansi;
-    
+
     const logoInput = document.getElementById('finalLogoData');
     const logoPreview = document.getElementById('previewLogoSetting');
     const instansiInput = document.getElementById('finalLogoInstansiData');
@@ -282,7 +282,7 @@ function applyPengaturanFormData(form, data) {
 
     if (logoInput) logoInput.value = logo;
     if (instansiInput) instansiInput.value = logoInstansi;
-    
+
     if (logoPreview) {
         logoPreview.onerror = () => { logoPreview.onerror = null; logoPreview.src = defLogo; };
         logoPreview.src = logo || defLogo;
@@ -291,7 +291,7 @@ function applyPengaturanFormData(form, data) {
         instansiPreview.onerror = () => { instansiPreview.onerror = null; instansiPreview.src = defLogo; };
         instansiPreview.src = logoInstansi || defLogo;
     }
-    
+
     updateLogoClearButton('instansi', logoInstansi);
     updateLogoClearButton('sekolah', logo);
     applyGradientColors(normalized);
