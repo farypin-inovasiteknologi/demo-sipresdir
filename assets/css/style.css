@@ -15,8 +15,8 @@ textarea {
 }
 
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 12px;
+    height: 12px;
 }
 
 ::-webkit-scrollbar-track {
@@ -87,7 +87,7 @@ input:checked ~ .dot {
 }
 
 .animated-gradient {
-    background: linear-gradient(-45deg, #6366f1, #a855f7, #ec4899, #3b82f6);
+    background: linear-gradient(-45deg, var(--gradient-1, #6366f1), var(--gradient-2, #a855f7), var(--gradient-3, #3b82f6), var(--gradient-4, #ec4899));
     background-size: 400% 400%;
     animation: gradientMove 15s ease infinite;
 }
